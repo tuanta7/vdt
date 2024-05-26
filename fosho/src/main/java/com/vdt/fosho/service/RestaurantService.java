@@ -1,0 +1,58 @@
+package com.vdt.fosho.service;
+
+import com.vdt.fosho.entity.Restaurant;
+import com.vdt.fosho.exception.ResourceNotFoundException;
+import com.vdt.fosho.repository.RestaurantRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class RestaurantService {
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    public List<Restaurant> getAllRestaurants() {
+        // The implementation of "findAll()" is provided dynamically at runtime by Spring Data JPA.
+        return restaurantRepository.findAll();
+    }
+
+
+    public Restaurant getRestaurantById(Long id) {
+        Optional<Restaurant> result = restaurantRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
+        }
+        return result.get();
+    }
+
+
+    public Restaurant createRestaurant(Restaurant restaurant) {
+        return restaurantRepository.save(restaurant);
+    }
+
+    public Restaurant updateRestaurant(Long id, Restaurant restaurant) {
+        Optional<Restaurant> result = restaurantRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
+
+        }
+        Restaurant existingRestaurant = result.get();
+        existingRestaurant.setName(restaurant.getName());
+        existingRestaurant.setAddress(restaurant.getAddress());
+        existingRestaurant.setPhone(restaurant.getPhone());
+        return restaurantRepository.save(existingRestaurant);
+    }
+
+
+    public void deleteRestaurant(Long id) {
+        Optional<Restaurant> result = restaurantRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
+        }
+        restaurantRepository.deleteById(id);
+    }
+}
