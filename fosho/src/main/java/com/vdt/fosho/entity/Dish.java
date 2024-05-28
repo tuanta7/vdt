@@ -1,9 +1,13 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "dishes")
 public class Dish {

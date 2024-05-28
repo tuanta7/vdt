@@ -1,11 +1,13 @@
 package com.vdt.fosho.entity;
 
-
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.locationtech.jts.geom.Point;
 
-
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "restaurants")
 public class Restaurant {
@@ -37,9 +39,6 @@ public class Restaurant {
     @JoinColumn(name = "owner_id", nullable = true)
     private User owner;
 
-    public Restaurant() {
-    }
-
     public Restaurant(String name, String address, String phone, Point coordinates, String logoUrl, User owner) {
         this.name = name;
         this.address = address;
@@ -47,74 +46,5 @@ public class Restaurant {
         this.coordinates = coordinates;
         this.logoUrl = logoUrl;
         this.owner = owner;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Point getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Point coordinates) {
-        this.coordinates = coordinates;
-    }
-
-    public String getLogoUrl() {
-        return logoUrl;
-    }
-
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    @Override
-    public String toString() {
-       return "Restaurant{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", address='" + address + '\'' +
-               ", phone='" + phone + '\'' +
-               ", coordinates=" + coordinates +
-               ", logoUrl='" + logoUrl + '\'' +
-               ", owner=" + owner +
-               '}';
     }
 }

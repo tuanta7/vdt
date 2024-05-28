@@ -1,8 +1,12 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "shipping_address")
 public class ShippingAddress {

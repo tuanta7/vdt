@@ -1,7 +1,11 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "reviews")
 public class Review {

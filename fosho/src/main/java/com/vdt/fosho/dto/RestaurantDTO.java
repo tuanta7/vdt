@@ -1,11 +1,18 @@
 package com.vdt.fosho.dto;
 
 import com.vdt.fosho.entity.Restaurant;
+import com.vdt.fosho.entity.User;
+import com.vdt.fosho.utils.GeoUtils;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
+@Data
+@NoArgsConstructor
 public class RestaurantDTO {
+    private Long id;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -17,44 +24,39 @@ public class RestaurantDTO {
     @Pattern(regexp = "^(\\+84|0)\\d{9,10}$", message = "Invalid phone number")
     private String phone;
 
-    private int longitude;
-    private int latitude;
+    private String logoUrl;
+    private int rating;
 
-    public RestaurantDTO(String name, String address, String phone) {
+    @Range(min = -90, max = 90)
+    private double latitude;
+    
+    @Range(min = -180, max = 180)
+    private double longitude;
+    private User owner;
+
+
+    public RestaurantDTO(
+            Long id, String name, String address, String phone,String logoUrl, int rating,
+            double longitude, double latitude, User owner
+    ) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.logoUrl = logoUrl;
+        this.rating = rating;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.owner = owner;
     }
 
-    public @NotBlank(message = "Name is required") String getName() {
-        return name;
-    }
-
-    public void setName(@NotBlank(message = "Name is required") String name) {
-        this.name = name;
-    }
-
-    public @NotBlank(message = "Address is required") String getAddress() {
-        return address;
-    }
-
-    public void setAddress(@NotBlank(message = "Address is required") String address) {
-        this.address = address;
-    }
-
-    public @NotBlank(message = "Phone is required") @Pattern(regexp = "^(\\+84|0)\\d{9,10}$", message = "Invalid phone number") String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(@NotBlank(message = "Phone is required") @Pattern(regexp = "^(\\+84|0)\\d{9,10}$", message = "Invalid phone number") String phone) {
-        this.phone = phone;
-    }
-
+    // Accepted input fields: name, address, phone, latitude, longitude
     public Restaurant toRestaurant() {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(name);
         restaurant.setAddress(address);
         restaurant.setPhone(phone);
+        restaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
         return restaurant;
     }
 }

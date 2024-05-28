@@ -1,8 +1,13 @@
 package com.vdt.fosho.service;
 
+import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.exception.ResourceNotFoundException;
 import com.vdt.fosho.repository.RestaurantRepository;
+
+import com.vdt.fosho.utils.GeoUtils;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +39,7 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+
     public Restaurant updateRestaurant(Long id, Restaurant restaurant) {
         Optional<Restaurant> result = restaurantRepository.findById(id);
         if (result.isEmpty()) {
@@ -54,5 +60,31 @@ public class RestaurantService {
             throw new ResourceNotFoundException("Restaurant not found with id: " + id);
         }
         restaurantRepository.deleteById(id);
+    }
+
+    public RestaurantDTO toDTO(Restaurant restaurant) {
+
+
+        return new RestaurantDTO(
+                restaurant.getId(),
+                restaurant.getName(),
+                restaurant.getAddress(),
+                restaurant.getPhone(),
+                restaurant.getLogoUrl(),
+                restaurant.getRating(),
+                restaurant.getCoordinates().getX(),
+                restaurant.getCoordinates().getY(),
+                restaurant.getOwner()
+        );
+    }
+
+    public Restaurant updateRestaurantCoordinates(Long id, double longitude, double latitude) {
+        Optional<Restaurant> result = restaurantRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
+        }
+        Restaurant existingRestaurant = result.get();
+        existingRestaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
+        return restaurantRepository.save(existingRestaurant);
     }
 }
