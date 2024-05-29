@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,6 +27,7 @@ import java.util.List;
 public class SecurityConfig {
     private final JwtVerifyFilter jwtVerifyFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final LogoutHandler logoutHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -40,6 +43,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtVerifyFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> {
+                    logout.logoutUrl("/auth/logout");
+                    logout.addLogoutHandler(logoutHandler);
+                    logout.logoutSuccessHandler((req, res, auth) -> {
+                        SecurityContextHolder.clearContext();
+                        res.setStatus(204);
+                    });
+                })
                 // .oauth2Login(oauth2 -> {})
                 .build();
     }

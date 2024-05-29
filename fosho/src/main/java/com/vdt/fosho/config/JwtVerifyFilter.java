@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,20 +32,17 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
             @NotNull  HttpServletRequest request,
-            @NotNull HttpServletResponse response,
+            @NotNull  HttpServletResponse response,
             @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        userEmail = jwtUtil.extractEmail(jwt);
+        final String jwt = authHeader.substring(7);
+        final String userEmail = jwtUtil.extractEmail(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // If the user is not already authenticated (???WTF)
             Optional<Token> result = tokenRepository.findByToken(jwt);

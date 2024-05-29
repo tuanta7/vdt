@@ -80,7 +80,4 @@ public class AuthenticationService {
                         () -> new IllegalArgumentException("User not found")
                 );
     }
-
-    public void logout(String token) {
-    }
 }

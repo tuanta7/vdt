@@ -4,6 +4,7 @@ import com.vdt.fosho.dto.LoginDTO;
 import com.vdt.fosho.dto.RegisterDTO;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.service.AuthenticationService;
+import com.vdt.fosho.service.LogoutService;
 import com.vdt.fosho.service.UserService;
 import com.vdt.fosho.utils.JSendResponse;
 import com.vdt.fosho.utils.JwtUtil;
@@ -20,6 +21,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authService;
     private final UserService userService;
+    private final LogoutService logoutService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
@@ -64,8 +66,6 @@ public class AuthenticationController {
     public JSendResponse<HashMap<String, Object>> logout(
             @RequestHeader("Authorization") String authorization
     ) {
-        String token = authorization.substring("Bearer ".length());
-        authService.logout(token);
         return JSendResponse.success(null);
     }
 }
