@@ -5,12 +5,14 @@ import com.vdt.fosho.entity.User;
 import com.vdt.fosho.utils.GeoUtils;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class RestaurantDTO {
     private Long id;
 
@@ -25,6 +27,7 @@ public class RestaurantDTO {
     private String phone;
 
     private String logoUrl;
+
     private int rating;
 
     @Range(min = -90, max = 90)
@@ -32,23 +35,9 @@ public class RestaurantDTO {
     
     @Range(min = -180, max = 180)
     private double longitude;
+
     private User owner;
 
-
-    public RestaurantDTO(
-            Long id, String name, String address, String phone,String logoUrl, int rating,
-            double longitude, double latitude, User owner
-    ) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.logoUrl = logoUrl;
-        this.rating = rating;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.owner = owner;
-    }
 
     // Accepted input fields: name, address, phone, latitude, longitude
     public Restaurant toRestaurant() {

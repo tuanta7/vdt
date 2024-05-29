@@ -63,8 +63,6 @@ public class RestaurantService {
     }
 
     public RestaurantDTO toDTO(Restaurant restaurant) {
-
-
         return new RestaurantDTO(
                 restaurant.getId(),
                 restaurant.getName(),

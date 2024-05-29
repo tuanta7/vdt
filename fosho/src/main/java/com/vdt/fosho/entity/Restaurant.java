@@ -1,6 +1,7 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
@@ -8,6 +9,7 @@ import org.locationtech.jts.geom.Point;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "restaurants")
 public class Restaurant {
@@ -21,6 +23,9 @@ public class Restaurant {
 
     @Column(name = "logo_url")
     private String logoUrl;
+
+    @Column(name = "is_open")
+    private boolean isOpen;
 
     @Column(name = "phone")
     private String phone;
@@ -38,13 +43,4 @@ public class Restaurant {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = true)
     private User owner;
-
-    public Restaurant(String name, String address, String phone, Point coordinates, String logoUrl, User owner) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.coordinates = coordinates;
-        this.logoUrl = logoUrl;
-        this.owner = owner;
-    }
 }

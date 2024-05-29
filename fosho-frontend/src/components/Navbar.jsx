@@ -3,12 +3,13 @@ import {
   Bars3BottomLeftIcon,
   InboxStackIcon,
   ShoppingCartIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
 const Navbar = ({ LoginButton, UserAvatar }) => {
   return (
-    <nav className="navbar bg-base-200">
-      <div className="navbar-start flex items-center gap-3">
+    <nav className="navbar bg-base-200 text-neutral-600">
+      <div className="navbar-start flex items-center gap-6">
         <div className="dropdown">
           <div
             tabIndex={0}
@@ -26,16 +27,26 @@ const Navbar = ({ LoginButton, UserAvatar }) => {
             </li>
           </ul>
         </div>
-        <button className="btn btn-ghost btn-circle btn-sm">
-          <InboxStackIcon className="w-5" />
-        </button>
-      </div>
-      <div className="navbar-center">
         <a className="text-xl">
           <img src="/text-logo.png" alt="logo" className="w-24" />
         </a>
       </div>
+      <div className="navbar-center">
+        <div className="flex items-center border rounded-lg bg-base-100">
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-sm rounded-lg focus:border-none no-focus "
+          />
+          <button className="btn btn-ghost rounded-lg btn-sm">
+            <MagnifyingGlassIcon className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
       <div className="navbar-end flex gap-3 items-center">
+        <button className="btn btn-ghost btn-circle btn-sm">
+          <InboxStackIcon className="w-5" />
+        </button>
         <button className="btn btn-ghost btn-circle btn-sm">
           <ShoppingCartIcon className="w-5" />
         </button>

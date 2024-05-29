@@ -16,9 +16,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
     @OneToMany(mappedBy = "order")
     private List<OrderItem> items;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status; // pending, processing, shipped, delivered
+    private OrderStatus status;
 }

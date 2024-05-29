@@ -1,13 +1,18 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -20,8 +25,8 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "full_name")
+    private String fullName;
 
     @Column(name = "avatar_url")
     private String avatarUrl;
@@ -31,13 +36,4 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<ShippingAddress> shippingAddresses;
-
-    public User(Long id, String email, String username, String avatarUrl, List<Restaurant> restaurants, List<ShippingAddress> shippingAddresses) {
-        this.id = id;
-        this.email = email;
-        this.username = username;
-        this.avatarUrl = avatarUrl;
-        this.restaurants = restaurants;
-        this.shippingAddresses = shippingAddresses;
-    }
 }
