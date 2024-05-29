@@ -27,16 +27,16 @@ const Navbar = ({ LoginButton, UserAvatar }) => {
             </li>
           </ul>
         </div>
-        <a className="text-xl">
+        <a className="text-xl min-w-24">
           <img src="/text-logo.png" alt="logo" className="w-24" />
         </a>
       </div>
       <div className="navbar-center">
-        <div className="flex items-center border rounded-lg bg-base-100">
+        <div className="max-sm:hidden flex items-center border rounded-lg bg-base-100">
           <input
             type="text"
             placeholder="Search"
-            className="input input-sm rounded-lg focus:border-none no-focus "
+            className="input input-sm rounded-lg focus:border-none no-focus"
           />
           <button className="btn btn-ghost rounded-lg btn-sm">
             <MagnifyingGlassIcon className="w-4 h-4" />
