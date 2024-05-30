@@ -19,7 +19,8 @@ const queryClient = new QueryClient({
   }),
   mutationCache: new MutationCache({
     onError: (error) => {
-      toast.error(error.message);
+      const serverMessage = error.response?.data?.message;
+      toast.error(serverMessage || error.message);
     },
   }),
   defaultOptions: {
