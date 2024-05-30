@@ -38,7 +38,7 @@ public class SecurityConfig {
                     auth
                         .requestMatchers(HttpMethod.GET, "/restaurants/**", "/dishes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                        .anyRequest().authenticated(); // dev only
+                        .anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

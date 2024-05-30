@@ -22,6 +22,9 @@ public class Token {
     @Column(name = "token")
     private String token;
 
+    @Column(name = "is_access_token")
+    private boolean isAccessToken;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, columnDefinition = "ENUM('BEARER') default 'BEARER'")
     private TokenType type;

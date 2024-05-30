@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TokenRepository extends JpaRepository<Token, Long> {
-    @Query("SELECT t FROM Token t WHERE t.user.id = ?1 AND t.expired = false AND t.revoked = false")
-    List<Token> findAllValidTokensByUserId(Long userId);
+    @Query("SELECT t FROM Token t WHERE t.user.id = ?1 AND t.expired = false AND t.revoked = false AND t.isAccessToken = true")
+    List<Token> findAllValidAccessTokensByUserId(Long userId);
+
+    @Query("SELECT t FROM Token t WHERE t.user.id = ?1 AND t.expired = false AND t.revoked = false AND t.isAccessToken = false")
+    List<Token> findAllValidRefreshTokensByUserId(Long userId);
 
     Optional<Token> findByToken(String token);
 }

@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 
 @RestController
@@ -35,11 +36,12 @@ public class AuthenticationController {
             @RequestBody RegisterDTO registerDTO
     ) {
         User user = authService.register(registerDTO);
+
         String accessToken = jwtUtil.generateAccessToken(user);
-        authService.saveToken(user, accessToken);
+        authService.saveAccessToken(user, accessToken);
 
         String refreshToken = jwtUtil.generateRefreshToken(user);
-        authService.saveToken(user, refreshToken);
+        authService.saveRefreshToken(user, refreshToken);
 
         HashMap<String, Object> data = buildData(user, accessToken);
         setRefreshCookie(response, refreshToken);
@@ -55,11 +57,12 @@ public class AuthenticationController {
             @RequestBody LoginDTO loginDTO
     ) {
         User user = authService.login(loginDTO);
+
         String accessToken = jwtUtil.generateAccessToken(user);
-        authService.saveToken(user, accessToken);
+        authService.saveAccessToken(user, accessToken);
 
         String refreshToken = jwtUtil.generateRefreshToken(user);
-        authService.saveToken(user, refreshToken);
+        authService.saveRefreshToken(user, refreshToken);
 
         HashMap<String, Object> data = buildData(user, accessToken);
         setRefreshCookie(response, refreshToken);
@@ -72,6 +75,15 @@ public class AuthenticationController {
     @ResponseBody
     public JSendResponse<HashMap<String, Object>> logout() {
         return JSendResponse.success(null);
+    }
+
+    @GetMapping("/info")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public JSendResponse<HashMap<String, Object>> info(HttpServletRequest request) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("user", request.getUserPrincipal());
+        return JSendResponse.success(data);
     }
 
     @PostMapping("/refresh")
@@ -92,7 +104,7 @@ public class AuthenticationController {
         }
 
         String accessToken = jwtUtil.generateAccessToken(user);
-        authService.saveToken(user, accessToken);
+        authService.saveAccessToken(user, accessToken);
 
         HashMap<String, Object> data = buildData(user, accessToken);
         return JSendResponse.success(data);

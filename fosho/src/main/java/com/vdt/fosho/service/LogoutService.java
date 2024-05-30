@@ -18,22 +18,12 @@ public class LogoutService implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        final String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-           return;
-        }
-        final String jwt = authHeader.substring(7);
-        Token token = tokenRepository.findByToken(jwt).orElse(null);
-        if (token != null) {
-            token.setRevoked(true);
-            token.setExpired(true);
-            tokenRepository.save(token);
-        }
-
         final Cookie[] cookies = request.getCookies();
+        boolean hasRefreshToken = false;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("refresh_token")) {
+                    hasRefreshToken = true;
                     Token refreshToken = tokenRepository.findByToken(cookie.getValue()).orElse(null);
                     if (refreshToken != null) {
                         refreshToken.setRevoked(true);
@@ -44,6 +34,22 @@ public class LogoutService implements LogoutHandler {
                     response.addCookie(cookie);
                 }
             }
+        }
+        if (!hasRefreshToken) {
+            response.setStatus(401);
+            return;
+        }
+
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        final String jwt = authHeader.substring(7);
+        Token token = tokenRepository.findByToken(jwt).orElse(null);
+        if (token != null) {
+            token.setRevoked(true);
+            token.setExpired(true);
+            tokenRepository.save(token);
         }
     }
 }

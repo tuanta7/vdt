@@ -25,10 +25,11 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public void saveToken(User user, String jwt) {
-        revokeAllTokens(user);
+    public void saveAccessToken(User user, String jwt) {
+        revokeAllAccessTokens(user);
         Token token = Token.builder()
                 .token(jwt)
+                .isAccessToken(true)
                 .type(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
@@ -37,8 +38,33 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    private void revokeAllTokens(User user) {
-        List<Token> validTokens = tokenRepository.findAllValidTokensByUserId(user.getId());
+    public void saveRefreshToken(User user, String jwt) {
+        revokeAllRefreshTokens(user);
+        Token token = Token.builder()
+                .token(jwt)
+                .isAccessToken(false)
+                .type(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .user(user)
+                .build();
+        tokenRepository.save(token);
+    }
+
+    private void revokeAllRefreshTokens(User user) {
+        List<Token> validTokens = tokenRepository.findAllValidRefreshTokensByUserId(user.getId());
+        if (validTokens.isEmpty()) {
+            return;
+        }
+        validTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validTokens);
+    }
+
+    private void revokeAllAccessTokens(User user) {
+        List<Token> validTokens = tokenRepository.findAllValidAccessTokensByUserId(user.getId());
         if (validTokens.isEmpty()) {
             return;
         }
