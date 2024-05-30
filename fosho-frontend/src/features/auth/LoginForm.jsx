@@ -7,23 +7,25 @@ import axios from "axios";
 import LoadingButton from "../../components/LoadingButton";
 import GoogleButton from "./GoogleButton";
 import { BASE_URL } from "../../utils/constant";
+import useGlobal from "../../hooks/useGlobal";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { dispatch } = useGlobal();
   const { handleSubmit, register, reset, formState } = useForm();
   const { errors } = formState;
 
-  const { mutate, isPending, data } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (payload) =>
       axios
         .post(`${BASE_URL}/auth/login`, payload)
         .then((res) => res.data)
         .then((axiosData) => axiosData.data),
-    onSuccess: () => {
+    onSuccess: (data) => {
       reset();
-      toast.success("Logged in successfully");
-      console.log(data);
-      // Save access token to context
+      toast.success("Đăng nhập thành công");
+      dispatch({ type: "SET_USER", payload: data.user });
+      dispatch({ type: "SET_ACCESS_TOKEN", payload: data.accessToken });
       navigate("/");
     },
   });

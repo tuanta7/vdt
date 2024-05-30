@@ -44,7 +44,7 @@ const Navbar = ({ UserAvatar }) => {
         <button className="btn btn-ghost btn-circle btn-sm">
           <ShoppingCartIcon className="w-5" />
         </button>
-        <div>{LoginButton || UserAvatar}</div>
+        <div>{UserAvatar || LoginButton}</div>
       </div>
     </nav>
   );

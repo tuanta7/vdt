@@ -5,8 +5,8 @@ import Address from "./Address";
 
 const Mapbox = () => {
   const [coordinates, setCoordinates] = useState({
-    long: localStorage.getItem("long") || 105.933239,
-    lat: localStorage.getItem("lat") || 21.035911,
+    long: parseFloat(localStorage.getItem("long")) || 105.933239,
+    lat: parseFloat(localStorage.getItem("lat")) || 21.035911,
   });
 
   useEffect(() => {
