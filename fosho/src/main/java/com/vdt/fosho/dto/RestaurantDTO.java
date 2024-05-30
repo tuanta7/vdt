@@ -1,5 +1,6 @@
 package com.vdt.fosho.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.utils.GeoUtils;
@@ -26,6 +27,7 @@ public class RestaurantDTO {
     @Pattern(regexp = "^(\\+84|0)\\d{9,10}$", message = "Invalid phone number")
     private String phone;
 
+    @JsonProperty("logo_url")
     private String logoUrl;
 
     private int rating;

@@ -20,11 +20,11 @@ const GoogleButton = () => {
 
   return (
     <button
-      className="btn border border-base-300 rounded-xl min-w-max"
+      className="btn border border-base-300 rounded-xl w-full"
       onClick={handleClick}
     >
       <LoadingButton isLoading={isPending}>
-        <span className="text-neutral-600">Login</span>
+        <span className="text-neutral-600">Tiếp tục với Google</span>
       </LoadingButton>
       <img src="/google.svg" className="h-6 w-6" />
     </button>

@@ -10,6 +10,7 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary) var(--primary);
+  color: #525252;
 }
 
 a.active {

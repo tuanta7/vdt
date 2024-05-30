@@ -1,7 +1,10 @@
 package com.vdt.fosho.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.Getter;
 
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JSendResponse<T>  {
 
@@ -25,30 +28,5 @@ public class JSendResponse<T>  {
 
     public static JSendResponse<Object> error(String message) {
         return new JSendResponse<>("error", null, message);
-    }
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 }

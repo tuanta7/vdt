@@ -2,6 +2,7 @@ package com.vdt.fosho.exception;
 
 import com.vdt.fosho.utils.JSendResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +37,13 @@ public class GlobalExceptionHandler {
     // TODO: Handle SQL exceptions
     @ExceptionHandler(SQLException.class)
     public JSendResponse<Object> handleSQLException(SQLException e) {
+        return JSendResponse.error(e.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public JSendResponse<Object> handleAuthenticationException(AuthenticationException e) {
         return JSendResponse.error(e.getMessage());
     }
 

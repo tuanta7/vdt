@@ -4,53 +4,47 @@ import {
   InboxStackIcon,
   ShoppingCartIcon,
   MagnifyingGlassIcon,
+  ArrowRightEndOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
-const Navbar = ({ LoginButton, UserAvatar }) => {
+const Navbar = ({ UserAvatar }) => {
+  const LoginButton = (
+    <Link to={"/auth/login"} className="btn p-1 text-neutral-600 min-w-fit">
+      Đăng nhập
+      <ArrowRightEndOnRectangleIcon className="w-5" />
+    </Link>
+  );
   return (
     <nav className="navbar bg-base-200 text-neutral-600">
-      <div className="navbar-start flex items-center gap-6">
-        <div className="dropdown">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle btn-sm"
-          >
-            <Bars3BottomLeftIcon className="w-5" />
-          </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
-          >
-            <li>
-              <a>About</a>
-            </li>
-          </ul>
-        </div>
-        <a className="text-xl">
+      <div className="navbar-start flex items-center gap-4">
+        <button className="btn btn-ghost btn-circle btn-sm">
+          <Bars3BottomLeftIcon className="w-5" />
+        </button>
+        <a className="text-xl min-w-24">
           <img src="/text-logo.png" alt="logo" className="w-24" />
         </a>
       </div>
-      <div className="navbar-center">
-        <div className="flex items-center border rounded-lg bg-base-100">
+      <div className="navbar-center min-w-content md:min-w-80">
+        <div className="max-md:hidden flex items-center justify-between border rounded-lg bg-base-100 w-full">
           <input
             type="text"
-            placeholder="Search"
-            className="input input-sm rounded-lg focus:border-none no-focus "
+            placeholder="Tìm nhà hàng, món ăn..."
+            className="input input-sm rounded-lg focus:border-none no-focus w-full"
           />
           <button className="btn btn-ghost rounded-lg btn-sm">
             <MagnifyingGlassIcon className="w-4 h-4" />
           </button>
         </div>
       </div>
-      <div className="navbar-end flex gap-3 items-center">
+      <div className="navbar-end flex gap-4 items-center">
         <button className="btn btn-ghost btn-circle btn-sm">
           <InboxStackIcon className="w-5" />
         </button>
         <button className="btn btn-ghost btn-circle btn-sm">
           <ShoppingCartIcon className="w-5" />
         </button>
-        <div>{LoginButton || UserAvatar}</div>
+        <div>{UserAvatar || LoginButton}</div>
       </div>
     </nav>
   );
