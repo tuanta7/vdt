@@ -26,7 +26,9 @@ public class JwtUtil {
     private long refreshExpiration; // 1 week
 
     public String generateAccessToken(UserDetails userDetails) {
-        return buildToken(userDetails, new HashMap<>(), jwtExpiration);
+        HashMap<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("typ", "access");
+        return buildToken(userDetails, extraClaims, jwtExpiration);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
@@ -70,6 +72,10 @@ public class JwtUtil {
         return extractClaim(jwt, Claims::getSubject);
     }
 
+    public String extractTokenType(String jwt) {
+        return extractClaim(jwt, claims -> claims.get("typ", String.class));
+    }
+
     private Date extractExpiration(String jwt) {
         return extractClaim(jwt, Claims::getExpiration);
     }
@@ -77,7 +83,7 @@ public class JwtUtil {
     private boolean isTokenExpired(String jwt) {
         return extractExpiration(jwt).before(new Date());
     }
-
+    
     public boolean isTokenValid(String jwt, UserDetails userDetails) {
         final String email = extractEmail(jwt);
         return email.equals(userDetails.getUsername()) && !isTokenExpired(jwt);

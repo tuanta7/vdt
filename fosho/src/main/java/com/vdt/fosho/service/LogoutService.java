@@ -2,6 +2,7 @@ package com.vdt.fosho.service;
 
 import com.vdt.fosho.entity.Token;
 import com.vdt.fosho.repository.TokenRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,22 @@ public class LogoutService implements LogoutHandler {
             token.setRevoked(true);
             token.setExpired(true);
             tokenRepository.save(token);
+        }
+
+        final Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("refresh_token")) {
+                    Token refreshToken = tokenRepository.findByToken(cookie.getValue()).orElse(null);
+                    if (refreshToken != null) {
+                        refreshToken.setRevoked(true);
+                        refreshToken.setExpired(true);
+                        tokenRepository.save(refreshToken);
+                    }
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
         }
     }
 }

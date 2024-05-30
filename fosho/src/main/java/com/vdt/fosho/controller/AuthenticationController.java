@@ -9,6 +9,7 @@ import com.vdt.fosho.service.UserService;
 import com.vdt.fosho.utils.JSendResponse;
 import com.vdt.fosho.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,15 +38,13 @@ public class AuthenticationController {
         String accessToken = jwtUtil.generateAccessToken(user);
         authService.saveToken(user, accessToken);
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("user", userService.toUserDTO(user));
-        data.put("access_token", accessToken);
-
         String refreshToken = jwtUtil.generateRefreshToken(user);
+        authService.saveToken(user, refreshToken);
+
+        HashMap<String, Object> data = buildData(user, accessToken);
         setRefreshCookie(response, refreshToken);
         return JSendResponse.success(data);
     }
-
 
 
     @PostMapping("/login")
@@ -55,17 +54,16 @@ public class AuthenticationController {
             HttpServletResponse response,
             @RequestBody LoginDTO loginDTO
     ) {
-
         User user = authService.login(loginDTO);
         String accessToken = jwtUtil.generateAccessToken(user);
         authService.saveToken(user, accessToken);
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("user", userService.toUserDTO(user));
-        data.put("access_token", accessToken);
-
         String refreshToken = jwtUtil.generateRefreshToken(user);
+        authService.saveToken(user, refreshToken);
+
+        HashMap<String, Object> data = buildData(user, accessToken);
         setRefreshCookie(response, refreshToken);
+
         return JSendResponse.success(data);
     }
 
@@ -79,8 +77,32 @@ public class AuthenticationController {
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, Object>> refresh() {
-        return JSendResponse.success(null);
+    public JSendResponse<HashMap<String, Object>> refresh(
+            @CookieValue("refresh_token") String refreshToken,
+            HttpServletResponse response
+    ) {
+        if (refreshToken == null) {
+           throw new IllegalArgumentException("Refresh token is missing");
+        }
+
+        String userEmail = jwtUtil.extractEmail(refreshToken);
+        User user = userService.findByEmail(userEmail);
+        if (!jwtUtil.isTokenValid(refreshToken, user)) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+
+        String accessToken = jwtUtil.generateAccessToken(user);
+        authService.saveToken(user, accessToken);
+
+        HashMap<String, Object> data = buildData(user, accessToken);
+        return JSendResponse.success(data);
+    }
+
+    private HashMap<String, Object> buildData(User user, String accessToken) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("user", userService.toUserDTO(user));
+        data.put("access_token", accessToken);
+        return data;
     }
 
     private static void setRefreshCookie(HttpServletResponse response, String refreshToken) {

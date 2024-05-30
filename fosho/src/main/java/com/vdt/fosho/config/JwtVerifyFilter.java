@@ -42,6 +42,13 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
         }
 
         final String jwt = authHeader.substring(7);
+
+        final String tokenType = jwtUtil.extractTokenType(jwt);
+        if (tokenType == null || !tokenType.equals("access")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String userEmail = jwtUtil.extractEmail(jwt);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // If the user is not already authenticated (???WTF)
