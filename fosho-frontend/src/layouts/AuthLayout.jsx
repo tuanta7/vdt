@@ -1,6 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 const AuthLayout = () => {
+  // Try to refresh tokens before rendering the layout
+  // If the refresh fails, the user will be redirected to the login page
+  // TODO: Implement refresh token logic
+
   return (
     <div className="w-full flex flex-col h-screen bg-base-100">
       <div className="navbar bg-base-200 px-10">

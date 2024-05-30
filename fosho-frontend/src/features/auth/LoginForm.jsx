@@ -25,7 +25,7 @@ const LoginForm = () => {
       reset();
       toast.success("Đăng nhập thành công");
       dispatch({ type: "SET_USER", payload: data.user });
-      dispatch({ type: "SET_ACCESS_TOKEN", payload: data.accessToken });
+      dispatch({ type: "SET_ACCESS_TOKEN", payload: data.access_token });
       navigate("/");
     },
   });

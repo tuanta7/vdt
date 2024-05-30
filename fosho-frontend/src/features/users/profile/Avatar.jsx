@@ -1,22 +1,30 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import Logout from "../../auth/Logout";
+
 const Avatar = ({ user }) => {
-  if (!user.avatar_url) {
-    return (
-      <div className="avatar placeholder px-2">
-        <div className="bg-white text-neutral-content rounded-full ring-2 ring-secondary w-6 ring-offset-base-100 ring-offset-2">
-          <span className="text-lg">
-            {user.full_name.charAt(0).toUpperCase()}
-          </span>
-        </div>
-      </div>
-    );
-  }
   return (
-    <div className="avatar online">
-      <div className="w-8 rounded-full">
-        <img src={user.avatar_url} />
-      </div>
-    </div>
+    <details className="dropdown dropdown-bottom dropdown-end">
+      <summary className="m-1">
+        <div className="avatar online">
+          <div className="w-8 rounded-full ring-2 ring-secondary ring-offset-base-100 ring-offset-2">
+            <img src={user.avatar_url || "default.svg"} />
+          </div>
+        </div>
+      </summary>
+      <ul className="shadow menu dropdown-content z-[1] bg-base-100 rounded-box min-w-max">
+        <p className="mx-4 mt-2 mb-6">{`🫡 Xin chào, ${user.full_name}`}</p>
+        <li>
+          <Link to="/info" className="pr-12 rounded-lg mb-2">
+            <UserCircleIcon className="w-5" /> Thông tin cá nhân
+          </Link>
+        </li>
+        <li>
+          <Logout />
+        </li>
+      </ul>
+    </details>
   );
 };
 Avatar.propTypes = {

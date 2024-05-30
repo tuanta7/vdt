@@ -12,6 +12,8 @@ function reducer(state, action) {
       localStorage.setItem("long", action.payload.longitude);
       localStorage.setItem("lat", action.payload.latitude);
       return { ...state, coordinates: action.payload };
+    case "LOGOUT":
+      return { ...state, user: null, accessToken: null };
     default:
       return state;
   }

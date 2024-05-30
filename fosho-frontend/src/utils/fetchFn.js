@@ -9,17 +9,20 @@ async function fetchPublicGet(url) {
   return axiosData.data;
 }
 
-async function fetchWithCredentials(url, payload) {
-  const response = await axios.post(url, payload, {
+async function fetchWithAccessTokenAndCredentials(url, method, accessToken) {
+  const response = await axios.post(url, {
     withCredentials: true,
+    method: method,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   return response;
 }
 
 async function fetchWithAccessToken(url, method, accessToken, payload) {
-  const response = await axios.request({
+  const response = await axios.request(url, {
     method: method,
-    url: url,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -28,4 +31,8 @@ async function fetchWithAccessToken(url, method, accessToken, payload) {
   return response;
 }
 
-export { fetchPublicGet, fetchWithAccessToken, fetchWithCredentials };
+export {
+  fetchPublicGet,
+  fetchWithAccessToken,
+  fetchWithAccessTokenAndCredentials,
+};
