@@ -18,7 +18,9 @@ const LoginForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (payload) =>
       axios
-        .post(`${BASE_URL}/auth/login`, payload)
+        .post(`${BASE_URL}/auth/login`, payload, {
+          withCredentials: true,
+        })
         .then((res) => res.data)
         .then((axiosData) => axiosData.data),
     onSuccess: (data) => {

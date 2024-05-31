@@ -18,7 +18,9 @@ const RegisterForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (payload) =>
       axios
-        .post(`${BASE_URL}/auth/register`, payload)
+        .post(`${BASE_URL}/auth/register`, payload, {
+          withCredentials: true,
+        })
         .then((res) => res.data)
         .then((axiosData) => axiosData.data),
     onSuccess: (data) => {

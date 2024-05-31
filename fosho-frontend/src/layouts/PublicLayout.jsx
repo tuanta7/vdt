@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Categories from "../features/public/Categories";
@@ -6,9 +7,35 @@ import Avatar from "../features/users/profile/Avatar";
 import useGlobal from "../hooks/useGlobal";
 import { Outlet } from "react-router-dom";
 
+import { fetchWithAccessToken, fetchWithCredentials } from "../utils/fetchFn";
+import { BASE_URL } from "../utils/constant";
+import { useEffect } from "react";
+
 const PublicLayout = () => {
-  const { info } = useGlobal();
-  console.log(info);
+  const { info, dispatch } = useGlobal();
+
+  const { data, error, refetch } = useQuery({
+    queryKey: ["info"],
+    queryFn: () =>
+      fetchWithAccessToken(`${BASE_URL}/auth/info`, "GET", info.accessToken),
+    retry: 0,
+    meta: { DisableGlobalErrorHandling: true },
+  });
+
+  useEffect(() => {
+    if (data) {
+      dispatch({ type: "SET_USER", payload: data.user });
+    }
+    if (error) {
+      console.log("Try to refresh token");
+      fetchWithCredentials(`${BASE_URL}/auth/refresh`, "POST").then((data) => {
+        dispatch({ type: "SET_USER", payload: data.user });
+        dispatch({ type: "SET_ACCESS_TOKEN", payload: data.accessToken });
+        console.log("Refreshed token successfully!!!");
+        return data.access_token;
+      });
+    }
+  }, [data, dispatch, error, refetch]);
 
   const UserAvatar = info.user && <Avatar user={info.user} />;
 

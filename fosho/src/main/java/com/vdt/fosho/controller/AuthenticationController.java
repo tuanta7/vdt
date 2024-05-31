@@ -125,7 +125,7 @@ public class AuthenticationController {
     private static void setRefreshCookie(HttpServletResponse response, String refreshToken) {
         Cookie cookie = new Cookie("refresh_token", refreshToken);
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(604900000);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
         response.addCookie(cookie);
     }
 }

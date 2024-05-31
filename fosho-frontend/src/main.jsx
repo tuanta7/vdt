@@ -14,7 +14,8 @@ import GlobalProvider from "./provider/GlobalProvider.jsx";
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (error) => {
+    onError: (error, query) => {
+      if (query?.meta?.DisableGlobalErrorHandling) return;
       toast.error(error.message);
     },
   }),
