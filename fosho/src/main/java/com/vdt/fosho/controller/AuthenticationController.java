@@ -9,13 +9,13 @@ import com.vdt.fosho.service.UserService;
 import com.vdt.fosho.utils.JSendResponse;
 import com.vdt.fosho.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.HashMap;
 
 @RestController
@@ -80,10 +80,15 @@ public class AuthenticationController {
     @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, Object>> info(HttpServletRequest request) {
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("user", request.getUserPrincipal());
-        return JSendResponse.success(data);
+    public JSendResponse<HashMap<String, Object>> info() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            User user = (User) authentication.getPrincipal();
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("user", userService.toUserDTO(user));
+            return JSendResponse.success(data);
+        }
+        throw new IllegalArgumentException("User is not authenticated");
     }
 
     @PostMapping("/refresh")

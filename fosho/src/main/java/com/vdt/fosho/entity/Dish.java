@@ -22,6 +22,12 @@ public class Dish {
     @Column(name = "price")
     private double price;
 
+    @Column(name = "discount_price")
+    private double discountPrice;
+
+    @Column(name = "sold")
+    private int sold;
+
     @Column(name = "description")
     private String description;
 

@@ -41,6 +41,6 @@ public class Restaurant {
     private Point coordinates;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = true)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 }

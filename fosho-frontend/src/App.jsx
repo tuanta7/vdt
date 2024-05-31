@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import MainLayout from "./layouts/MainLayout";
-import Homepage from "./pages/Homepage";
 import AuthLayout from "./layouts/AuthLayout";
 import LoginForm from "./features/auth/LoginForm";
 import RegisterForm from "./features/auth/RegisterForm";
+import PublicLayout from "./layouts/PublicLayout";
+import RestaurantList from "./features/public/restaurants/RestaurantList";
+import DishList from "./features/public/dishes/DishList";
 
 function App() {
   return (
@@ -27,15 +29,17 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" index element={<Homepage />} />
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<RestaurantList />} />
+          <Route path="restaurants" element={<RestaurantList />} />
+          <Route path="dishes" element={<DishList />} />
+        </Route>
         <Route path="/auth" element={<AuthLayout />}>
           <Route index element={<LoginForm />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
         </Route>
-        <Route path="/app/" element={<MainLayout />}>
-          <Route path="restaurants" element={<Homepage />} />
-        </Route>
+        <Route path="/app/" element={<MainLayout />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -10,13 +10,16 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--secondary) var(--primary);
+}
+
+div.card {
   color: #525252;
 }
 
 a.active {
   font-weight: 500;
-  background-color: rgba(0, 0, 0, 0) !important;
-  color: oklch(var(--p)) !important;
+  background-color: rgba(253, 70, 73, 80) !important;
+  color: #f8fdef !important;
 }
 
 td {

@@ -6,12 +6,11 @@ import com.vdt.fosho.entity.User;
 import com.vdt.fosho.utils.GeoUtils;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestaurantDTO {
@@ -40,7 +39,6 @@ public class RestaurantDTO {
 
     private User owner;
 
-
     // Accepted input fields: name, address, phone, latitude, longitude
     public Restaurant toRestaurant() {
         Restaurant restaurant = new Restaurant();
@@ -48,6 +46,7 @@ public class RestaurantDTO {
         restaurant.setAddress(address);
         restaurant.setPhone(phone);
         restaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
+        restaurant.setOwner(owner);
         return restaurant;
     }
 }

@@ -2,13 +2,14 @@ package com.vdt.fosho.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.entity.ShippingAddress;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 
     private Long id;

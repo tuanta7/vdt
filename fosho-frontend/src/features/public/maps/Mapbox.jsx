@@ -21,7 +21,7 @@ const Mapbox = () => {
   }, []);
 
   return (
-    <div className="rounded-xl border pb-4 max-h-[590px] max-w-72 overflow-hidden">
+    <div className="rounded-xl border pb-4 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
       <p className="p-2 text-sm border-b word-wrap">
         📍
         <Address long={coordinates.long} lat={coordinates.lat} />
@@ -48,7 +48,7 @@ const Mapbox = () => {
           latitude: coordinates.lat,
           zoom: 16,
         }}
-        style={{ width: 300, height: 500 }}
+        style={{ width: 220, height: 500 }}
         mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
       >
         <Marker

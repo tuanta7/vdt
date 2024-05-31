@@ -6,8 +6,6 @@ import com.vdt.fosho.exception.ResourceNotFoundException;
 import com.vdt.fosho.repository.RestaurantRepository;
 
 import com.vdt.fosho.utils.GeoUtils;
-import org.locationtech.jts.geom.*;
-import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,26 +61,26 @@ public class RestaurantService {
     }
 
     public RestaurantDTO toDTO(Restaurant restaurant) {
-        return new RestaurantDTO(
-                restaurant.getId(),
-                restaurant.getName(),
-                restaurant.getAddress(),
-                restaurant.getPhone(),
-                restaurant.getLogoUrl(),
-                restaurant.getRating(),
-                restaurant.getCoordinates().getX(),
-                restaurant.getCoordinates().getY(),
-                restaurant.getOwner()
-        );
+        return  RestaurantDTO.builder()
+                .id(restaurant.getId())
+                .address(restaurant.getAddress())
+                .name(restaurant.getName())
+                .phone(restaurant.getPhone())
+                .logoUrl(restaurant.getLogoUrl())
+                .rating(restaurant.getRating())
+                .latitude(restaurant.getCoordinates().getY())
+                .longitude(restaurant.getCoordinates().getX())
+                .build();
     }
 
-    public Restaurant updateRestaurantCoordinates(Long id, double longitude, double latitude) {
+    public Restaurant updateRestaurantAddress(Long id, String address, double longitude, double latitude) {
         Optional<Restaurant> result = restaurantRepository.findById(id);
         if (result.isEmpty()) {
             throw new ResourceNotFoundException("Restaurant not found with id: " + id);
         }
         Restaurant existingRestaurant = result.get();
         existingRestaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
+        existingRestaurant.setAddress(address);
         return restaurantRepository.save(existingRestaurant);
     }
 }

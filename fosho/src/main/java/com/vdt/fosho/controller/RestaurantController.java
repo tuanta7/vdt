@@ -1,14 +1,16 @@
 package com.vdt.fosho.controller;
 
-import com.vdt.fosho.dto.CoordinateDTO;
+import com.vdt.fosho.dto.AddressDTO;
 import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.entity.Restaurant;
+import com.vdt.fosho.entity.User;
 import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -46,6 +48,9 @@ public class RestaurantController {
     public JSendResponse<HashMap<String, RestaurantDTO>> createRestaurant(
             @Valid @RequestBody RestaurantDTO restaurantDTO
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        restaurantDTO.setOwner((User) authentication.getPrincipal());
+
         Restaurant createdRestaurant = restaurantService.createRestaurant(restaurantDTO.toRestaurant());
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(createdRestaurant));
@@ -71,6 +76,9 @@ public class RestaurantController {
             @PathVariable("restaurant_id") Long id,
             @Valid @RequestBody RestaurantDTO restaurantDTO
     ) {
+        if (isOwner(id)) {
+            throw new IllegalArgumentException("Access denied, you are not the owner of this restaurant");
+        }
         Restaurant updatedRestaurant = restaurantService.updateRestaurant(id, restaurantDTO.toRestaurant());
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
@@ -82,9 +90,17 @@ public class RestaurantController {
     @ResponseBody
     public JSendResponse<HashMap<String, RestaurantDTO>> updateRestaurantCoordinates(
             @PathVariable("restaurant_id") Long id,
-            @Valid @RequestBody CoordinateDTO coordinateDTO
+            @Valid @RequestBody AddressDTO addressDTO
         ) {
-        Restaurant updatedRestaurant = restaurantService.updateRestaurantCoordinates(id, coordinateDTO.getLongitude(), coordinateDTO.getLatitude());
+        if (isOwner(id)) {
+            throw new IllegalArgumentException("Access denied, you are not the owner of this restaurant");
+        }
+        Restaurant updatedRestaurant = restaurantService.updateRestaurantAddress(
+                id,
+                addressDTO.getAddress(),
+                addressDTO.getLongitude(),
+                addressDTO.getLatitude()
+        );
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
         return JSendResponse.success(data);
@@ -95,7 +111,17 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public JSendResponse<Object> deleteRestaurant(@PathVariable("restaurant_id") Long id) {
+        if (isOwner(id)) {
+            throw new IllegalArgumentException("Access denied, you are not the owner of this restaurant");
+        }
         restaurantService.deleteRestaurant(id);
         return JSendResponse.success(null);
+    }
+
+    private boolean isOwner(Long restaurantId) {
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return restaurant.getOwner().getId().equals(user.getId());
     }
 }

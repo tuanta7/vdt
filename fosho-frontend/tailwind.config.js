@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 import daisyui from "daisyui";
+import themes from "daisyui/src/theming/themes";
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -16,6 +17,7 @@ export default {
     themes: [
       {
         custom: {
+          ...themes["retro"],
           primary: "#FE4144",
           secondary: "#FBBF24",
           error: "#FE2053",
