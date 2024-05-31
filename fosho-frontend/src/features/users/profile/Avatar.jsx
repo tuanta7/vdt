@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
+import {
+  UserCircleIcon,
+  BuildingStorefrontIcon,
+} from "@heroicons/react/24/outline";
 import Logout from "../../auth/Logout";
 
 const Avatar = ({ user }) => {
@@ -18,6 +21,14 @@ const Avatar = ({ user }) => {
         <li>
           <Link to="/info" className="pr-12 rounded-lg mb-2">
             <UserCircleIcon className="w-5" /> Thông tin cá nhân
+          </Link>
+        </li>
+        <li>
+          <Link
+            to={`/users/${user.id}/restaurants`}
+            className="pr-12 rounded-lg mb-2"
+          >
+            <BuildingStorefrontIcon className="w-5" /> Kênh người bán
           </Link>
         </li>
         <li>

@@ -21,7 +21,7 @@ const Mapbox = () => {
   }, []);
 
   return (
-    <div className="rounded-xl border pb-4 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
+    <div className="rounded-xl border  pb-4 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
       <p className="p-2 text-sm border-b word-wrap">
         📍
         <Address long={coordinates.long} lat={coordinates.lat} />
