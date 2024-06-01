@@ -21,9 +21,9 @@ const Navbar = ({ UserAvatar }) => {
         <button className="btn btn-ghost btn-circle btn-sm">
           <Bars3BottomLeftIcon className="w-5" />
         </button>
-        <a className="text-xl min-w-24">
+        <Link to="/" className="text-xl min-w-24">
           <img src="/text-logo.png" alt="logo" className="w-24" />
-        </a>
+        </Link>
       </div>
       <div className="navbar-center min-w-content md:min-w-80">
         <div className="max-md:hidden flex items-center justify-between border rounded-lg bg-base-100 w-full">

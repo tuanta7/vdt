@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Categories from "../features/public/Categories";
 import Mapbox from "../features/public/maps/Mapbox";
-import Avatar from "../features/users/profile/Avatar";
+import Avatar from "../features/users/Avatar";
 import useGlobal from "../hooks/useGlobal";
 import { Outlet } from "react-router-dom";
 

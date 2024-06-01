@@ -1,12 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import MainLayout from "./layouts/MainLayout";
+import MainLayout from "./layouts/ProtectedLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import LoginForm from "./features/auth/LoginForm";
 import RegisterForm from "./features/auth/RegisterForm";
 import PublicLayout from "./layouts/PublicLayout";
 import RestaurantList from "./features/public/restaurants/RestaurantList";
 import DishList from "./features/public/dishes/DishList";
+
+import Profile from "./features/users/Profile";
+import UserRestaurantList from "./features/restaurants/UserRestaurantList";
+import ProtectedLayout from "./layouts/ProtectedLayout";
 
 function App() {
   return (
@@ -33,6 +37,11 @@ function App() {
           <Route index element={<RestaurantList />} />
           <Route path="restaurants" element={<RestaurantList />} />
           <Route path="dishes" element={<DishList />} />
+        </Route>
+        <Route path="/users/:userId" element={<ProtectedLayout />}>
+          <Route index element={<Profile />} />
+          <Route path="info" element={<Profile />} />
+          <Route path="restaurants" element={<UserRestaurantList />} />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
           <Route index element={<LoginForm />} />

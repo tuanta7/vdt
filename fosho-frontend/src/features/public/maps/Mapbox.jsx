@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import Map, { Marker } from "react-map-gl";
+import useGlobal from "../../../hooks/useGlobal";
 import { MAPBOX_TOKEN } from "../../../utils/constant";
 import Address from "./Address";
 
-const Mapbox = () => {
+const Mapbox = ({ long = 105.933239, lat = 21.035911 }) => {
+  const { dispatch } = useGlobal();
   const [coordinates, setCoordinates] = useState({
-    long: parseFloat(localStorage.getItem("long")) || 105.933239,
-    lat: parseFloat(localStorage.getItem("lat")) || 21.035911,
+    long: parseFloat(localStorage.getItem("long")) || long,
+    lat: parseFloat(localStorage.getItem("lat")) || lat,
   });
 
   useEffect(() => {
@@ -17,11 +20,12 @@ const Mapbox = () => {
         long: position.coords.longitude,
         lat: position.coords.latitude,
       });
+      dispatch({ type: "SET_COORDINATES", payload: coordinates });
     });
-  }, []);
+  });
 
   return (
-    <div className="rounded-xl border  pb-4 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
+    <div className="rounded-xl border pb-4 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
       <p className="p-2 text-sm border-b word-wrap">
         📍
         <Address long={coordinates.long} lat={coordinates.lat} />
@@ -61,6 +65,11 @@ const Mapbox = () => {
       </Map>
     </div>
   );
+};
+
+Mapbox.propTypes = {
+  long: PropTypes.number,
+  lat: PropTypes.number,
 };
 
 export default Mapbox;

@@ -32,6 +32,10 @@ public class RestaurantService {
         return result.get();
     }
 
+    public List<Restaurant> getRestaurantsByOwnerId(Long ownerId) {
+        return restaurantRepository.findByOwnerId(ownerId);
+    }
+
 
     public Restaurant createRestaurant(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);

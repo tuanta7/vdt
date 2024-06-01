@@ -5,7 +5,7 @@ import Skeleton from "../components/Skeleton";
 const LoadingBlock = ({ isLoading, error, children }) => {
   if (isLoading) {
     return (
-      <div className="flex justify-between">
+      <div className="flex-1 flex justify-evenly gap-6">
         <Skeleton />
         <Skeleton />
         <Skeleton />
@@ -16,7 +16,7 @@ const LoadingBlock = ({ isLoading, error, children }) => {
   if (error) {
     const serverError = error.response?.data?.message;
     toast.error(serverError || error.message);
-    return;
+    return serverError || error.message;
   }
 
   return children;

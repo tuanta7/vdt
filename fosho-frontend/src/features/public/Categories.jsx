@@ -6,22 +6,22 @@ const Categories = () => {
     <div className="min-w-fit">
       <ul className="menu gap-3 bg-base-200 rounded-lg pr-2">
         <li>
-          <NavLink to="/" className="rounded-lg w-fit">
+          <NavLink to="" className="rounded-lg">
             🛎️ <p className="max-sm:hidden"> Cửa hàng</p>
           </NavLink>
         </li>
         <li>
-          <NavLink to="/dishes" className="rounded-lg">
+          <NavLink to="dishes" className="rounded-lg">
             🍕 <p className="max-sm:hidden"> Đồ ăn</p>
           </NavLink>
         </li>
         <li>
-          <NavLink to="/drinks" className="rounded-lg">
+          <NavLink to="drinks" className="rounded-lg">
             🍹 <p className="max-sm:hidden"> Đồ uống</p>
           </NavLink>
         </li>
         <li>
-          <NavLink to="/treats" className="rounded-lg">
+          <NavLink to="treats" className="rounded-lg">
             🍰 <p className="max-sm:hidden"> Ăn vặt</p>
           </NavLink>
         </li>

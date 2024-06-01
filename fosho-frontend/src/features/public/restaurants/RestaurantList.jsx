@@ -25,16 +25,22 @@ const RestaurantList = ({ long, lat }) => {
     <div className="flex-1">
       <div className="flex flex-wrap justify-center items-center gap-2 mb-6 mt-2">
         <p className="text-sm font-semibold">🎯Bộ lọc</p>
-        <select className="select select-bordered select-sm  max-w-xs">
-          <option disabled selected>
+        <select
+          className="select select-bordered select-sm  max-w-xs"
+          defaultValue={0}
+        >
+          <option value={0} disabled>
             Sắp xếp theo
           </option>
           <option>Bán chạy nhất</option>
           <option>Đánh giá cao nhất</option>
           <option>Vị trí gần nhất</option>
         </select>
-        <select className="select select-bordered select-sm  max-w-xs">
-          <option disabled selected>
+        <select
+          className="select select-bordered select-sm  max-w-xs"
+          defaultValue={0}
+        >
+          <option value={0} disabled>
             Tỉnh/Thành phố
           </option>
           <option>Hà Nội</option>

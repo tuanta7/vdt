@@ -9,8 +9,8 @@ function reducer(state, action) {
     case "SET_ACCESS_TOKEN":
       return { ...state, accessToken: action.payload };
     case "SET_COORDINATES":
-      localStorage.setItem("long", action.payload.longitude);
-      localStorage.setItem("lat", action.payload.latitude);
+      localStorage.setItem("long", action.payload.long);
+      localStorage.setItem("lat", action.payload.lat);
       return { ...state, coordinates: action.payload };
     case "LOGOUT":
       return { ...state, user: null, accessToken: null };
@@ -25,7 +25,7 @@ const GlobalProvider = ({ children }) => {
     accessToken: null,
     coordinates: {
       latitude: null,
-      longitude: null,
+      long: null,
     },
   });
 

@@ -4,22 +4,22 @@ import {
   UserCircleIcon,
   BuildingStorefrontIcon,
 } from "@heroicons/react/24/outline";
-import Logout from "../../auth/Logout";
+import Logout from "../auth/Logout";
 
 const Avatar = ({ user }) => {
   return (
-    <details className="dropdown dropdown-bottom dropdown-end">
+    <details className="dropdown dropdown-bottom dropdown-end hover:cursor-pointer">
       <summary className="m-1">
         <div className="avatar online">
           <div className="w-8 rounded-full ring-2 ring-secondary ring-offset-base-100 ring-offset-2">
-            <img src={user.avatar_url || "default.svg"} />
+            <img src={user.avatar_url || "/default.svg"} />
           </div>
         </div>
       </summary>
       <ul className="shadow menu dropdown-content z-[1] bg-base-100 rounded-box min-w-max">
         <p className="mx-4 mt-2 mb-6">{`🫡 Xin chào, ${user.full_name}`}</p>
         <li>
-          <Link to="/info" className="pr-12 rounded-lg mb-2">
+          <Link to={`/users/${user.id}/info`} className="pr-12 rounded-lg mb-2">
             <UserCircleIcon className="w-5" /> Thông tin cá nhân
           </Link>
         </li>
