@@ -33,44 +33,44 @@ const ProtectedLayout = () => {
       fetchWithCredentials(`${BASE_URL}/auth/refresh`, "POST")
         .then((data) => {
           dispatch({ type: "SET_USER", payload: data.user });
-          dispatch({ type: "SET_ACCESS_TOKEN", payload: data.accessToken });
+          dispatch({ type: "SET_ACCESS_TOKEN", payload: data.access_token });
           console.log("Refreshed token successfully!!!");
-          return data.access_token;
         })
         .catch((error) => {
           console.log("Error refreshing token: ", error);
-          navigate("/login");
+          navigate("/auth/login");
         });
     }
   }, [data, dispatch, error, refetch, navigate]);
 
   const UserAvatar = info.user && <Avatar user={info.user} />;
 
+  const sidebar = (
+    <div className="min-w-fit">
+      <ul className="menu gap-2 bg-base-200 rounded-lg pr-2">
+        <li>
+          <NavLink to={`/users/${info?.user?.id}/info`} className="rounded-lg">
+            🕵🏼 <p className="max-sm:hidden"> Cá nhân</p>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to={`/users/${info?.user?.id}/restaurants`}
+            className="rounded-lg"
+          >
+            🛎️ <p className="max-sm:hidden"> Cửa hàng</p>
+          </NavLink>
+        </li>
+      </ul>
+    </div>
+  );
+
   return (
     <div className="w-full h-screen bg-base-100 overflow-x-hidden">
       <Navbar UserAvatar={UserAvatar} />
       <div className="w-full py-6 px-3 flex gap-6 min-h-[80vh]">
-        <div className="min-w-fit">
-          <ul className="menu gap-2 bg-base-200 rounded-lg pr-2">
-            <li>
-              <NavLink
-                to={`/users/${info?.user?.id}/info`}
-                className="rounded-lg"
-              >
-                🕵🏼 <p className="max-sm:hidden"> Cá nhân</p>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={`/users/${info?.user?.id}/restaurants`}
-                className="rounded-lg"
-              >
-                🛎️ <p className="max-sm:hidden"> Cửa hàng</p>
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-        <Outlet />
+        {sidebar}
+        {info.accessToken && <Outlet />}
       </div>
       <Footer />
     </div>

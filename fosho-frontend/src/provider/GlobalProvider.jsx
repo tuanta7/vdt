@@ -24,7 +24,7 @@ const GlobalProvider = ({ children }) => {
     user: null,
     accessToken: null,
     coordinates: {
-      latitude: null,
+      lat: null,
       long: null,
     },
   });

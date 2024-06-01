@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import useGlobal from "../../hooks/useGlobal";
 import { useQuery } from "@tanstack/react-query";
+import LoadingBlock from "../../components/LoadingBlock";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
 
 import { BASE_URL } from "../../utils/constant";
+import UserRestaurantItem from "./UserRestaurantItem";
 
 const UserRestaurantList = () => {
   const { info } = useGlobal();
@@ -19,10 +21,19 @@ const UserRestaurantList = () => {
       ),
   });
 
+  const content = data?.restaurants?.map((restaurant) => (
+    <UserRestaurantItem key={restaurant.id} restaurant={restaurant} />
+  ));
+
   return (
-    <div>
-      <h1>{JSON.stringify(data)}</h1>
-    </div>
+    <LoadingBlock
+      number={1}
+      vertical={true}
+      isLoading={isPending}
+      error={error}
+    >
+      <div className="flex flex-col gap-6 w-full">{content}</div>
+    </LoadingBlock>
   );
 };
 

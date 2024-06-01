@@ -28,7 +28,6 @@ async function fetchWithCredentials(url, method) {
     {},
     {
       withCredentials: true,
-
       method: method,
     }
   );
@@ -37,7 +36,9 @@ async function fetchWithCredentials(url, method) {
 }
 
 async function fetchWithAccessToken(url, method, accessToken, payload) {
-  const response = await axios.request(url, payload, {
+  const response = await axios.request({
+    url,
+    data: payload,
     method: method,
     headers: {
       Authorization: `Bearer ${accessToken}`,
