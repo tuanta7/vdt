@@ -1,19 +1,27 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Map, { Marker } from "react-map-gl";
+
 import useGlobal from "../../../hooks/useGlobal";
 import { MAPBOX_TOKEN } from "../../../utils/constant";
 import Address from "./Address";
 
-const Mapbox = ({ long = 105.933239, lat = 21.035911 }) => {
+const Mapbox = ({ long, lat, w, h }) => {
   const { dispatch } = useGlobal();
   const [coordinates, setCoordinates] = useState({
     long: parseFloat(localStorage.getItem("long")) || long,
     lat: parseFloat(localStorage.getItem("lat")) || lat,
   });
 
+  const [viewState, setViewState] = useState({
+    longitude: coordinates.long,
+    latitude: coordinates.lat,
+    zoom: 15,
+  });
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
       localStorage.setItem("long", position.coords.longitude);
       localStorage.setItem("lat", position.coords.latitude);
       setCoordinates({
@@ -22,10 +30,11 @@ const Mapbox = ({ long = 105.933239, lat = 21.035911 }) => {
       });
       dispatch({ type: "SET_COORDINATES", payload: coordinates });
     });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="rounded-xl border pb-4 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
+    <div className="rounded-xl border border-neutral-400 pb-1 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
       <p className="p-2 text-sm border-b word-wrap">
         📍
         <Address long={coordinates.long} lat={coordinates.lat} />
@@ -34,12 +43,17 @@ const Mapbox = ({ long = 105.933239, lat = 21.035911 }) => {
         <h2 className="text-neutral-600 text-sm">Vị trí không đúng?</h2>
         <button
           className="btn btn-info btn-xs text-base-200"
-          onClick={() =>
+          onClick={() => {
             setCoordinates({
               long: 105.933239,
               lat: 21.035911,
-            })
-          }
+            });
+            setViewState({
+              longitude: 105.933239,
+              latitude: 21.035911,
+              zoom: 15,
+            });
+          }}
         >
           Cập nhật
         </button>
@@ -47,12 +61,9 @@ const Mapbox = ({ long = 105.933239, lat = 21.035911 }) => {
       <Map
         mapLib={import("mapbox-gl")}
         mapboxAccessToken={MAPBOX_TOKEN}
-        initialViewState={{
-          longitude: coordinates.long,
-          latitude: coordinates.lat,
-          zoom: 16,
-        }}
-        style={{ width: 220, height: 500 }}
+        {...viewState}
+        onMove={(evt) => setViewState(evt.viewState)}
+        style={{ width: w || 220, height: h || 500 }}
         mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
       >
         <Marker
@@ -70,6 +81,8 @@ const Mapbox = ({ long = 105.933239, lat = 21.035911 }) => {
 Mapbox.propTypes = {
   long: PropTypes.number,
   lat: PropTypes.number,
+  w: PropTypes.number,
+  h: PropTypes.number,
 };
 
 export default Mapbox;

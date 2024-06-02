@@ -2,14 +2,13 @@ import PropTypes from "prop-types";
 import toast from "react-hot-toast";
 import Skeleton from "../components/Skeleton";
 
-const LoadingBlock = ({ number, vertical, isLoading, error, children }) => {
+const LoadingBlock = ({ number, isLoading, error, children, vertical }) => {
+  const blockClassNames =
+    "flex-1 flex gap-6" + (vertical ? " flex-col" : " justify-evenly");
+
   if (isLoading) {
     return (
-      <div
-        className={
-          "flex-1 flex justify-evenly gap-6" + vertical ? " flex-col" : ""
-        }
-      >
+      <div className={blockClassNames}>
         {Array.from({ length: number || 3 }).map((_, index) => (
           <Skeleton key={index} />
         ))}

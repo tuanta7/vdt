@@ -14,7 +14,7 @@ const RestaurantList = ({ long, lat }) => {
   });
 
   const list = (
-    <LoadingBlock isLoading={isLoading} error={error}>
+    <LoadingBlock isLoading={isLoading} error={error} vertical={false}>
       {data?.restaurants?.map((r) => (
         <RestaurantItem key={r.id} restaurant={r} />
       ))}

@@ -50,7 +50,15 @@ const ProtectedLayout = () => {
       <ul className="menu gap-2 bg-base-200 rounded-lg pr-2">
         <li>
           <NavLink to={`/users/${info?.user?.id}/info`} className="rounded-lg">
-            🕵🏼 <p className="max-sm:hidden"> Cá nhân</p>
+            🕵🏼 <p className="max-md:hidden"> Hồ sơ</p>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to={`/users/${info?.user?.id}/orders`}
+            className="rounded-lg"
+          >
+            🔖 <p className="max-md:hidden"> Đơn mua</p>
           </NavLink>
         </li>
         <li>
@@ -58,7 +66,7 @@ const ProtectedLayout = () => {
             to={`/users/${info?.user?.id}/restaurants`}
             className="rounded-lg"
           >
-            🛎️ <p className="max-sm:hidden"> Cửa hàng</p>
+            🛎️ <p className="max-md:hidden"> Cửa hàng</p>
           </NavLink>
         </li>
       </ul>
@@ -66,9 +74,9 @@ const ProtectedLayout = () => {
   );
 
   return (
-    <div className="w-full h-screen bg-base-100 overflow-x-hidden">
+    <div className="w-full h-screen bg-base-100 overflow-x-auto">
       <Navbar UserAvatar={UserAvatar} />
-      <div className="w-full py-6 px-3 flex gap-6 min-h-[80vh]">
+      <div className="w-full py-6 px-3 flex gap-6 min-h-[80vh] ">
         {sidebar}
         {info.accessToken && <Outlet />}
       </div>
