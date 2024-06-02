@@ -72,6 +72,9 @@ public class RestaurantService {
                 .phone(restaurant.getPhone())
                 .logoUrl(restaurant.getLogoUrl())
                 .rating(restaurant.getRating())
+                .isOpen(restaurant.isOpen())
+                .openTime(restaurant.getOpenTime())
+                .closeTime(restaurant.getCloseTime())
                 .latitude(restaurant.getCoordinates().getY())
                 .longitude(restaurant.getCoordinates().getX())
                 .build();

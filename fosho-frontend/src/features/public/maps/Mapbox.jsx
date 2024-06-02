@@ -28,35 +28,21 @@ const Mapbox = ({ long, lat, w, h }) => {
         long: position.coords.longitude,
         lat: position.coords.latitude,
       });
+      setViewState({ ...coordinates, zoom: 15 });
       dispatch({ type: "SET_COORDINATES", payload: coordinates });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="rounded-xl border border-neutral-400 pb-1 max-h-[600px] max-w-[220px] min-w-min overflow-hidden">
+    <div className="rounded-xl border border-neutral-400 pb-1 max-h-min max-w-min overflow-hidden">
       <p className="p-2 text-sm border-b word-wrap">
         📍
         <Address long={coordinates.long} lat={coordinates.lat} />
       </p>
       <div className="p-2 border-b  flex items-center justify-between text-sm">
         <h2 className="text-neutral-600 text-sm">Vị trí không đúng?</h2>
-        <button
-          className="btn btn-info btn-xs text-base-200"
-          onClick={() => {
-            setCoordinates({
-              long: 105.933239,
-              lat: 21.035911,
-            });
-            setViewState({
-              longitude: 105.933239,
-              latitude: 21.035911,
-              zoom: 15,
-            });
-          }}
-        >
-          Cập nhật
-        </button>
+        <button className="btn btn-info btn-xs text-base-200">Cập nhật</button>
       </div>
       <Map
         mapLib={import("mapbox-gl")}

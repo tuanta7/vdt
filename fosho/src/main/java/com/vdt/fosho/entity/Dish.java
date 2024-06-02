@@ -25,6 +25,9 @@ public class Dish {
     @Column(name = "discount_price")
     private double discountPrice;
 
+    @Column(name="unit")
+    private String unit; // Cốc, phần, 1kg, 1 lít, 1 hộp,...
+
     @Column(name = "sold")
     private int sold;
 

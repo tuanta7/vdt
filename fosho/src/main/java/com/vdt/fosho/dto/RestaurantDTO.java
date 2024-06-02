@@ -29,6 +29,17 @@ public class RestaurantDTO {
     @JsonProperty("logo_url")
     private String logoUrl;
 
+    @JsonProperty("is_open")
+    private boolean isOpen;
+
+    @JsonProperty("open_time")
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format")
+    private String openTime;
+
+    @JsonProperty("close_time")
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format")
+    private String closeTime;
+
     private int rating;
 
     @Range(min = -90, max = 90)
@@ -45,6 +56,8 @@ public class RestaurantDTO {
         restaurant.setName(name);
         restaurant.setAddress(address);
         restaurant.setPhone(phone);
+        restaurant.setOpenTime(openTime);
+        restaurant.setCloseTime(closeTime);
         restaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
         restaurant.setOwner(owner);
         return restaurant;

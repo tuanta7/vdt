@@ -27,6 +27,15 @@ public class Restaurant {
     @Column(name = "is_open")
     private boolean isOpen;
 
+    @Column(name = "open_time")
+    private String openTime;
+
+    @Column(name = "close_time")
+    private String closeTime;
+
+    @Column(name = "is_active")
+    private String isActive;
+
     @Column(name = "phone")
     private String phone;
 

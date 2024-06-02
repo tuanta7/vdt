@@ -23,5 +23,7 @@ public class UserDTO {
     private String avatarUrl;
 
     @JsonProperty("shipping_addresses")
-    private List<ShippingAddress> shippingAddresses;
+    private List<ShippingAddressDTO> shippingAddressesDTO;
 }
+
+

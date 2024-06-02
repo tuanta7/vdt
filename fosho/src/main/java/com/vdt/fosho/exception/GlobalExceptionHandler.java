@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public JSendResponse<Object> handleException(Exception e) {
-        return JSendResponse.error(e.getMessage());
+       //return JSendResponse.error(e.getMessage());
+        return JSendResponse.error("Something went wrong or your data is duplicated. Please try again later 🌠.");
     }
 }

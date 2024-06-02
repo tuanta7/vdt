@@ -27,7 +27,22 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> items;
 
+    @Column(name = "total_price")
+    private double totalPrice;
+
+    @Column(name = "shipping_fee")
+    private double shippingFee;
+
+    @Column(name = "total_discount")
+    private double totalDiscount;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private OrderStatus status;
+
+    @Column(name = "created_at")
+    private long createdAt;
+
+    @Column(name = "delivered_at")
+    private long deliveredAt;
 }
