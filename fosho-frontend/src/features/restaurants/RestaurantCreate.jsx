@@ -49,7 +49,7 @@ const RestaurantCreate = ({ cancel }) => {
         latitude: data.data.features[0].geometry.coordinates[1],
       });
       setValue("longitude", data.data.features[0].geometry.coordinates[0]);
-      setValue("latitide", data.data.features[0].geometry.coordinates[1]);
+      setValue("latitude", data.data.features[0].geometry.coordinates[1]);
     },
   });
 
@@ -88,7 +88,9 @@ const RestaurantCreate = ({ cancel }) => {
 
   const form = (
     <div className="flex-1 flex flex-col justify-between">
-      <h2 className="font-semibold mb-3 pl-1">Thêm cửa hàng mới</h2>
+      <h2 className="font-semibold mb-3 pl-1 text-primary">
+        Thêm cửa hàng mới
+      </h2>
       <label className="form-control mb-2">
         <div className="label">
           <span className="label-text">Tên cửa hàng</span>
@@ -207,7 +209,7 @@ const RestaurantCreate = ({ cancel }) => {
             latitude: e.lngLat.lat,
           });
           setValue("longitude", e.lngLat.lng);
-          setValue("latitide", e.lngLat.lat);
+          setValue("latitude", e.lngLat.lat);
         }}
       >
         <Marker
@@ -245,7 +247,7 @@ const RestaurantCreate = ({ cancel }) => {
               type="text"
               className="input input-sm input-bordered"
               placeholder="Vĩ độ"
-              {...register("latitide", {
+              {...register("latitude", {
                 required: "*",
               })}
               disabled

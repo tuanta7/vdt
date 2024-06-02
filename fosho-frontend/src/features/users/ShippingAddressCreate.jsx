@@ -1,8 +1,15 @@
+import PropTypes from "prop-types";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
-const ShippingAddressCreate = () => {
-  const { mutate } = useMutation({});
+import LoadingButton from "../../components/LoadingButton";
+import { fetchWithAccessToken } from "../../utils/fetchFn";
+
+const ShippingAddressCreate = ({ cancel }) => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => fetchWithAccessToken(),
+    onSuccess: () => {},
+  });
 
   const { register, handleSubmit, errors } = useForm();
 
@@ -15,7 +22,7 @@ const ShippingAddressCreate = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="p-3 mb-3 border border-neutral-400 rounded-xl"
     >
-      <h2 className="text-sm font-semibold mb-2 pl-1">
+      <h2 className="text-primary text-sm font-semibold mb-2 pl-1">
         Thêm địa chỉ giao hàng mới
       </h2>
       <label className="form-control w-full">
@@ -44,10 +51,28 @@ const ShippingAddressCreate = () => {
           })}
         />
       </label>
-      <button className="btn btn-sm mt-3">Lưu</button>
+      <div className="flex flex-row-reverse gap-3 mt-4">
+        <button
+          className="btn btn-primary text-base-100 rounded-lg btn-sm"
+          type="submit"
+          disabled={isPending}
+        >
+          <LoadingButton isLoading={isPending}>Xác nhận</LoadingButton>
+        </button>
+        <button
+          className="btn btn-ghost rounded-lg btn-sm"
+          type="reset"
+          onClick={cancel}
+        >
+          Hủy
+        </button>
+      </div>
     </form>
   );
 };
-ShippingAddressCreate.propTypes = {};
+
+ShippingAddressCreate.propTypes = {
+  cancel: PropTypes.func.isRequired,
+};
 
 export default ShippingAddressCreate;

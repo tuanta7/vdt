@@ -18,7 +18,7 @@ const Navbar = ({ UserAvatar }) => {
   return (
     <nav className="navbar bg-base-200 text-neutral-600">
       <div className="navbar-start flex items-center gap-4">
-        <button className="btn btn-ghost btn-circle btn-sm">
+        <button className="btn btn-ghost btn-sm">
           <Bars3BottomLeftIcon className="w-5" />
         </button>
         <Link to="/" className="text-xl min-w-24">

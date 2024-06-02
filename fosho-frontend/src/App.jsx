@@ -11,6 +11,7 @@ import DishList from "./features/public/dishes/DishList";
 import Profile from "./features/users/Profile";
 import UserRestaurantList from "./features/restaurants/UserRestaurantList";
 import ProtectedLayout from "./layouts/ProtectedLayout";
+import RestaurantDetail from "./features/restaurants/RestaurantDetail";
 
 function App() {
   return (
@@ -42,6 +43,10 @@ function App() {
           <Route index element={<Profile />} />
           <Route path="info" element={<Profile />} />
           <Route path="restaurants" element={<UserRestaurantList />} />
+          <Route
+            path="restaurants/:restaurantId"
+            element={<RestaurantDetail />}
+          />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
           <Route index element={<LoginForm />} />

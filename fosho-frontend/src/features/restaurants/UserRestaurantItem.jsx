@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
+import { Link, useParams } from "react-router-dom";
+
 const UserRestaurantItem = ({ restaurant }) => {
+  const { userId } = useParams();
+
   return (
-    <div className="card card-side bg-base-100 shadow-md border h-fit w-[720px] rounded-xl">
+    <div className="card card-side bg-base-100 shadow-md border h-fit xl:w-1/2 rounded-xl">
       <figure>
         <img
           src={restaurant.logo_url || "/no-img.png"}
@@ -10,12 +14,12 @@ const UserRestaurantItem = ({ restaurant }) => {
         />
       </figure>
       <div className="card-body px-6 py-4 text-sm">
-        <h2 className="card-title">
-          {restaurant.name}{" "}
-          <span className="text-xs">
-            {restaurant.is_open ? "🟢 Đang mở" : "🔴 Đang đóng"}
-          </span>
-        </h2>
+        <div className="card-title flex flex-wrap items-center gap-2">
+          <h2 className="text-lg">{restaurant.name}</h2>
+          <p className="text-xs">
+            {restaurant.is_open ? "🟢 Đang mở cửa" : "🔴 Chưa mở cửa"}
+          </p>
+        </div>
         <p>{restaurant.address}</p>
         <p className="mr-2">
           {restaurant.rating ? (
@@ -24,9 +28,12 @@ const UserRestaurantItem = ({ restaurant }) => {
             <span className="text-neutral-400">Chưa có đánh giá nào</span>
           )}
         </p>
-        <button className="link text-primary no-underline hover:underline max-w-fit">
+        <Link
+          to={`/users/${userId}/restaurants/${restaurant.id}`}
+          className="link text-primary no-underline hover:underline max-w-fit"
+        >
           Chi tiết
-        </button>
+        </Link>
       </div>
     </div>
   );

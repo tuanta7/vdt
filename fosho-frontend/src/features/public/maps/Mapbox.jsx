@@ -35,7 +35,7 @@ const Mapbox = ({ long, lat, w, h }) => {
   }, []);
 
   return (
-    <div className="rounded-xl border border-neutral-400 pb-1 max-h-min max-w-min overflow-hidden">
+    <div className="rounded-xl border border-neutral-400 max-h-[500px] max-w-min overflow-hidden">
       <p className="p-2 text-sm border-b word-wrap">
         📍
         <Address long={coordinates.long} lat={coordinates.lat} />
@@ -49,7 +49,7 @@ const Mapbox = ({ long, lat, w, h }) => {
         mapboxAccessToken={MAPBOX_TOKEN}
         {...viewState}
         onMove={(evt) => setViewState(evt.viewState)}
-        style={{ width: w || 220, height: h || 500 }}
+        style={{ width: w || 250, height: h || 400 }}
         mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
       >
         <Marker

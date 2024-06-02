@@ -76,7 +76,7 @@ const ProtectedLayout = () => {
   return (
     <div className="w-full h-screen bg-base-100 overflow-x-auto">
       <Navbar UserAvatar={UserAvatar} />
-      <div className="w-full py-6 px-3 flex gap-6 min-h-[80vh] ">
+      <div className="w-full py-6 px-3 flex gap-6 min-h-[80vh]">
         {sidebar}
         {info.accessToken && <Outlet />}
       </div>
