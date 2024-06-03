@@ -62,6 +62,11 @@ const ProtectedLayout = () => {
           </NavLink>
         </li>
         <li>
+          <NavLink to={`/users/${info?.user?.id}/cart`} className="rounded-lg">
+            🛍️ <p className="max-md:hidden"> Giỏ hàng</p>
+          </NavLink>
+        </li>
+        <li>
           <NavLink
             to={`/users/${info?.user?.id}/restaurants`}
             className="rounded-lg"

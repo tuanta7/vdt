@@ -1,14 +1,17 @@
 import PropTypes from "prop-types";
-import { Fragment } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const ChangeAvatar = ({ userId }) => {
   return (
-    <Fragment>
-      <button className="btn btn-xs btn-base glass text-base-100 max-w-fit hover:text-base-content">
+    <div className="flex items-center justify-center">
+      <label
+        htmlFor="avatar-upload"
+        className="btn btn-xs btn-base glass text-base-100 max-w-fit hover:text-base-content"
+      >
         <PencilSquareIcon className="w-4" /> {userId}
-      </button>
-    </Fragment>
+      </label>
+      <input id="avatar-upload" name="avatar" type="file" className="hidden" />
+    </div>
   );
 };
 ChangeAvatar.propTypes = {

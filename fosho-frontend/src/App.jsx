@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import MainLayout from "./layouts/ProtectedLayout";
+import Page404 from "./components/Page404";
 import AuthLayout from "./layouts/AuthLayout";
 import LoginForm from "./features/auth/LoginForm";
 import RegisterForm from "./features/auth/RegisterForm";
@@ -53,7 +53,7 @@ function App() {
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
         </Route>
-        <Route path="/app/" element={<MainLayout />}></Route>
+        <Route path="*" element={<Page404 />}></Route>
       </Routes>
     </BrowserRouter>
   );

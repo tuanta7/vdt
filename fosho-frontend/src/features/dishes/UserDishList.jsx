@@ -1,7 +1,9 @@
-import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+
 const UserDishList = () => {
-  return <div>Dishes</div>;
+  const { restaurantId } = useParams();
+
+  return <div>Dishes, ID: {restaurantId}</div>;
 };
-UserDishList.propTypes = {};
 
 export default UserDishList;

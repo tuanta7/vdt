@@ -5,6 +5,8 @@ import Map, { Marker } from "react-map-gl";
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL, MAPBOX_TOKEN } from "../../utils/constant";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
+import UserDishList from "../dishes/UserDishList";
+import ChangeLogo from "./ChangeLogo";
 
 const RestaurantDetail = () => {
   const {
@@ -33,7 +35,7 @@ const RestaurantDetail = () => {
           longitude: data.restaurant.longitude,
           zoom: 16,
         }}
-        style={{ width: 270, height: 180 }}
+        style={{ width: 300, height: 170 }}
         mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
       >
         <Marker
@@ -49,9 +51,9 @@ const RestaurantDetail = () => {
 
   return (
     <div className="flex-1 overflow-hidden">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-3">
         <Link to={`/users/${userId}/restaurants`} className="btn btn-sm">
-          🔙 Quay lại
+          🔙 Toàn bộ
         </Link>
         <div className="flex gap-3">
           <button className="btn btn-sm">Chỉnh sửa</button>
@@ -60,13 +62,20 @@ const RestaurantDetail = () => {
           </button>
         </div>
       </div>
-      <div className="flex justify-between gap-6 flex-wrap">
-        <div className="mt-3 flex gap-3">
-          <img
-            src={data?.restaurant?.logo_url || "/no-img.png"}
-            alt="Logo"
-            className="w-[180px] h-[180px] object-cover rounded-2xl border-2 border-neutral-400"
-          />
+      <div className="flex justify-between items-center gap-6 flex-wrap mb-3">
+        <div className="mt-3 flex items-center gap-3">
+          <div className="avatar flex flex-col items-end">
+            <div className="w-44 h-44 rounded-xl overflow-hidden">
+              <img
+                src={data?.restaurant?.logo_url || "/no-img.png"}
+                alt="Logo"
+                className="w-44 h-44 object-cover"
+              />
+            </div>
+            <div className="-mt-44 mb-36">
+              <ChangeLogo restaurantId={data?.restaurant?.id} />
+            </div>
+          </div>
           <div>
             <p>
               {data?.restaurant.is_open ? (
@@ -81,23 +90,23 @@ const RestaurantDetail = () => {
             </p>
             <h2 className="font-semibold text-2xl">{data?.restaurant?.name}</h2>
             <h3 className="text-lg mb-2">{data?.restaurant?.address}</h3>
-            <p className="">Điện thoại: {data?.restaurant?.phone}</p>
-
-            <p className="">
-              Giờ hoạt động: {data?.restaurant?.open_time} -{" "}
+            <p className="mb-1">☎️ Điện thoại: {data?.restaurant?.phone}</p>
+            <p className="mb-1">
+              🕙 Giờ hoạt động: {data?.restaurant?.open_time} -{" "}
               {data?.restaurant?.close_time}
             </p>
             <p className="mr-2">
               {data?.restaurant.rating ? (
                 `Đánh giá: ${data?.restaurant?.rating}⭐`
               ) : (
-                <span className="text-neutral-400">Chưa có đánh giá</span>
+                <span className="text-neutral-400">⭐ Chưa có đánh giá</span>
               )}
             </p>
           </div>
         </div>
         {map}
       </div>
+      <UserDishList />
     </div>
   );
 };
