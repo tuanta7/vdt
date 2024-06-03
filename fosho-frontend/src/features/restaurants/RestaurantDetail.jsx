@@ -16,7 +16,7 @@ const RestaurantDetail = () => {
   const { userId, restaurantId } = useParams();
 
   const { data } = useQuery({
-    queryKey: ["restaurant", restaurantId],
+    queryKey: ["userRestaurants", userId, `r${restaurantId}`],
     queryFn: () =>
       fetchWithAccessToken(
         `${BASE_URL}/restaurants/${restaurantId}`,
@@ -72,7 +72,7 @@ const RestaurantDetail = () => {
               />
             </div>
             <div className="-mt-44 mb-36">
-              <ChangeLogo restaurantId={data?.restaurant?.id} />
+              <ChangeLogo />
             </div>
           </div>
           <div>
@@ -88,7 +88,7 @@ const RestaurantDetail = () => {
               )}
             </p>
             <h2 className="font-semibold text-2xl">{data?.restaurant?.name}</h2>
-            <h3 className="text-lg mb-2">{data?.restaurant?.address}</h3>
+            <h3 className="mb-2">{data?.restaurant?.address}</h3>
             <p className="mb-1">☎️ Điện thoại: {data?.restaurant?.phone}</p>
             <p className="mb-1">
               🕙 Giờ hoạt động: {data?.restaurant?.open_time} -{" "}

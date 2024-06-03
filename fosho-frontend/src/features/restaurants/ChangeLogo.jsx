@@ -1,17 +1,21 @@
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL } from "../../utils/constant";
+import toast from "react-hot-toast";
 
-const ChangeLogo = ({ restaurantId }) => {
+const ChangeLogo = () => {
+  const queryClient = useQueryClient();
+  const { userId, restaurantId } = useParams();
   const {
     info: { accessToken },
   } = useGlobal();
 
-  const { mutate, isPending, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (image) => {
       const formData = new FormData();
       formData.append("logoFile", image);
@@ -23,6 +27,17 @@ const ChangeLogo = ({ restaurantId }) => {
         formData
       );
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "userRestaurants",
+          userId,
+          `r${restaurantId}`,
+          "restaurants",
+        ],
+      });
+      toast.success("Cập nhật logo thành công");
+    },
   });
 
   return (
@@ -31,7 +46,11 @@ const ChangeLogo = ({ restaurantId }) => {
         htmlFor="avatar-upload"
         className="btn btn-xs glass text-base-content max-w-fit"
       >
-        {isPending ? "..." : <PencilSquareIcon className="w-4" />}
+        {isPending ? (
+          <span className="loading loading-spinner text-primary loading-xs" />
+        ) : (
+          <PencilSquareIcon className="w-4" />
+        )}
       </label>
       <input
         id="avatar-upload"

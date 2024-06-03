@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -59,6 +60,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public JSendResponse<Object> handleForbiddenException(ForbiddenException e) {
         return JSendResponse.error(e.getMessage());
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public JSendResponse<Object> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        return JSendResponse.error("File size too large. Please upload a file smaller than 10MB.");
     }
 
     @ExceptionHandler(Exception.class)
