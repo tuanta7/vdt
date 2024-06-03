@@ -63,7 +63,7 @@ const RestaurantCreate = ({ cancel }) => {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["userRestaurants", userId],
+        queryKey: ["user-restaurants", userId],
       });
       toast.success("Thêm cửa hàng thành công");
       cancel();

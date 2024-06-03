@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -150,11 +149,15 @@ public class RestaurantController {
         }
         Map result = cloudinaryService.upload(logoFile);
 
+        String imageIdToDelete = restaurantService.getRestaurantById(id).getLogoPublicId();
         Restaurant updatedRestaurant = restaurantService.updateRestaurantLogo(
                 id,
                 result.get("url").toString(),
                 result.get("public_id").toString()
         );
+        if(imageIdToDelete != null){
+            cloudinaryService.delete(imageIdToDelete);
+        }
         HashMap<String, Object> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
         return JSendResponse.success(data);

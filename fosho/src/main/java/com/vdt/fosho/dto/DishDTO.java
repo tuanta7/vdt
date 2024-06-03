@@ -1,0 +1,56 @@
+package com.vdt.fosho.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vdt.fosho.entity.Dish;
+import com.vdt.fosho.entity.Restaurant;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class DishDTO {
+
+    private Long id;
+
+    @NotBlank(message = "Name is required")
+    private String name;
+
+    private String description;
+
+    @NotBlank(message = "Price is required")
+    private double price;
+
+    private double discount;
+
+    @NotBlank(message = "Unit is required")
+    private String unit;
+
+    private int sold;
+
+    @JsonProperty("thumbnail_url")
+    private String thumbnailUrl;
+
+    private boolean available;
+
+    @JsonIgnore
+    private Restaurant restaurant;
+
+    // Accepted input fields for create/update: name, description, price, discountPrice, unit
+    public Dish toDish() {
+        return Dish.builder()
+                .name(name)
+                .description(description)
+                .price(price)
+                .discount(discount)
+                .unit(unit)
+                .restaurant(restaurant)
+                .build();
+    }
+}

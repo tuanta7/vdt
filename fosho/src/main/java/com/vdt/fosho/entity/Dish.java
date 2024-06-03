@@ -1,12 +1,14 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jdk.jshell.Snippet;
+import lombok.*;
 
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "dishes")
@@ -22,8 +24,11 @@ public class Dish {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "discount_price")
-    private double discountPrice;
+    @Column(name = "discount")
+    private double discount;
+
+    @Column(name = "rating")
+    private double rating;
 
     @Column(name="unit")
     private String unit; // Cốc, phần, 1kg, 1 lít, 1 hộp,...
@@ -37,6 +42,9 @@ public class Dish {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    @Column(name = "thumbnail_public_id")
+    private String thumbnailPublicId;
+
     @Column(name = "available")
     private boolean available;
 
@@ -47,6 +55,6 @@ public class Dish {
     private List<Review> reviews;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 }

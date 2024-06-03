@@ -29,7 +29,7 @@ const ChangeLogo = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["restaurants"]);
-      queryClient.invalidateQueries(["userRestaurants", userId, restaurantId]);
+      queryClient.invalidateQueries(["user-restaurants", userId, restaurantId]);
       toast.success("Cập nhật logo thành công");
     },
   });
@@ -38,7 +38,7 @@ const ChangeLogo = () => {
     <form className="flex items-center justify-center">
       <label
         htmlFor="avatar-upload"
-        className="btn btn-xs glass text-base-content max-w-fit"
+        className="btn btn-xs glass text-base-300 hover:text-primary max-w-fit"
       >
         {isPending ? (
           <span className="loading loading-spinner text-primary loading-xs" />

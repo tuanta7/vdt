@@ -44,7 +44,7 @@ public class Restaurant {
 
     @Column(name = "rating")
     @Range(min = 0, max = 5)
-    private int rating;
+    private double rating;
 
     @Column(name = "address")
     private String address;

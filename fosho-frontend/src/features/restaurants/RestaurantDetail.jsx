@@ -7,6 +7,7 @@ import { BASE_URL, MAPBOX_TOKEN } from "../../utils/constant";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
 import UserDishList from "../dishes/UserDishList";
 import ChangeLogo from "./ChangeLogo";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 const RestaurantDetail = () => {
   const {
@@ -16,7 +17,7 @@ const RestaurantDetail = () => {
   const { userId, restaurantId } = useParams();
 
   const { data } = useQuery({
-    queryKey: ["userRestaurants", userId, restaurantId],
+    queryKey: ["user-restaurants", userId, restaurantId],
     queryFn: () =>
       fetchWithAccessToken(
         `${BASE_URL}/restaurants/${restaurantId}`,
@@ -55,7 +56,11 @@ const RestaurantDetail = () => {
         <Link to={`/users/${userId}/restaurants`} className="btn btn-sm">
           🔙 Toàn bộ
         </Link>
+
         <div className="flex gap-3">
+          <button className="btn btn-sm">
+            <Cog8ToothIcon className="w-4" />
+          </button>
           <button className="btn btn-sm">Chỉnh sửa</button>
           <button className="btn btn-sm btn-primary text-base-100">
             {data?.restaurant.is_open ? "Đóng cửa" : "Mở cửa 🧑🏼‍🍳"}
@@ -65,7 +70,7 @@ const RestaurantDetail = () => {
       <div className="flex justify-between items-start gap-6 flex-wrap mb-3">
         <div className="mt-3 flex items-start gap-3">
           <div className="avatar flex flex-col items-end">
-            <div className="w-44 h-44 rounded-xl overflow-hidden">
+            <div className="w-44 h-44 border border-base-200 rounded-xl overflow-hidden">
               <img
                 src={data?.restaurant?.logo_url || "/no-img.png"}
                 alt="Logo"
@@ -75,7 +80,7 @@ const RestaurantDetail = () => {
               <ChangeLogo />
             </div>
           </div>
-          <div>
+          <div className="min-w-max">
             <p>
               {data?.restaurant.is_open ? (
                 <span className="text-green-500 font-semibold">

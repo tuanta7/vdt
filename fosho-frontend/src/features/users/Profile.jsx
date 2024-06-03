@@ -37,7 +37,7 @@ const Profile = () => {
   );
 
   return (
-    <div className="flex-1 flex gap-10">
+    <div className="flex-1 flex flex-wrap gap-10">
       <div className="flex flex-col">
         <div className="flex gap-3">
           <div className="avatar flex flex-col items-end">
@@ -77,10 +77,12 @@ const Profile = () => {
           )}
         </div>
       </div>
-      <div className="flex-1 border border-neutral-400 p-3 rounded-xl max-h-screen w-full xl:w-1/2 overflow-auto">
-        ...
+      <div className="flex-1 border border-neutral-400 p-3 rounded-xl">
+        Coming soon...
       </div>
-      <Mapbox />
+      <div className="max-lg:hidden">
+        <Mapbox />
+      </div>
     </div>
   );
 };

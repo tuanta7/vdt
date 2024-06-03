@@ -1,5 +1,6 @@
 package com.vdt.fosho.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.entity.Restaurant;
@@ -44,7 +45,7 @@ public class RestaurantDTO {
     @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format")
     private String closeTime;
 
-    private int rating;
+    private double rating;
 
     @Range(min = -90, max = 90)
     private double latitude;
@@ -52,9 +53,10 @@ public class RestaurantDTO {
     @Range(min = -180, max = 180)
     private double longitude;
 
+    @JsonIgnore
     private User owner;
 
-    // Accepted input fields: name, address, phone, latitude, longitude
+    // Accepted input fields: name, address, phone, latitude, longitude, openTime, closeTime
     public Restaurant toRestaurant() {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(name);

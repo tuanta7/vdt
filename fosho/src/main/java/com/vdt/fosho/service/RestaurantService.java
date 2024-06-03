@@ -6,16 +6,16 @@ import com.vdt.fosho.exception.ResourceNotFoundException;
 import com.vdt.fosho.repository.RestaurantRepository;
 
 import com.vdt.fosho.utils.GeoUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RestaurantService {
 
-    @Autowired
     private RestaurantRepository restaurantRepository;
 
     public List<Restaurant> getAllRestaurants() {

@@ -16,7 +16,7 @@ const UserRestaurantList = () => {
   const { userId } = useParams();
 
   const { isPending, data, error } = useQuery({
-    queryKey: ["userRestaurants", userId],
+    queryKey: ["user-restaurants", userId],
     queryFn: () =>
       fetchWithAccessToken(
         `${BASE_URL}/users/${userId}/restaurants`,
@@ -63,7 +63,7 @@ const UserRestaurantList = () => {
       </div>
       {showForm && <RestaurantCreate cancel={() => setShowForm(false)} />}
       <LoadingBlock
-        number={1}
+        number={2}
         vertical={true}
         isLoading={isPending}
         error={error}
