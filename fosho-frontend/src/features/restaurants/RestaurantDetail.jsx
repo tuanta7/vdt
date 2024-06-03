@@ -16,7 +16,7 @@ const RestaurantDetail = () => {
   const { userId, restaurantId } = useParams();
 
   const { data } = useQuery({
-    queryKey: ["userRestaurants", userId, `r${restaurantId}`],
+    queryKey: ["userRestaurants", userId, restaurantId],
     queryFn: () =>
       fetchWithAccessToken(
         `${BASE_URL}/restaurants/${restaurantId}`,

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
@@ -9,6 +9,7 @@ import { fetchWithAccessTokenAndCredentials } from "../../utils/fetchFn";
 import { BASE_URL } from "../../utils/constant";
 
 const Logout = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { info, dispatch } = useGlobal();
   const { mutate, isPending } = useMutation({
@@ -19,6 +20,7 @@ const Logout = () => {
         info.accessToken
       ),
     onSuccess: () => {
+      queryClient.clear();
       toast.success("Đăng xuất thành công");
       dispatch({ type: "LOGOUT" });
       navigate("/auth/login");

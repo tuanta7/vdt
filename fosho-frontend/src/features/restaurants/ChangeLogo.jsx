@@ -28,14 +28,8 @@ const ChangeLogo = () => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [
-          "userRestaurants",
-          userId,
-          `r${restaurantId}`,
-          "restaurants",
-        ],
-      });
+      queryClient.invalidateQueries(["restaurants"]);
+      queryClient.invalidateQueries(["userRestaurants", userId, restaurantId]);
       toast.success("Cập nhật logo thành công");
     },
   });

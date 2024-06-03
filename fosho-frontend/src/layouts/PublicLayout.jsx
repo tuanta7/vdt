@@ -42,11 +42,11 @@ const PublicLayout = () => {
   return (
     <div className="w-full h-screen bg-base-100 overflow-x-hidden">
       <Navbar UserAvatar={UserAvatar} />
-      <div className="w-full py-6 px-3 flex justify-between gap-3 overflow-x-auto">
+      <div className="w-full py-6 px-3 flex justify-between gap-3 overflow-x-auto min-h-[80vh]">
         <Categories />
         <Outlet />
         <div className="max-sm:hidden">
-          <Mapbox />
+          <Mapbox long={105.8} lat={21} />
         </div>
       </div>
       <Footer />

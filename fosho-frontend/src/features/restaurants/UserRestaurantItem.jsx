@@ -8,7 +8,10 @@ const UserRestaurantItem = ({ restaurant }) => {
   return (
     <div className="flex items-start bg-base-100 border xl:w-1/2 rounded-xl overflow-hidden">
       <figure className="min-w-[200px]">
-        <img src={fill(restaurant.logo_url, 200, 200) || "/no-img.png"} />
+        <img
+          src={fill(restaurant.logo_url, 200, 200) || "/no-img.png"}
+          className="w-[200px] h-[200px] object-cover"
+        />
       </figure>
       <div className="card-body px-6 py-4 text-sm max-h-[200px] overflow-y-auto">
         <div className="card-title flex flex-wrap items-center gap-2">
