@@ -1,5 +1,6 @@
 package com.vdt.fosho.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
@@ -13,6 +14,7 @@ import org.hibernate.validator.constraints.Range;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestaurantDTO {
     private Long id;
 
@@ -33,10 +35,12 @@ public class RestaurantDTO {
     private boolean isOpen;
 
     @JsonProperty("open_time")
+    @NotBlank(message = "Open time is required")
     @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format")
     private String openTime;
 
     @JsonProperty("close_time")
+    @NotBlank(message = "Close time is required")
     @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format")
     private String closeTime;
 

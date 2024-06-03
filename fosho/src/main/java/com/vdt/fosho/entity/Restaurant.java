@@ -24,6 +24,9 @@ public class Restaurant {
     @Column(name = "logo_url")
     private String logoUrl;
 
+    @Column(name = "logo_public_id")
+    private String logoPublicId;
+
     @Column(name = "is_open")
     private boolean isOpen;
 

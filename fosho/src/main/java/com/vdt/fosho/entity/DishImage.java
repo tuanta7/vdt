@@ -17,6 +17,9 @@ public class DishImage {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "public_id")
+    private String publicId; // Cloudinary public ID
+
     @ManyToOne
     @JoinColumn(name = "dish_id")
     private Dish dish;

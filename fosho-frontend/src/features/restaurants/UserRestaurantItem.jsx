@@ -9,7 +9,7 @@ const UserRestaurantItem = ({ restaurant }) => {
       <figure>
         <img
           src={restaurant.logo_url || "/no-img.png"}
-          alt="Movie"
+          alt="Logo"
           className="h-full w-[200px] object-cover"
         />
       </figure>

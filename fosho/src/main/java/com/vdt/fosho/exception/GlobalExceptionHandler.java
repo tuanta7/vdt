@@ -34,6 +34,13 @@ public class GlobalExceptionHandler {
         return JSendResponse.fail(messages);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public JSendResponse<Object> handleBadRequestException(BadRequestException e) {
+        return JSendResponse.error(e.getMessage());
+    }
+
     // TODO: Handle SQL exceptions
     @ExceptionHandler(SQLException.class)
     public JSendResponse<Object> handleSQLException(SQLException e) {
@@ -47,11 +54,18 @@ public class GlobalExceptionHandler {
         return JSendResponse.error(e.getMessage());
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public JSendResponse<Object> handleForbiddenException(ForbiddenException e) {
+        return JSendResponse.error(e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public JSendResponse<Object> handleException(Exception e) {
        //return JSendResponse.error(e.getMessage());
-        return JSendResponse.error("Something went wrong or your data is duplicated. Please try again later 🌠.");
+        return JSendResponse.error("Something went wrong. Please try again later 🌠.");
     }
 }

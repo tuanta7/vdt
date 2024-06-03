@@ -4,28 +4,34 @@ import com.vdt.fosho.dto.AddressDTO;
 import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
+import com.vdt.fosho.exception.BadRequestException;
+import com.vdt.fosho.exception.ForbiddenException;
+import com.vdt.fosho.service.CloudinaryService;
 import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
-
-    @Autowired
-    public RestaurantController(RestaurantService restaurantService) {
-        this.restaurantService = restaurantService;
-    }
+    private final CloudinaryService cloudinaryService;
 
     @GetMapping("/restaurants")
     @ResponseStatus(HttpStatus.OK)
@@ -76,8 +82,8 @@ public class RestaurantController {
             @PathVariable("restaurant_id") Long id,
             @Valid @RequestBody RestaurantDTO restaurantDTO
     ) {
-        if (isOwner(id)) {
-            throw new IllegalArgumentException("Access denied, you are not the owner of this restaurant");
+        if (!isOwner(id)) {
+            throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
         }
         Restaurant updatedRestaurant = restaurantService.updateRestaurant(id, restaurantDTO.toRestaurant());
         HashMap<String, RestaurantDTO> data = new HashMap<>();
@@ -92,8 +98,8 @@ public class RestaurantController {
             @PathVariable("restaurant_id") Long id,
             @Valid @RequestBody AddressDTO addressDTO
         ) {
-        if (isOwner(id)) {
-            throw new IllegalArgumentException("Access denied, you are not the owner of this restaurant");
+        if (!isOwner(id)) {
+            throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
         }
         Restaurant updatedRestaurant = restaurantService.updateRestaurantAddress(
                 id,
@@ -111,8 +117,8 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public JSendResponse<Object> deleteRestaurant(@PathVariable("restaurant_id") Long id) {
-        if (isOwner(id)) {
-            throw new IllegalArgumentException("Access denied, you are not the owner of this restaurant");
+        if (!isOwner(id)) {
+            throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
         }
         restaurantService.deleteRestaurant(id);
         return JSendResponse.success(null);
@@ -123,5 +129,50 @@ public class RestaurantController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         return restaurant.getOwner().getId().equals(user.getId());
+    }
+
+
+    // Logo APIs
+    @PatchMapping("/restaurants/{restaurant_id}/logo")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public JSendResponse<HashMap<String, Object>> updateRestaurantLogo(
+            @PathVariable("restaurant_id") Long id,
+            @RequestParam MultipartFile logoFile
+    ) throws IOException {
+        if (!isOwner(id)) {
+            throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
+        }
+
+        BufferedImage bi = ImageIO.read(logoFile.getInputStream());
+        if (bi == null) {
+            throw new BadRequestException("Invalid image file");
+        }
+        Map result = cloudinaryService.upload(logoFile);
+
+        Restaurant updatedRestaurant = restaurantService.updateRestaurantLogo(
+                id,
+                result.get("url").toString(),
+                result.get("public_id").toString()
+        );
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
+        return JSendResponse.success(data);
+    }
+
+    @DeleteMapping("/restaurants/{restaurant_id}/logo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public JSendResponse<Object> deleteRestaurantLogo(@PathVariable("restaurant_id") Long id) throws IOException {
+        if (!isOwner(id)) {
+            throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
+        }
+
+        Restaurant updatedRestaurant = restaurantService.updateRestaurantLogo(id, null, null);
+        cloudinaryService.delete(restaurantService.getRestaurantById(id).getLogoPublicId());
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
+        return JSendResponse.success(data);
     }
 }

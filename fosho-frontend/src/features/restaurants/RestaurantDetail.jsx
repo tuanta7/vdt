@@ -62,14 +62,13 @@ const RestaurantDetail = () => {
           </button>
         </div>
       </div>
-      <div className="flex justify-between items-center gap-6 flex-wrap mb-3">
-        <div className="mt-3 flex items-center gap-3">
+      <div className="flex justify-between items-start gap-6 flex-wrap mb-3">
+        <div className="mt-3 flex items-start gap-3">
           <div className="avatar flex flex-col items-end">
             <div className="w-44 h-44 rounded-xl overflow-hidden">
               <img
                 src={data?.restaurant?.logo_url || "/no-img.png"}
                 alt="Logo"
-                className="w-44 h-44 object-cover"
               />
             </div>
             <div className="-mt-44 mb-36">

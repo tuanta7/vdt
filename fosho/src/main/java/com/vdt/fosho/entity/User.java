@@ -36,6 +36,9 @@ public class User implements UserDetails {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
+    @Column(name = "avatar_public_id")
+    private String avatarPublicId;
+
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Restaurant> restaurants;
 

@@ -32,6 +32,7 @@ public class RestaurantService {
         return result.get();
     }
 
+
     public List<Restaurant> getRestaurantsByOwnerId(Long ownerId) {
         return restaurantRepository.findByOwnerId(ownerId);
     }
@@ -52,6 +53,8 @@ public class RestaurantService {
         existingRestaurant.setName(restaurant.getName());
         existingRestaurant.setAddress(restaurant.getAddress());
         existingRestaurant.setPhone(restaurant.getPhone());
+        existingRestaurant.setOpenTime(restaurant.getOpenTime());
+        existingRestaurant.setCloseTime(restaurant.getCloseTime());
         return restaurantRepository.save(existingRestaurant);
     }
 
@@ -62,6 +65,30 @@ public class RestaurantService {
             throw new ResourceNotFoundException("Restaurant not found with id: " + id);
         }
         restaurantRepository.deleteById(id);
+    }
+
+
+    public Restaurant updateRestaurantAddress(Long id, String address, double longitude, double latitude) {
+        Optional<Restaurant> result = restaurantRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
+        }
+        Restaurant existingRestaurant = result.get();
+        existingRestaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
+        existingRestaurant.setAddress(address);
+        return restaurantRepository.save(existingRestaurant);
+    }
+
+
+    public Restaurant updateRestaurantLogo(Long id, String logoUrl, String logoPublicId) {
+        Optional<Restaurant> result = restaurantRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
+        }
+        Restaurant existingRestaurant = result.get();
+        existingRestaurant.setLogoUrl(logoUrl);
+        existingRestaurant.setLogoPublicId(logoPublicId);
+        return restaurantRepository.save(existingRestaurant);
     }
 
     public RestaurantDTO toDTO(Restaurant restaurant) {
@@ -80,14 +107,4 @@ public class RestaurantService {
                 .build();
     }
 
-    public Restaurant updateRestaurantAddress(Long id, String address, double longitude, double latitude) {
-        Optional<Restaurant> result = restaurantRepository.findById(id);
-        if (result.isEmpty()) {
-            throw new ResourceNotFoundException("Restaurant not found with id: " + id);
-        }
-        Restaurant existingRestaurant = result.get();
-        existingRestaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
-        existingRestaurant.setAddress(address);
-        return restaurantRepository.save(existingRestaurant);
-    }
 }
