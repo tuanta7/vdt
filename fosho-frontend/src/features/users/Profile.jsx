@@ -16,11 +16,11 @@ const Profile = () => {
   const shippingAddress = user?.shipping_addresses?.map((s) => (
     <div
       key={s.address}
-      className="flex items-center gap-6 justify-between p-2 border border-neutral-500 hover:border-primary hover:cursor-pointer rounded-lg text-sm"
+      className="flex items-center gap-6 justify-between p-2 mb-3 border border-neutral-500 hover:border-primary hover:cursor-pointer rounded-lg"
     >
       <div className="w-64">
         <h2 className="font-semibold">🏠 {s.name}</h2>
-        <p className="break-words">🗺️ {s.address}</p>
+        <p className="break-words text-sm">🗺️ {s.address}</p>
       </div>
       <ShippingAddressDelete />
     </div>
@@ -37,8 +37,8 @@ const Profile = () => {
   );
 
   return (
-    <div className="flex-1 flex flex-wrap gap-10">
-      <div className="flex flex-col">
+    <div className="flex-1 flex flex-wrap gap-8">
+      <div className="flex flex-col gap-3">
         <div className="flex gap-3">
           <div className="avatar flex flex-col items-end">
             <div className="w-44 h-44 rounded-xl">
@@ -78,7 +78,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="flex-1 border border-neutral-400 p-3 rounded-xl">
-        Coming soon...
+        FoshoFeed Coming soon...
       </div>
       <div className="max-lg:hidden">
         <Mapbox />

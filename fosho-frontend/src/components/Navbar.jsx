@@ -5,6 +5,7 @@ import {
   ShoppingCartIcon,
   MagnifyingGlassIcon,
   ArrowRightEndOnRectangleIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
@@ -43,6 +44,9 @@ const Navbar = ({ UserAvatar }) => {
         </button>
         <button className="btn btn-ghost btn-circle btn-sm">
           <ShoppingCartIcon className="w-5" />
+        </button>
+        <button className="btn btn-ghost btn-circle btn-sm">
+          <ChatBubbleBottomCenterTextIcon className="w-5" />
         </button>
         <div>{UserAvatar || LoginButton}</div>
       </div>

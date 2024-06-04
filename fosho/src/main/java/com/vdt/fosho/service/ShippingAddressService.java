@@ -3,26 +3,26 @@ package com.vdt.fosho.service;
 import com.vdt.fosho.dto.ShippingAddressDTO;
 import com.vdt.fosho.entity.ShippingAddress;
 import com.vdt.fosho.repository.ShippingAddressRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ShippingAddressService {
 
-    ShippingAddressRepository shippingAddressRepository;
+    private final ShippingAddressRepository shippingAddressRepository;
 
     public ShippingAddress createShippingAddress(ShippingAddress shippingAddress) {
         return shippingAddressRepository.save(shippingAddress);
     }
 
-    public ShippingAddressDTO toShippingAddressDTO(ShippingAddress shippingAddress) {
-        return new ShippingAddressDTO(
-                shippingAddress.getId(),
-                shippingAddress.getName(),
-                shippingAddress.getAddress(),
-                shippingAddress.getCoordinates().getX(),
-                shippingAddress.getCoordinates().getY()
-        );
+    public ShippingAddressDTO toDTO(ShippingAddress shippingAddress) {
+        return ShippingAddressDTO.builder()
+                .id(shippingAddress.getId())
+                .name(shippingAddress.getName())
+                .address(shippingAddress.getAddress())
+                .latitude(shippingAddress.getCoordinates().getY())
+                .longitude(shippingAddress.getCoordinates().getX())
+                .build();
     }
 }

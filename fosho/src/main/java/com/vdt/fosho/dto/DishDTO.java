@@ -1,7 +1,6 @@
 package com.vdt.fosho.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.entity.Restaurant;
@@ -10,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 @Data
 @Builder
@@ -37,12 +37,13 @@ public class DishDTO {
     @JsonProperty("thumbnail_url")
     private String thumbnailUrl;
 
-    private boolean available;
+    @Range(min = 0, message = "Stock must be greater than or equal to 0")
+    private int stock;
 
     @JsonIgnore
     private Restaurant restaurant;
 
-    // Accepted input fields for create/update: name, description, price, discountPrice, unit
+    // Accepted input fields for create/update: name, description, price, discountPrice, unit, stock
     public Dish toDish() {
         return Dish.builder()
                 .name(name)
@@ -51,6 +52,7 @@ public class DishDTO {
                 .discount(discount)
                 .unit(unit)
                 .restaurant(restaurant)
+                .stock(stock)
                 .build();
     }
 }

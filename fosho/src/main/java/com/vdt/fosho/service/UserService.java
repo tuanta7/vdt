@@ -2,6 +2,7 @@ package com.vdt.fosho.service;
 
 import com.vdt.fosho.dto.ShippingAddressDTO;
 import com.vdt.fosho.dto.UserDTO;
+import com.vdt.fosho.entity.ShippingAddress;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.exception.ResourceNotFoundException;
 import com.vdt.fosho.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,17 +31,17 @@ public class UserService {
     }
 
     public UserDTO toUserDTO(User user) {
-        List<ShippingAddressDTO> shippingAddressesDTO = null;
-        if (user.getShippingAddresses() != null) {
-            shippingAddressesDTO = user.getShippingAddresses().stream()
-                    .map(shippingAddress -> new ShippingAddressDTO(
-                            shippingAddress.getId(),
-                            shippingAddress.getName(),
-                            shippingAddress.getAddress(),
-                            shippingAddress.getCoordinates().getX(),
-                            shippingAddress.getCoordinates().getY()
-                    ))
-                    .collect(Collectors.toList());
+        List<ShippingAddressDTO> shippingAddressesDTO = new ArrayList<>();
+        for (ShippingAddress sa: user.getShippingAddresses()) {
+            shippingAddressesDTO.add(
+                    ShippingAddressDTO.builder()
+                            .id(sa.getId())
+                            .name(sa.getName())
+                            .address(sa.getAddress())
+                            .latitude(sa.getCoordinates().getY())
+                            .longitude(sa.getCoordinates().getX())
+                            .build()
+            );
         }
 
         return new UserDTO(

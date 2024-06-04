@@ -34,8 +34,8 @@ const UserDishList = () => {
   );
 
   return (
-    <div className="mt-6 p-3 rounded-xl">
-      <div className="flex flex-wrap justify-between items-center gap-3 mb-2">
+    <div className="mt-6 p-4 rounded-xl border-2 border-base-200">
+      <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
         <h2 className="font-semibold text-xl text-primary pl-2">🍽️ Thực đơn</h2>
         <div className="flex gap-3">
           {search}
@@ -49,7 +49,7 @@ const UserDishList = () => {
       </div>
       {showForm && <DishCreate cancel={() => setShowForm(false)} />}
       <LoadingBlock number={3} isPending={isPending} error={error}>
-        <div className="p-2 flex gap-10 flex-wrap">
+        <div className="p-2 flex gap-10 justify-evenly flex-wrap">
           {data?.dishes?.map((d) => (
             <DishItem
               key={d.id}

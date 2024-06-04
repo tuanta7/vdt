@@ -50,7 +50,7 @@ public class DishService {
                     .unit(dish.getUnit())
                     .sold(dish.getSold())
                     .thumbnailUrl(dish.getThumbnailUrl())
-                    .available(dish.isAvailable())
+                    .stock(dish.getStock())
                     .build();
         }
 

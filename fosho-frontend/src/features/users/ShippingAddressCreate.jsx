@@ -1,14 +1,30 @@
 import PropTypes from "prop-types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
 import LoadingButton from "../../components/LoadingButton";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
+import { BASE_URL } from "../../utils/constant";
+import useGlobal from "../../hooks/useGlobal";
 
 const ShippingAddressCreate = ({ cancel }) => {
+  const queryClient = useQueryClient();
+  const {
+    info: { accessToken },
+  } = useGlobal();
+
   const { mutate, isPending } = useMutation({
-    mutationFn: () => fetchWithAccessToken(),
-    onSuccess: () => {},
+    mutationFn: (payload) =>
+      fetchWithAccessToken(
+        `${BASE_URL}/addresses`,
+        "POST",
+        accessToken,
+        payload
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["info"]);
+      cancel();
+    },
   });
 
   const { register, handleSubmit, errors } = useForm();

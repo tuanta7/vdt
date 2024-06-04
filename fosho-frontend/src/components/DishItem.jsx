@@ -45,8 +45,8 @@ const DishItem = ({ dish, buttonBar }) => {
         </div>
       </Link>
       <div className="card-actions justify-between items-center p-3">
-        <p className="text-neutral-400 text-sm">
-          {dish.available ? "Còn hàng" : "Hết hàng"}
+        <p className="text-neutral-500 text-sm">
+          {dish.stock ? `Còn ${dish.stock} ${dish.unit}` : "Hết hàng"}
         </p>
         {buttonBar}
       </div>

@@ -1,14 +1,15 @@
 package com.vdt.fosho.dto;
 
 import com.vdt.fosho.entity.ShippingAddress;
+import com.vdt.fosho.entity.User;
 import com.vdt.fosho.utils.GeoUtils;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Range;
-import org.locationtech.jts.geom.Point;
 
 @Data
 @Builder
@@ -29,12 +30,16 @@ public class ShippingAddressDTO {
         @Range(min = -180, max = 180)
         private double longitude;
 
+        @JsonIgnore
+        private User user;
+
         public ShippingAddress toShippingAddress() {
             return ShippingAddress.builder()
                     .id(id)
                     .name(name)
                     .address(address)
                     .coordinates(GeoUtils.createPoint(latitude, longitude))
+                    .user(user)
                     .build();
         }
 }

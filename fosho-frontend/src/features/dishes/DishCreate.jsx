@@ -27,6 +27,7 @@ const DishCreate = ({ cancel }) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["user-dishes", userId, restaurantId]);
       toast.success("Tạo món thành công");
+      cancel();
     },
   });
 
@@ -69,18 +70,18 @@ const DishCreate = ({ cancel }) => {
         <label className="form-control mb-2 sm:col-span-2">
           <div className="label">
             <span className="label-text">Mô tả</span>
-            <p className="text-red-600 text-sm">{errors?.name?.message}</p>
+            <p className="text-red-600 text-sm">
+              {errors?.description?.message}
+            </p>
           </div>
           <input
             type="text"
             className="input input-sm input-bordered"
-            {...register("description", {
-              required: "Tên không được để trống",
-            })}
+            {...register("description")}
           />
         </label>
       </div>
-      <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-3">
+      <div className="grid grid-cols-4 max-sm:grid-cols-1 gap-3">
         <label className="form-control mb-2">
           <div className="label">
             <span className="label-text">Giá gốc</span>
@@ -113,11 +114,12 @@ const DishCreate = ({ cancel }) => {
                 message: "Chiết khấu không được âm",
               },
               validate: (value) =>
-                value < getValues("price") ||
+                parseFloat(value) < parseFloat(getValues("price")) ||
                 "Chiết khấu không được lớn hơn giá",
             })}
           />
         </label>
+
         <label className="form-control mb-2">
           <div className="label">
             <span className="label-text">
@@ -132,7 +134,24 @@ const DishCreate = ({ cancel }) => {
             type="text"
             className="input input-sm input-bordered"
             {...register("unit", {
-              required: "Đợn vị không được để trống",
+              required: "*",
+            })}
+          />
+        </label>
+        <label className="form-control mb-2">
+          <div className="label">
+            <span className="label-text">Kho</span>
+            <p className="text-red-600 text-sm">{errors?.stock?.message}</p>
+          </div>
+          <input
+            type="numnber"
+            className="input input-sm input-bordered"
+            {...register("stock", {
+              required: "*",
+              min: {
+                value: 0,
+                message: "Số lượng trong kho không được âm",
+              },
             })}
           />
         </label>

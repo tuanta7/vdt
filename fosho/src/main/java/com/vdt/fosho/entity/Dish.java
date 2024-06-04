@@ -1,7 +1,6 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
-import jdk.jshell.Snippet;
 import lombok.*;
 
 import java.util.List;
@@ -45,8 +44,8 @@ public class Dish {
     @Column(name = "thumbnail_public_id")
     private String thumbnailPublicId;
 
-    @Column(name = "available")
-    private boolean available;
+    @Column(name = "stock")
+    private int stock;
 
     @OneToMany
     private List<DishImage> images;
@@ -57,4 +56,5 @@ public class Dish {
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
+
 }
