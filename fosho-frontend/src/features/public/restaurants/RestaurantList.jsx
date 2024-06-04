@@ -48,7 +48,7 @@ const RestaurantList = ({ long, lat }) => {
           <option>Đà Nẵng</option>
         </select>
       </div>
-      <div className="flex flex-wrap justify-evenly gap-4">{list}</div>
+      <div className="flex flex-wrap justify-evenly gap-6">{list}</div>
     </div>
   );
 };

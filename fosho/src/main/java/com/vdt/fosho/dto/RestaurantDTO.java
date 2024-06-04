@@ -53,6 +53,7 @@ public class RestaurantDTO {
     @Range(min = -180, max = 180)
     private double longitude;
 
+
     @JsonIgnore
     private User owner;
 

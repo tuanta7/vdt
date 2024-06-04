@@ -1,5 +1,6 @@
 package com.vdt.fosho.entity;
 
+import com.vdt.fosho.dto.DishDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,7 +36,7 @@ public class Dish {
     @Column(name = "sold")
     private int sold;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "VARCHAR(1000)")
     private String description;
 
     @Column(name = "thumbnail_url")
@@ -57,4 +58,15 @@ public class Dish {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
+    public DishDTO toDTO() {
+        return DishDTO.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .discount(discount)
+                .unit(unit)
+                .thumbnailUrl(thumbnailUrl)
+                .stock(stock)
+                .build();
+    }
 }

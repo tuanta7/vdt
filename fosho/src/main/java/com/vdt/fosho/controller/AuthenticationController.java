@@ -85,7 +85,7 @@ public class AuthenticationController {
         if (authentication != null && authentication.isAuthenticated()) {
             User user = (User) authentication.getPrincipal();
             HashMap<String, Object> data = new HashMap<>();
-            data.put("user", userService.toUserDTO(user));
+            data.put("user", userService.toDTO(user));
             return JSendResponse.success(data);
         }
         throw new IllegalArgumentException("User is not authenticated");
@@ -117,7 +117,7 @@ public class AuthenticationController {
 
     private HashMap<String, Object> buildData(User user, String accessToken) {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("user", userService.toUserDTO(user));
+        data.put("user", userService.toDTO(user));
         data.put("access_token", accessToken);
         return data;
     }

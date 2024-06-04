@@ -54,9 +54,10 @@ public class RestaurantController {
             @Valid @RequestBody RestaurantDTO restaurantDTO
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        restaurantDTO.setOwner((User) authentication.getPrincipal());
 
+        restaurantDTO.setOwner((User) authentication.getPrincipal());
         Restaurant createdRestaurant = restaurantService.createRestaurant(restaurantDTO.toRestaurant());
+
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(createdRestaurant));
         return JSendResponse.success(data);
@@ -123,13 +124,6 @@ public class RestaurantController {
         return JSendResponse.success(null);
     }
 
-    private boolean isOwner(Long restaurantId) {
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        return restaurant.getOwner().getId().equals(user.getId());
-    }
-
 
     // Logo APIs
     @PatchMapping("/restaurants/{restaurant_id}/logo")
@@ -177,5 +171,12 @@ public class RestaurantController {
         HashMap<String, Object> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
         return JSendResponse.success(data);
+    }
+
+    private boolean isOwner(Long restaurantId) {
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return restaurant.getOwner().getId().equals(user.getId());
     }
 }

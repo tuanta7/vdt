@@ -16,16 +16,6 @@ const Categories = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="drinks" className="rounded-lg">
-            🍹 <p className="max-sm:hidden"> Đồ uống</p>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="treats" className="rounded-lg">
-            🍰 <p className="max-sm:hidden"> Ăn vặt</p>
-          </NavLink>
-        </li>
-        <li>
           <button
             className="rounded-lg w-fit"
             onClick={() =>

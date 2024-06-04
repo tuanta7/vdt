@@ -16,7 +16,7 @@ const Mapbox = ({ long, lat, w, h }) => {
   const [viewState, setViewState] = useState({
     longitude: coordinates.long,
     latitude: coordinates.lat,
-    zoom: 15,
+    zoom: 16,
   });
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const Mapbox = ({ long, lat, w, h }) => {
       <Map
         mapLib={import("mapbox-gl")}
         mapboxAccessToken={MAPBOX_TOKEN}
-        {...viewState}
+        initialViewState={{ ...viewState }}
         onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: w || 250, height: h || 400 }}
         mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"

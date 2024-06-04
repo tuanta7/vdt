@@ -1,0 +1,32 @@
+package com.vdt.fosho.service;
+
+import com.vdt.fosho.dto.OrderItemDTO;
+import com.vdt.fosho.entity.OrderItem;
+import com.vdt.fosho.repository.OrderItemRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class OrderItemService {
+    private final OrderItemRepository orderItemRepository;
+
+    public List<OrderItem> getCart(Long userId) {
+        return orderItemRepository.findByUserIdAndOrderIdIsNull(userId);
+    }
+
+    public OrderItem createOrderItem(OrderItem orderItem) {
+        return orderItemRepository.save(orderItem);
+    }
+
+    public OrderItemDTO toDTO(OrderItem orderItem) {
+        return OrderItemDTO.builder()
+                .id(orderItem.getId())
+                .dishDTO(orderItem.getDish().toDTO())
+                .order(orderItem.getOrder())
+                .quantity(orderItem.getQuantity())
+                .build();
+    }
+}

@@ -30,18 +30,20 @@ public class UserService {
         return result.get();
     }
 
-    public UserDTO toUserDTO(User user) {
+    public UserDTO toDTO(User user) {
         List<ShippingAddressDTO> shippingAddressesDTO = new ArrayList<>();
-        for (ShippingAddress sa: user.getShippingAddresses()) {
-            shippingAddressesDTO.add(
-                    ShippingAddressDTO.builder()
-                            .id(sa.getId())
-                            .name(sa.getName())
-                            .address(sa.getAddress())
-                            .latitude(sa.getCoordinates().getY())
-                            .longitude(sa.getCoordinates().getX())
-                            .build()
-            );
+        if (user.getShippingAddresses() != null) {
+            for (ShippingAddress sa: user.getShippingAddresses()) {
+                shippingAddressesDTO.add(
+                        ShippingAddressDTO.builder()
+                                .id(sa.getId())
+                                .name(sa.getName())
+                                .address(sa.getAddress())
+                                .latitude(sa.getCoordinates().getY())
+                                .longitude(sa.getCoordinates().getX())
+                                .build()
+                );
+            }
         }
 
         return new UserDTO(

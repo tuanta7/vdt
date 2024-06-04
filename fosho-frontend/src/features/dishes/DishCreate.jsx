@@ -26,6 +26,7 @@ const DishCreate = ({ cancel }) => {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries(["user-dishes", userId, restaurantId]);
+      queryClient.invalidateQueries(["dishes"]);
       toast.success("Tạo món thành công");
       cancel();
     },

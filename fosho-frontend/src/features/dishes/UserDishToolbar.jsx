@@ -28,6 +28,7 @@ const UserDishToolbar = ({ dishId }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["user-dishes", userId, restaurantId]);
+      queryClient.invalidateQueries(["dishes"]);
       toast.success("Cập nhật thành công");
     },
   });

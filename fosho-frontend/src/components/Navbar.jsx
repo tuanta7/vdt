@@ -7,9 +7,13 @@ import {
   ArrowRightEndOnRectangleIcon,
   ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import useGlobal from "../hooks/useGlobal";
 
 const Navbar = ({ UserAvatar }) => {
+  const {
+    info: { user },
+  } = useGlobal();
   const LoginButton = (
     <Link to={"/auth/login"} className="btn p-1 text-neutral-600 min-w-fit">
       Đăng nhập
@@ -42,9 +46,12 @@ const Navbar = ({ UserAvatar }) => {
         <button className="btn btn-ghost btn-circle btn-sm">
           <InboxStackIcon className="w-5" />
         </button>
-        <button className="btn btn-ghost btn-circle btn-sm">
+        <NavLink
+          to={user ? `/users/${user.id}/cart` : "/auth/login"}
+          className="btn btn-ghost btn-circle btn-sm"
+        >
           <ShoppingCartIcon className="w-5" />
-        </button>
+        </NavLink>
         <button className="btn btn-ghost btn-circle btn-sm">
           <ChatBubbleBottomCenterTextIcon className="w-5" />
         </button>
