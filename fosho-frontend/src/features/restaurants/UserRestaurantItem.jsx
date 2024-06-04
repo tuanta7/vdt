@@ -9,7 +9,7 @@ const UserRestaurantItem = ({ restaurant }) => {
     <div className="flex items-start bg-base-100 border xl:w-1/2 rounded-xl overflow-hidden">
       <figure className="min-w-[200px]">
         <img
-          src={fill(restaurant.logo_url, 200, 200) || "/no-img.png"}
+          src={fill(restaurant.logo_url, 400, 400) || "/no-img.png"}
           className="w-[200px] h-[200px] object-cover"
         />
       </figure>

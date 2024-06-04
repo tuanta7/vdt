@@ -26,7 +26,7 @@ const DishItem = ({ dish, buttonBar }) => {
 
   return (
     <div className="card w-[250px] h-[320px] glass rounded-2xl overflow-hidden">
-      <Link to="">
+      <Link to={`dishes/${dish.id}`}>
         <figure>
           <img
             src={fill(dish.thumbnail_url, 150, 150) || "/no-img.png"}
@@ -44,7 +44,12 @@ const DishItem = ({ dish, buttonBar }) => {
           <p className="text-neutral-500 text-sm">Đã bán: {dish.sold}</p>
         </div>
       </Link>
-      <div className="card-actions justify-end p-2">{buttonBar}</div>
+      <div className="card-actions justify-between items-center p-3">
+        <p className="text-neutral-400 text-sm">
+          {dish.available ? "Còn hàng" : "Hết hàng"}
+        </p>
+        {buttonBar}
+      </div>
     </div>
   );
 };

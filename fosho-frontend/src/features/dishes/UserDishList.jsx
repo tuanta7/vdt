@@ -33,7 +33,7 @@ const UserDishList = () => {
   return (
     <div className="mt-6 border border-base-200 p-3 rounded-xl">
       <div className="flex flex-wrap justify-between items-center gap-3 mb-2">
-        <h2 className="font-semibold text-lg text-primary pl-2">Thực đơn 🍽️</h2>
+        <h2 className="font-semibold text-xl text-primary pl-2">🍽️ Thực đơn</h2>
         <div className="flex gap-3">
           {search}
           <button className="btn btn-sm btn-primary text-base-100">
