@@ -38,7 +38,7 @@ const ChangeLogo = () => {
     <form className="flex items-center justify-center">
       <label
         htmlFor="avatar-upload"
-        className="btn btn-xs glass text-base-300 hover:text-primary max-w-fit"
+        className="btn btn-xs text-neutral-500 max-w-fit"
       >
         {isPending ? (
           <span className="loading loading-spinner text-primary loading-xs" />

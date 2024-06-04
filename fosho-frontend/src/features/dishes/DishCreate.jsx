@@ -1,11 +1,45 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+import toast from "react-hot-toast";
+
+import LoadingButton from "../../components/LoadingButton";
+import { BASE_URL } from "../../utils/constant";
+import { fetchWithAccessToken } from "../../utils/fetchFn";
+import useGlobal from "../../hooks/useGlobal";
 
 const DishCreate = ({ cancel }) => {
-  const { mutate } = useMutation();
+  const queryClient = useQueryClient();
+  const { userId, restaurantId } = useParams();
+  const {
+    info: { accessToken },
+  } = useGlobal();
 
-  const { handleSubmit } = useForm();
+  const { mutate, isPending } = useMutation({
+    mutationFn: (payload) =>
+      fetchWithAccessToken(
+        `${BASE_URL}/restaurants/${restaurantId}/dishes`,
+        "POST",
+        accessToken,
+        payload
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user-dishes", userId, restaurantId]);
+      toast.success("Tạo món thành công");
+    },
+  });
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    getValues,
+  } = useForm({
+    defaultValues: {
+      discount: 0,
+    },
+  });
 
   const onSubmit = (data) => {
     mutate(data);
@@ -16,7 +50,110 @@ const DishCreate = ({ cancel }) => {
       className="p-3 mb-3 border border-neutral-400 rounded-xl"
       onSubmit={handleSubmit(onSubmit)}
       autoComplete="on"
-    ></form>
+    >
+      <h2 className="font-semibold mb-3 pl-1 text-primary">Thêm món mới</h2>
+      <div className="grid max-sm:grid-cols-1 grid-cols-3 gap-3">
+        <label className="form-control mb-2">
+          <div className="label">
+            <span className="label-text">Tên món</span>
+            <p className="text-red-600 text-sm">{errors?.name?.message}</p>
+          </div>
+          <input
+            type="text"
+            className="input input-sm input-bordered"
+            {...register("name", {
+              required: "Tên không được để trống",
+            })}
+          />
+        </label>
+        <label className="form-control mb-2 sm:col-span-2">
+          <div className="label">
+            <span className="label-text">Mô tả</span>
+            <p className="text-red-600 text-sm">{errors?.name?.message}</p>
+          </div>
+          <input
+            type="text"
+            className="input input-sm input-bordered"
+            {...register("description", {
+              required: "Tên không được để trống",
+            })}
+          />
+        </label>
+      </div>
+      <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-3">
+        <label className="form-control mb-2">
+          <div className="label">
+            <span className="label-text">Giá gốc</span>
+            <p className="text-red-600 text-sm">{errors?.price?.message}</p>
+          </div>
+          <input
+            type="number"
+            className="input input-sm input-bordered"
+            {...register("price", {
+              required: "*",
+              min: {
+                value: 0,
+                message: "Giá không được âm",
+              },
+            })}
+          />
+        </label>
+        <label className="form-control mb-2">
+          <div className="label">
+            <span className="label-text">Chiết khấu</span>
+            <p className="text-red-600 text-sm">{errors?.discount?.message}</p>
+          </div>
+          <input
+            type="numnber"
+            className="input input-sm input-bordered"
+            {...register("discount", {
+              required: "*",
+              min: {
+                value: 0,
+                message: "Chiết khấu không được âm",
+              },
+              validate: (value) =>
+                value < getValues("price") ||
+                "Chiết khấu không được lớn hơn giá",
+            })}
+          />
+        </label>
+        <label className="form-control mb-2">
+          <div className="label">
+            <span className="label-text">
+              Đơn vị{" "}
+              <span className="text-xs text-neutral-500">
+                (VD: Hộp, suất...)
+              </span>
+            </span>
+            <p className="text-red-600 text-sm">{errors?.unit?.message}</p>
+          </div>
+          <input
+            type="text"
+            className="input input-sm input-bordered"
+            {...register("unit", {
+              required: "Đợn vị không được để trống",
+            })}
+          />
+        </label>
+      </div>
+      <div className="flex flex-row-reverse gap-3 mt-4">
+        <button
+          className="btn btn-primary text-base-100 rounded-lg btn-sm"
+          type="submit"
+          disabled={isPending}
+        >
+          <LoadingButton isLoading={isPending}>Xác nhận</LoadingButton>
+        </button>
+        <button
+          className="btn btn-ghost rounded-lg btn-sm"
+          type="reset"
+          onClick={cancel}
+        >
+          Hủy
+        </button>
+      </div>
+    </form>
   );
 };
 DishCreate.propTypes = {

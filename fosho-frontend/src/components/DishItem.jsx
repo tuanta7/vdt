@@ -7,12 +7,12 @@ const DishItem = ({ dish, buttonBar }) => {
   const renderPrice = () => {
     if (dish.discount) {
       return (
-        <div className="flex items-center gap-2 font-semibold text-lg">
+        <div className="flex items-center gap-1 font-semibold text-lg flex-wrap">
           <p className="text-neutral-500 line-through">
             {formatPrice(dish.price)} <sup>₫</sup>
           </p>
           <p className="text-primary">
-            {formatPrice(dish.price - dish.discount)} <sup>₫</sup>
+            ⚡{formatPrice(dish.price - dish.discount)} <sup>₫</sup>
           </p>
         </div>
       );
@@ -25,12 +25,12 @@ const DishItem = ({ dish, buttonBar }) => {
   };
 
   return (
-    <div className="card w-[250px] h-[320px] glass rounded-2xl overflow-hidden">
+    <div className="card justify-between w-[250px] h-[450px] glass rounded-2xl overflow-hidden">
       <Link to={`dishes/${dish.id}`}>
         <figure>
           <img
-            src={fill(dish.thumbnail_url, 150, 150) || "/no-img.png"}
-            className="h-[150px] object-center object-cover w-full"
+            src={fill(dish.thumbnail_url, 400, 400) || "/no-img.png"}
+            className="h-[250px] object-center object-cover w-full"
           />
         </figure>
         <div className="px-3 mt-3 flex flex-col gap-1">

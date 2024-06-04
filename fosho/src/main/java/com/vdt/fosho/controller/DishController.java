@@ -5,7 +5,9 @@ import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
+import com.vdt.fosho.exception.BadRequestException;
 import com.vdt.fosho.exception.ForbiddenException;
+import com.vdt.fosho.service.CloudinaryService;
 import com.vdt.fosho.service.DishService;
 import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
@@ -14,11 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -26,6 +29,22 @@ public class DishController {
 
     RestaurantService restaurantService;
     DishService dishService;
+    CloudinaryService cloudinaryService;
+
+    @GetMapping("/dishes")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public JSendResponse<HashMap<String, List<DishDTO>>> getAllDishes() {
+        List<Dish> dishes = dishService.getAllDishes();
+        List<DishDTO> dishDTOs = new ArrayList<>();
+        for (Dish dish : dishes) {
+            dishDTOs.add(dishService.toDTO(dish));
+        }
+
+        HashMap<String, List<DishDTO>> data = new HashMap<>();
+        data.put("dishes", dishDTOs);
+        return JSendResponse.success(data);
+    }
 
     @GetMapping("/restaurants/{restaurant_id}/dishes")
     @ResponseStatus(HttpStatus.OK)
@@ -57,6 +76,39 @@ public class DishController {
         Dish createdDish = dishService.createDish(dishDTO.toDish());
         HashMap<String, DishDTO> data = new HashMap<>();
         data.put("dish", dishService.toDTO(createdDish));
+        return JSendResponse.success(data);
+    }
+
+
+
+    @PatchMapping("/restaurants/{restaurant_id}/dishes/{dish_id}/thumbnail")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public JSendResponse<HashMap<String, DishDTO>> updateDishThumbnail(
+            @PathVariable("restaurant_id") Long restaurantId,
+            @PathVariable("dish_id") Long dishId,
+            @RequestParam MultipartFile image
+    ) throws IOException {
+        verifyOwner(restaurantId);
+
+        BufferedImage bi = ImageIO.read(image.getInputStream());
+        if (bi == null) {
+            throw new BadRequestException("Invalid image file");
+        }
+        Map result = cloudinaryService.upload(image);
+
+        String imageIdToDelete = dishService.getDishById(dishId).getThumbnailPublicId();
+        Dish updatedDish = dishService.updateDishThumbnail(
+                dishId,
+                result.get("url").toString(),
+                result.get("public_id").toString()
+        );
+        if (imageIdToDelete != null) {
+            cloudinaryService.delete(imageIdToDelete);
+        }
+
+        HashMap<String, DishDTO> data = new HashMap<>();
+        data.put("dish", dishService.toDTO(updatedDish));
         return JSendResponse.success(data);
     }
 

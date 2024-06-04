@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
@@ -7,8 +8,10 @@ import { fetchPublicGet } from "../../utils/fetchFn";
 import LoadingBlock from "../../components/LoadingBlock";
 import DishItem from "../../components/DishItem";
 import UserDishToolbar from "./UserDishToolbar";
+import DishCreate from "./DishCreate";
 
 const UserDishList = () => {
+  const [showForm, setShowForm] = useState(false);
   const { restaurantId, userId } = useParams();
 
   const { isPending, data, error } = useQuery({
@@ -31,18 +34,22 @@ const UserDishList = () => {
   );
 
   return (
-    <div className="mt-6 border border-base-200 p-3 rounded-xl">
+    <div className="mt-6 p-3 rounded-xl">
       <div className="flex flex-wrap justify-between items-center gap-3 mb-2">
         <h2 className="font-semibold text-xl text-primary pl-2">🍽️ Thực đơn</h2>
         <div className="flex gap-3">
           {search}
-          <button className="btn btn-sm btn-primary text-base-100">
+          <button
+            className="btn btn-sm btn-primary text-base-100"
+            onClick={() => setShowForm(!showForm)}
+          >
             Thêm món mới
           </button>
         </div>
       </div>
+      {showForm && <DishCreate cancel={() => setShowForm(false)} />}
       <LoadingBlock number={3} isPending={isPending} error={error}>
-        <div className="p-2">
+        <div className="p-2 flex gap-10 flex-wrap">
           {data?.dishes?.map((d) => (
             <DishItem
               key={d.id}

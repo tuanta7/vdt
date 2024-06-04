@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 
 const RestaurantItem = ({ restaurant }) => {
   return (
-    <div className="card w-[250px] h-[330px] border border-base-300 rounded-2xl overflow-hidden">
+    <div className="card w-[250px] h-[450px] border-2 border-base-300 rounded-2xl overflow-hidden">
       <Link to={`/restaurants/${restaurant.id}`}>
         <figure>
           <img
             src={fill(restaurant.logo_url, 400, 400) || "/no-img.png"}
-            className="h-[150px] object-center object-cover w-full"
+            className="h-[250px] object-center object-cover w-full"
           />
         </figure>
-        <div className="px-3 mt-2 flex flex-col justify-evenly gap-2">
+        <div className="px-3 pt-2 border-t-2 border-base-300  flex flex-col justify-evenly gap-2">
           <div className="h-12 flex items-center">
             <div className="">
               <h2 className="font-semibold text-lg truncate max-w-[200px]">
