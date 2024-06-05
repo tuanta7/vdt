@@ -1,3 +1,5 @@
 fosho/src/.env
 
 *.env
+
+data/
