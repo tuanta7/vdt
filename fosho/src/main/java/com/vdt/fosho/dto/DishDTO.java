@@ -40,8 +40,11 @@ public class DishDTO {
     @Range(min = 0, message = "Stock must be greater than or equal to 0")
     private int stock;
 
+    @JsonProperty("restaurant")
+    private RestaurantDTO restaurantDTO;
 
     @JsonIgnore
+    @JsonProperty("_")
     private Restaurant restaurant;
 
     // Accepted input fields for create/update: name, description, price, discountPrice, unit, stock
