@@ -68,7 +68,9 @@ const UserRestaurantList = () => {
         isLoading={isPending}
         error={error}
       >
-        <div className="flex flex-col gap-6 w-full">{content}</div>
+        <div className="flex flex-col gap-6 w-full">
+          {content.length > 0 ? content : <p>Bạn chưa tạo cửa hàng nào 🌆</p>}
+        </div>
       </LoadingBlock>
     </div>
   );

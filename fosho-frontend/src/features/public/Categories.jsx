@@ -26,7 +26,10 @@ const Categories = () => {
           </button>
         </li>
         <li>
-          <button className="rounded-lg">
+          <button
+            className="rounded-lg"
+            onClick={() => document.getElementById("current_map").showModal()}
+          >
             🌏 <p className="max-sm:hidden"> Vị trí</p>
           </button>
         </li>
