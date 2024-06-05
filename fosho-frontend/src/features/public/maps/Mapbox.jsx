@@ -44,41 +44,49 @@ const Mapbox = ({ w, h }) => {
   }, []);
 
   return (
-    <div className="max-w-min mt-3">
-      <p className="p-2 text-sm border rounded-t-lg word-wrap">
-        📍
-        <Address long={coordinates.long} lat={coordinates.lat} />
-      </p>
-      <div className="p-2 mb-2 border rounded-b-lg flex items-center justify-between text-sm">
-        <h2 className="text-neutral-600 text-sm">Vị trí không đúng?</h2>
-        <button
-          className="btn btn-info btn-xs text-base-200"
-          onClick={() => document.getElementById("current_map").showModal()}
-        >
-          Cập nhật
-        </button>
+    <>
+      <div className="max-md:hidden">
+        <div className="max-w-min mt-3">
+          <p className="p-2 text-sm border rounded-t-lg word-wrap">
+            📍
+            <Address long={coordinates.long} lat={coordinates.lat} />
+          </p>
+          <div className="p-2 mb-2 border rounded-b-lg flex items-center justify-between text-sm">
+            <h2 className="text-neutral-600 text-sm">Vị trí không đúng?</h2>
+            <button
+              className="btn btn-info btn-xs text-base-200"
+              onClick={() => document.getElementById("current_map").showModal()}
+            >
+              Cập nhật
+            </button>
+          </div>
+          <Map
+            mapLib={import("mapbox-gl")}
+            mapboxAccessToken={MAPBOX_TOKEN}
+            {...viewState}
+            onMove={(evt) => setViewState(evt.viewState)}
+            style={{
+              width: w || 250,
+              height: h || 350,
+              borderRadius: "0.5rem",
+            }}
+            mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
+          >
+            <Marker
+              longitude={coordinates.long}
+              latitude={coordinates.lat}
+              anchor="bottom"
+            >
+              <img src="/marker.png" alt="marker" className="w-6" />
+            </Marker>
+          </Map>
+        </div>
       </div>
-      <Map
-        mapLib={import("mapbox-gl")}
-        mapboxAccessToken={MAPBOX_TOKEN}
-        {...viewState}
-        onMove={(evt) => setViewState(evt.viewState)}
-        style={{ width: w || 250, height: h || 350, borderRadius: "0.5rem" }}
-        mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
-      >
-        <Marker
-          longitude={coordinates.long}
-          latitude={coordinates.lat}
-          anchor="bottom"
-        >
-          <img src="/marker.png" alt="marker" className="w-6" />
-        </Marker>
-      </Map>
       <UpdateMapForm
         initCoordinates={coordinates}
         reset={(long, lat) => handleCoordinates(long, lat)}
       />
-    </div>
+    </>
   );
 };
 

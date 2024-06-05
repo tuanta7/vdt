@@ -50,9 +50,7 @@ const PublicLayout = () => {
       <div className="w-full py-6 px-3 flex justify-between gap-3 min-h-[80vh]">
         <Categories />
         <Outlet />
-        <div className="max-md:hidden">
-          <Mapbox />
-        </div>
+        <Mapbox />
       </div>
       <Footer />
     </div>
