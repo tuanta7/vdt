@@ -10,7 +10,7 @@ const CartItem = ({ item }) => {
     if (item.dish.discount) {
       return (
         <div className="flex items-center gap-1 font-semibold flex-wrap">
-          <p className="text-neutral-500 line-through">
+          <p className="text-neutral-500 text-sm line-through">
             {formatPrice(item.dish.price)} <sup>₫</sup>
           </p>
           <p className="text-primary">
