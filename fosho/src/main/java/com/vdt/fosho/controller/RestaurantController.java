@@ -2,6 +2,7 @@ package com.vdt.fosho.controller;
 
 import com.vdt.fosho.dto.AddressDTO;
 import com.vdt.fosho.dto.RestaurantDTO;
+import com.vdt.fosho.elasticsearch.document.RestaurantDocument;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.exception.BadRequestException;
@@ -12,6 +13,7 @@ import com.vdt.fosho.utils.JSendResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,11 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
     private final CloudinaryService cloudinaryService;
+
+    @GetMapping("/restaurants/nearby")
+    public ResponseEntity<Iterable<RestaurantDocument>> getNearbyRestaurants(){
+        return ResponseEntity.ok(restaurantService.getNearbyRestaurants());
+    }
 
     @GetMapping("/restaurants")
     @ResponseStatus(HttpStatus.OK)

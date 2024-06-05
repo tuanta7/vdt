@@ -8,7 +8,6 @@ import org.apache.kafka.connect.source.SourceRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 @Configuration
 public class DebeziumConfig {
 
@@ -22,11 +21,12 @@ public class DebeziumConfig {
                 .with("offset.storage", "org.apache.kafka.connect.storage.FileOffsetBackingStore")
                 .with("offset.storage.file.filename", "/tmp/offsets.dat")
                 .with("offset.flush.interval.ms", 60000)
-                .with("database.hostname", "mariadb")
+                .with("database.hostname", "localhost")
                 .with("database.port", 3306)
                 .with("database.user", "root")
                 .with("database.password", "password")
                 .with("database.dbname", "fosho")
+                .with("topic.prefix", "fosho.vdt")
                 .with("database.include.list", "fosho")
                 .with("include.schema.changes", "false")
                 .with("database.server.id", 85744)
