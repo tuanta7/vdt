@@ -51,7 +51,7 @@ const PublicLayout = () => {
         <Categories />
         <Outlet />
         <div className="max-md:hidden">
-          <Mapbox long={105.8} lat={21} />
+          <Mapbox />
         </div>
       </div>
       <Footer />

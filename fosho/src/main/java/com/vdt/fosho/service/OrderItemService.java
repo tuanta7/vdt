@@ -20,13 +20,4 @@ public class OrderItemService {
     public OrderItem createOrderItem(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
-
-    public OrderItemDTO toDTO(OrderItem orderItem) {
-        return OrderItemDTO.builder()
-                .id(orderItem.getId())
-                .dishDTO(orderItem.getDish().toDTO())
-                .order(orderItem.getOrder())
-                .quantity(orderItem.getQuantity())
-                .build();
-    }
 }

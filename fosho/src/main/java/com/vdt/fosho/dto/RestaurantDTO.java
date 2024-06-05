@@ -53,12 +53,11 @@ public class RestaurantDTO {
     @Range(min = -180, max = 180)
     private double longitude;
 
-
     @JsonIgnore
     private User owner;
 
     // Accepted input fields: name, address, phone, latitude, longitude, openTime, closeTime
-    public Restaurant toRestaurant() {
+    public Restaurant toEntity() {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(name);
         restaurant.setAddress(address);

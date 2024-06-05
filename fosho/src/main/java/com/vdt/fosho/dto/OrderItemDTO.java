@@ -41,7 +41,7 @@ public class OrderItemDTO {
     @JsonProperty("_")
     private Dish dish;
 
-    public OrderItem toOrderItem() {
+    public OrderItem toEntity() {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(id);
         orderItem.setQuantity(quantity);

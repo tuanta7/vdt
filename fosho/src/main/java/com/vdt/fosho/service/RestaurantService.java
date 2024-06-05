@@ -7,16 +7,17 @@ import com.vdt.fosho.repository.RestaurantRepository;
 
 import com.vdt.fosho.utils.GeoUtils;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RestaurantService {
 
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public List<Restaurant> getAllRestaurants() {
         // The implementation of "findAll()" is provided dynamically at runtime by Spring Data JPA.

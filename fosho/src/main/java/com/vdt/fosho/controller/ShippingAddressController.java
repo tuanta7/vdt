@@ -36,7 +36,7 @@ public class ShippingAddressController {
 
         shippingAddressDTO.setUser(user);
         ShippingAddress shippingAddress = shippingAddressService.createShippingAddress(
-                shippingAddressDTO.toShippingAddress()
+                shippingAddressDTO.toEntity()
         );
 
         HashMap<String, ShippingAddressDTO> data = new HashMap<>();

@@ -56,7 +56,9 @@ public class RestaurantController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         restaurantDTO.setOwner((User) authentication.getPrincipal());
-        Restaurant createdRestaurant = restaurantService.createRestaurant(restaurantDTO.toRestaurant());
+        Restaurant createdRestaurant = restaurantService.createRestaurant(
+                restaurantDTO.toEntity()
+        );
 
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(createdRestaurant));
@@ -85,11 +87,15 @@ public class RestaurantController {
         if (!isOwner(id)) {
             throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
         }
-        Restaurant updatedRestaurant = restaurantService.updateRestaurant(id, restaurantDTO.toRestaurant());
+
+        Restaurant updatedRestaurant = restaurantService.updateRestaurant(
+                id, restaurantDTO.toEntity()
+        );
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
         return JSendResponse.success(data);
     }
+
 
     @PatchMapping("/restaurants/{restaurant_id}/coordinates")
     @ResponseStatus(HttpStatus.OK)
@@ -157,6 +163,7 @@ public class RestaurantController {
         return JSendResponse.success(data);
     }
 
+
     @DeleteMapping("/restaurants/{restaurant_id}/logo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -172,6 +179,7 @@ public class RestaurantController {
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
         return JSendResponse.success(data);
     }
+
 
     private boolean isOwner(Long restaurantId) {
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);

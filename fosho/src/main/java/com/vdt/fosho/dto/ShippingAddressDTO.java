@@ -33,7 +33,7 @@ public class ShippingAddressDTO {
         @JsonIgnore
         private User user;
 
-        public ShippingAddress toShippingAddress() {
+        public ShippingAddress toEntity() {
             return ShippingAddress.builder()
                     .id(id)
                     .name(name)

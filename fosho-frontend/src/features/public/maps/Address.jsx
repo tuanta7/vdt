@@ -5,7 +5,7 @@ import { MAPBOX_ACCESS_TOKEN } from "../../../utils/constant";
 
 const Address = ({ long, lat }) => {
   const { data: address } = useQuery({
-    queryKey: ["reverse-geocode", long, lat],
+    queryKey: ["reverse-geocode"],
     queryFn: async () =>
       axios
         .get(

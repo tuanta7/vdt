@@ -47,11 +47,4 @@ public class UserController {
 
         return JSendResponse.success(data);
     }
-
-    private boolean isOwner(Long restaurantId) {
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        return restaurant.getOwner().getId().equals(user.getId());
-    }
 }

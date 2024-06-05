@@ -3,7 +3,6 @@ package com.vdt.fosho.controller;
 import com.vdt.fosho.dto.OrderItemDTO;
 import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.entity.OrderItem;
-import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.service.DishService;
 import com.vdt.fosho.service.OrderItemService;
@@ -33,13 +32,13 @@ public class OrderItemController {
         User user = (User) authentication.getPrincipal();
 
         List<OrderItem> orderItems = orderItemService.getCart(user.getId());
-        List<OrderItemDTO> orderItemDTOs = new ArrayList<>();
+        List<OrderItemDTO> orderItemsDTO = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
-            orderItemDTOs.add(orderItemService.toDTO(orderItem));
+            orderItemsDTO.add(orderItem.toDTO());
         }
 
         HashMap<String, List<OrderItemDTO>> data = new HashMap<>();
-        data.put("order_items", orderItemDTOs);
+        data.put("order_items", orderItemsDTO);
         return JSendResponse.success(data);
     }
 
@@ -55,10 +54,10 @@ public class OrderItemController {
 
         orderItemDTO.setUser(user);
         orderItemDTO.setDish(dish);
-        OrderItem newOrderItem = orderItemService.createOrderItem(orderItemDTO.toOrderItem());
+        OrderItem orderItem = orderItemService.createOrderItem(orderItemDTO.toEntity());
 
         HashMap<String, OrderItemDTO> data = new HashMap<>();
-        data.put("order_item", orderItemService.toDTO(newOrderItem));
+        data.put("order_item",orderItem.toDTO());
         return JSendResponse.success(data);
     }
 }

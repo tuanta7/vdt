@@ -1,5 +1,6 @@
 package com.vdt.fosho.entity;
 
+import com.vdt.fosho.dto.OrderItemDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,13 @@ public class OrderItem {
 
         @Column(name = "quantity")
         private int quantity;
+
+        public OrderItemDTO toDTO() {
+                return OrderItemDTO.builder()
+                        .id(this.id)
+                        .dishDTO(this.dish.toDTO())
+                        .order(this.order)
+                        .quantity(this.quantity)
+                        .build();
+        }
 }

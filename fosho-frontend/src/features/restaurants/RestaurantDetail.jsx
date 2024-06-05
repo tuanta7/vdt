@@ -27,27 +27,25 @@ const RestaurantDetail = () => {
   });
 
   const map = data && (
-    <div className="border border-neutral-300 rounded-2xl w-fit h-fit overflow-hidden">
-      <Map
-        mapLib={import("mapbox-gl")}
-        mapboxAccessToken={MAPBOX_TOKEN}
-        initialViewState={{
-          latitude: data.restaurant.latitude,
-          longitude: data.restaurant.longitude,
-          zoom: 16,
-        }}
-        style={{ width: 300, height: 170 }}
-        mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
+    <Map
+      mapLib={import("mapbox-gl")}
+      mapboxAccessToken={MAPBOX_TOKEN}
+      initialViewState={{
+        latitude: data.restaurant.latitude,
+        longitude: data.restaurant.longitude,
+        zoom: 16,
+      }}
+      style={{ width: 300, height: 180, borderRadius: "0.5rem" }}
+      mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
+    >
+      <Marker
+        longitude={data.restaurant.longitude}
+        latitude={data.restaurant.latitude}
+        anchor="bottom"
       >
-        <Marker
-          longitude={data.restaurant.longitude}
-          latitude={data.restaurant.latitude}
-          anchor="bottom"
-        >
-          <img src="/marker.png" alt="marker" className="w-6" />
-        </Marker>
-      </Map>
-    </div>
+        <img src="/marker.png" alt="marker" className="w-6" />
+      </Marker>
+    </Map>
   );
 
   return (
