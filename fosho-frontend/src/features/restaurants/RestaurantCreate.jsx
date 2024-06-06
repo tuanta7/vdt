@@ -109,7 +109,7 @@ const RestaurantCreate = ({ cancel }) => {
           <span className="label-text">
             Địa chỉ chi tiết{" "}
             <span className="text-xs text-neutral-500">
-              (VD: AEON Mall, Đường Cổ Linh, Quận Long Biên, Hà Nội)
+              (VD: AEON Mall, Đường Cổ Linh, Quận Long Biên, Thành phố Hà Nội)
             </span>
           </span>
 
