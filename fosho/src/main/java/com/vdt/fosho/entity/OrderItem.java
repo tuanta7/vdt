@@ -37,9 +37,11 @@ public class OrderItem {
         public OrderItemDTO toDTO() {
                 return OrderItemDTO.builder()
                         .id(this.id)
-                        .dishDTO(this.dish.toDTO())
                         .order(this.order)
                         .quantity(this.quantity)
+                        .dishDTO(this.dish.toDTO())
+                        .restaurantId(this.dish.getRestaurant().getId())
+                        .restaurantName(this.dish.getRestaurant().getName())
                         .build();
         }
 }

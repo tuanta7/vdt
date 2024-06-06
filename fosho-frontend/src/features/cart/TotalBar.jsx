@@ -1,20 +1,30 @@
 import PropTypes from "prop-types";
 import { formatPrice } from "../../utils/price";
 
-const TotalBar = ({ total }) => {
+const TotalBar = ({ total, discount }) => {
   return (
-    <div className="flex w-full justify-end px-4">
-      <p className="text-lg">
-        Tổng cộng:
-        <span className="pl-3 text-primary font-semibold">
-          {formatPrice(total)} <sup>₫</sup>
-        </span>
-      </p>
+    <div className="flex w-full justify-end items-center gap-10 px-3 pt-3 border-t border-neutral-300">
+      <div>
+        <p>
+          <span>Tổng cộng:</span>
+          <span className="pl-2 text-primary font-semibold text-lg">
+            {formatPrice(total)} <sup>₫</sup>
+          </span>
+        </p>
+        {discount > 0 && (
+          <p className="text-neutral-500 mt-1">
+            Tiết kiệm {formatPrice(discount)} ₫
+          </p>
+        )}
+      </div>
+
+      <button className="btn btn-primary text-base-100">Đặt hàng</button>
     </div>
   );
 };
 TotalBar.propTypes = {
   total: PropTypes.number.isRequired,
+  discount: PropTypes.number.isRequired,
 };
 
 export default TotalBar;

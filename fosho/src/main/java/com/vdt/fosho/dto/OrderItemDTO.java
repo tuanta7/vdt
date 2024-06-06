@@ -24,13 +24,19 @@ public class OrderItemDTO {
 
     private Long orderId;
 
+    private int quantity;
+
     @JsonProperty("dish_id")
     private Long dishId;
 
     @JsonProperty("dish")
     private DishDTO dishDTO;
 
-    private int quantity;
+    @JsonProperty("restaurant_id")
+    private Long restaurantId;
+
+    @JsonProperty("restaurant_name")
+    private String restaurantName;
 
     @JsonIgnore
     private User user;
@@ -41,6 +47,7 @@ public class OrderItemDTO {
     @JsonIgnore
     private Dish dish;
 
+    // Accepted input fields: quantity, dishId
     public OrderItem toEntity() {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(id);

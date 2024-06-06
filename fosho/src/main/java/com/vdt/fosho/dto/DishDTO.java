@@ -39,10 +39,7 @@ public class DishDTO {
 
     @Range(min = 0, message = "Stock must be greater than or equal to 0")
     private int stock;
-
-    @JsonProperty("restaurant")
-    private RestaurantDTO restaurantDTO;
-
+    
     @JsonIgnore
     private Restaurant restaurant;
 

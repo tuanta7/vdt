@@ -14,7 +14,7 @@ const RestaurantItem = ({ restaurant }) => {
         </figure>
         <div className="px-3 pt-2 border-t-2 border-base-300  flex flex-col justify-evenly gap-2">
           <div className="h-12 flex items-center">
-            <div className="">
+            <div>
               <h2 className="font-semibold text-lg truncate max-w-[200px]">
                 {restaurant.name}
               </h2>
@@ -25,7 +25,7 @@ const RestaurantItem = ({ restaurant }) => {
               </p>
             </div>
           </div>
-          <div className="grid text-sm gap-1">
+          <div className="grid text-sm gap-2">
             <p>📍 {restaurant.address}</p>
             <p> {restaurant.isOpen ? "🟢 Đang mở cửa" : "🔴 Chưa mở cửa"}</p>
             <p>☎️ {restaurant.phone}</p>
