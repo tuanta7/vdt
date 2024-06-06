@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class RestaurantService {
     private final RestaurantDocumentRepository restaurantDocumentRepository;
 
     // Elasticsearch
-    public boolean replicateData(RestaurantDocument restaurantDocument, String op) {
+    public boolean replicateData(String op, RestaurantDocument restaurantDocument) {
         if(op.equals("c") || op.equals("u")) {
             System.out.println("Replicating data to Elasticsearch....");
             restaurantDocumentRepository.save(restaurantDocument);
@@ -33,16 +35,15 @@ public class RestaurantService {
         return true;
     }
 
-    public Iterable<RestaurantDocument> getNearbyRestaurants(){
-        return restaurantDocumentRepository.findAll();
+    public List<RestaurantDocument> getAllRestaurants() {
+        Iterable<RestaurantDocument> restaurantDocuments = restaurantDocumentRepository.findAll();
+        return StreamSupport
+                .stream(restaurantDocuments.spliterator(), false)
+                .collect(Collectors.toList());
     }
+
 
     // MariaDB
-    public List<Restaurant> getAllRestaurants() {
-        // The implementation of "findAll()" is provided dynamically at runtime by Spring Data JPA.
-        return restaurantRepository.findAll();
-    }
-
     public Restaurant getRestaurantById(Long id) {
         Optional<Restaurant> result = restaurantRepository.findById(id);
         if (result.isEmpty()) {

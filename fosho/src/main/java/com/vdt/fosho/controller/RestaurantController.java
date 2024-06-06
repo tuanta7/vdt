@@ -34,28 +34,15 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
     private final CloudinaryService cloudinaryService;
 
-    @GetMapping("/restaurants/nearby")
-    public ResponseEntity<List<RestaurantDocument>> getNearbyRestaurants(){
-        Iterable<RestaurantDocument> allRestaurants = restaurantService.getNearbyRestaurants();
-        List<RestaurantDocument> nearbyRestaurants = new ArrayList<>();
-        allRestaurants.forEach(nearbyRestaurants::add);
-        return ResponseEntity.ok(nearbyRestaurants);
-    }
-
     @GetMapping("/restaurants")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, List<RestaurantDTO>>> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
-        List<RestaurantDTO> restaurantDTOs = new ArrayList<>();
-        for (Restaurant restaurant : restaurants) {
-            restaurantDTOs.add(restaurantService.toDTO(restaurant));
-        }
-        HashMap<String, List<RestaurantDTO>> data = new HashMap<>();
-        data.put("restaurants", restaurantDTOs);
+    public JSendResponse<HashMap<String, List<RestaurantDocument>>> getAllRestaurants() {
+        List<RestaurantDocument> restaurants = restaurantService.getAllRestaurants();
+        HashMap<String, List<RestaurantDocument>> data = new HashMap<>();
+        data.put("restaurants", restaurants);
         return JSendResponse.success(data);
     }
-
 
     @PostMapping("/restaurants")
     @ResponseStatus(HttpStatus.CREATED)

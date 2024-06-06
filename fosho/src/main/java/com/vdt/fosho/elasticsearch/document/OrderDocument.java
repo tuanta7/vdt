@@ -1,8 +1,5 @@
 package com.vdt.fosho.elasticsearch.document;
 
-import co.elastic.clients.util.DateTime;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +10,6 @@ import org.springframework.data.elasticsearch.annotations.Field;
 
 import java.sql.Timestamp;
 
-@Entity
 @Data
 @Builder
 @AllArgsConstructor

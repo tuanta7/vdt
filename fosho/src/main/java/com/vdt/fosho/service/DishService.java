@@ -1,25 +1,45 @@
 package com.vdt.fosho.service;
 
 import com.vdt.fosho.dto.DishDTO;
+import com.vdt.fosho.elasticsearch.document.DishDocument;
+import com.vdt.fosho.elasticsearch.repository.DishDocumentRepository;
 import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.exception.ResourceNotFoundException;
 import com.vdt.fosho.repository.DishRepository;
 import lombok.AllArgsConstructor;
+import org.apache.kafka.connect.data.Struct;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
 public class DishService {
 
     private final DishRepository dishRepository;
+    private final DishDocumentRepository dishDocumentRepository;
 
-    public List<Dish> getAllDishes() {
-        return dishRepository.findAll();
+    public boolean replicateData(String op, DishDocument dishDocument) {
+        if(op.equals("c") || op.equals("u")) {
+            System.out.println("Replicating data to Elasticsearch....");
+            dishDocumentRepository.save(dishDocument);
+            return true;
+        } else if(op.equals("d")) {
+            dishDocumentRepository.deleteById(dishDocument.getId());
+        }
+        return true;
     }
 
+    public List<DishDocument> getAllDishes() {
+        Iterable<DishDocument> dishDocuments = dishDocumentRepository.findAll();
+        return StreamSupport
+                .stream(dishDocuments.spliterator(), false)
+                .collect(Collectors.toList());
+    }
 
     public Dish getDishById(Long dishId) {
         Optional<Dish> result = dishRepository.findById(dishId);
@@ -34,11 +54,9 @@ public class DishService {
         return dishRepository.save(dish);
     }
 
-
     public List<Dish> getAllDishesByRestaurantId(Long restaurantId) {
         return dishRepository.findByRestaurantId(restaurantId);
     }
-
 
     public Dish updateDishThumbnail(Long dishId, String url, String publicId) {
         Optional<Dish> result = dishRepository.findById(dishId);

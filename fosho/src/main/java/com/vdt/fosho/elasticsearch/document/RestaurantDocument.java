@@ -1,6 +1,6 @@
 package com.vdt.fosho.elasticsearch.document;
 
-import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
-@Entity
 @Data
 @Builder
 @AllArgsConstructor
@@ -25,6 +24,22 @@ public class RestaurantDocument {
 
     @Field(name = "address")
     private String address;
+
+    @Field(name = "logo_url")
+    @JsonProperty("logo_url")
+    private String logoUrl;
+
+    @Field(name = "is_open")
+    private boolean isOpen;
+
+    @Field(name = "open_time")
+    private String openTime;
+
+    @Field(name = "close_time")
+    private String closeTime;
+
+    @Field(name = "phone")
+    private String phone;
 
     @Field(name = "latitude")
     private double latitude;

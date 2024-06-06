@@ -1,6 +1,8 @@
 package com.vdt.fosho.config;
 
+import com.vdt.fosho.elasticsearch.document.DishDocument;
 import com.vdt.fosho.elasticsearch.document.RestaurantDocument;
+import com.vdt.fosho.service.DishService;
 import com.vdt.fosho.service.RestaurantService;
 import io.debezium.config.Configuration;
 import io.debezium.embedded.Connect;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,13 +30,15 @@ public class DebeziumListener {
 
     private final Configuration connectorConfiguration;
     private final RestaurantService restaurantService;
+    private final DishService dishService;
 
     private DebeziumEngine<RecordChangeEvent<SourceRecord>> debeziumEngine;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Autowired
-    public DebeziumListener(Configuration connectorConfiguration, RestaurantService restaurantService) {
+    public DebeziumListener(Configuration connectorConfiguration, RestaurantService restaurantService, DishService dishService) {
         this.restaurantService = restaurantService;
+        this.dishService = dishService;
         this.connectorConfiguration = connectorConfiguration;
 
         this.debeziumEngine = DebeziumEngine.create(ChangeEventFormat.of(Connect.class))
@@ -45,6 +50,7 @@ public class DebeziumListener {
     private void handleEvent(RecordChangeEvent<SourceRecord> sourceRecordRecordChangeEvent) {
         SourceRecord sourceRecord = sourceRecordRecordChangeEvent.record();
         Struct value = (Struct) sourceRecord.value();
+        System.out.println(value);
 
         String op = value.get("op").toString();
         Struct source = (Struct) value.get("source");
@@ -52,8 +58,9 @@ public class DebeziumListener {
         Struct after = (Struct) value.get("after");
 
         boolean result = switch (table) {
-            case "restaurant" -> handleRestaurant(after, op);
-            case "orders" -> handleOrder(after, op);
+            case "restaurants" -> handleRestaurant(op, after);
+            case "orders" -> handleOrder(op, after);
+            case "dishes" -> handleDish(op, after);
             default -> false;
         };
         if (result){
@@ -75,21 +82,43 @@ public class DebeziumListener {
         }
     }
 
-    private boolean handleRestaurant(Struct after, String op) {
+    private boolean handleRestaurant(String op, Struct after) {
         Struct coordinates = (Struct) after.get("coordinates");
         double longitude = (double) coordinates.get("x");
         double latitude = (double) coordinates.get("y");
 
-        return restaurantService.replicateData(RestaurantDocument.builder()
+        // Check if any of the fields are null
+
+        return restaurantService.replicateData(op, RestaurantDocument.builder()
                 .id((Long) after.get("id"))
                 .name(after.get("name").toString())
                 .address(after.get("address").toString())
+                .isOpen((boolean) after.get("is_open"))
+                .openTime(after.get("open_time").toString())
+                .phone(after.get("phone").toString())
+                .logoUrl(Objects.toString(after.get("logo_url"), null))
+                .closeTime(after.get("close_time").toString())
                 .latitude(latitude)
                 .longitude(longitude)
-                .build(), op);
+                .build());
     }
 
-     private boolean handleOrder(Struct after, String op) {
+     private boolean handleOrder(String op, Struct after) {
         return false;
      }
+
+    private boolean handleDish(String op, Struct after) {
+
+        return dishService.replicateData(op, DishDocument.builder()
+                .id((Long) after.get("id"))
+                .name(after.get("name").toString())
+                .price((double) after.get("price"))
+                .unit(after.get("unit").toString())
+                .discount((double) after.get("discount"))
+                .rating((double) after.get("rating"))
+                .stock((int) after.get("stock"))
+                .sold((int) after.get("sold"))
+                .thumbnailUrl(Objects.toString(after.get("thumbnail_url"), null))
+                .build());
+    }
 }

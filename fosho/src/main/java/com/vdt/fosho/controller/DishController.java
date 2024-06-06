@@ -2,6 +2,7 @@ package com.vdt.fosho.controller;
 
 import com.vdt.fosho.dto.DishDTO;
 import com.vdt.fosho.dto.RestaurantDTO;
+import com.vdt.fosho.elasticsearch.document.DishDocument;
 import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
@@ -34,15 +35,10 @@ public class DishController {
     @GetMapping("/dishes")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, List<DishDTO>>> getAllDishes() {
-        List<Dish> dishes = dishService.getAllDishes();
-        List<DishDTO> dishDTOs = new ArrayList<>();
-        for (Dish dish : dishes) {
-            dishDTOs.add(dishService.toDTO(dish));
-        }
-
-        HashMap<String, List<DishDTO>> data = new HashMap<>();
-        data.put("dishes", dishDTOs);
+    public JSendResponse<HashMap<String, List<DishDocument>>> getAllDishes() {
+        List<DishDocument> dishes = dishService.getAllDishes();
+        HashMap<String, List<DishDocument>> data = new HashMap<>();
+        data.put("dishes", dishes);
         return JSendResponse.success(data);
     }
 

@@ -44,7 +44,6 @@ public class DishDTO {
     private RestaurantDTO restaurantDTO;
 
     @JsonIgnore
-    @JsonProperty("_")
     private Restaurant restaurant;
 
     // Accepted input fields for create/update: name, description, price, discountPrice, unit, stock

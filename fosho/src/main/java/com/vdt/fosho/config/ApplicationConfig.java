@@ -56,3 +56,6 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+// Delete Elasticsearch index
+// curl -XDELETE localhost:9200/restaurants
