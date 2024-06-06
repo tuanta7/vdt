@@ -12,6 +12,7 @@ import com.vdt.fosho.service.DishService;
 import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,10 +35,19 @@ public class DishController {
     @GetMapping("/dishes")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, List<DishDocument>>> getAllDishes() {
-        List<DishDocument> dishes = dishService.getAllDishes();
-        HashMap<String, List<DishDocument>> data = new HashMap<>();
+    public JSendResponse<HashMap<String, Object>> getAllDishes(
+            @RequestParam(required = false,defaultValue = "") String q,
+            @RequestParam(required = false, defaultValue = "10") int limit,
+            @RequestParam(required = false, defaultValue = "1") int page
+    ) {
+        if (limit < 1 || page < 1) {
+            throw new BadRequestException("Invalid limit or page");
+        }
+        Page<DishDocument> dishesPage = dishService.getAllDishes(q, page-1, limit);
+        List<DishDocument> dishes = dishesPage.getContent();
+        HashMap<String, Object> data = new HashMap<>();
         data.put("dishes", dishes);
+        data.put("total", dishesPage.getTotalPages());
         return JSendResponse.success(data);
     }
 

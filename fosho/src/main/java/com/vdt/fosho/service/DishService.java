@@ -7,6 +7,8 @@ import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.exception.ResourceNotFoundException;
 import com.vdt.fosho.repository.DishRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,11 +34,13 @@ public class DishService {
         return true;
     }
 
-    public List<DishDocument> getAllDishes() {
-        Iterable<DishDocument> dishDocuments = dishDocumentRepository.findAll();
-        return StreamSupport
-                .stream(dishDocuments.spliterator(), false)
-                .collect(Collectors.toList());
+    public Page<DishDocument> getAllDishes(String search, int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        if (search.isEmpty()) {
+            System.out.println("Searching all dishes in Elasticsearch");
+            return dishDocumentRepository.findAll(pageable);
+        }
+        return dishDocumentRepository.findByName(search, pageable);
     }
 
     public Dish getDishById(Long dishId) {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchPublicGet } from "../../../utils/fetchFn";
@@ -5,11 +6,14 @@ import { BASE_URL } from "../../../utils/constant";
 import LoadingBlock from "../../../components/LoadingBlock";
 import DishItem from "../../../components/DishItem";
 import AddToCartBar from "../../cart/AddToCartBar";
+import Pagination from "../../../components/Pagination";
 
 const DishList = () => {
+  const [page, setPage] = useState(1);
   const { isPending, data, error } = useQuery({
-    queryKey: ["dishes"],
-    queryFn: () => fetchPublicGet(`${BASE_URL}/dishes?limit=10&page=1`, "GET"),
+    queryKey: ["dishes", page],
+    queryFn: () =>
+      fetchPublicGet(`${BASE_URL}/dishes?limit=8&page=${page}`, "GET"),
   });
 
   return (
@@ -39,7 +43,7 @@ const DishList = () => {
           <option>Đà Nẵng</option>
         </select>
       </div>
-      <div className="flex flex-wrap justify-evenly gap-6">
+      <div className="flex flex-wrap justify-evenly gap-6 mb-10">
         <LoadingBlock isLoading={isPending} error={error}>
           {data?.dishes?.map((d) => (
             <DishItem
@@ -50,6 +54,7 @@ const DishList = () => {
           ))}
         </LoadingBlock>
       </div>
+      <Pagination current={page} setFn={setPage} total={data?.total} />
     </div>
   );
 };
