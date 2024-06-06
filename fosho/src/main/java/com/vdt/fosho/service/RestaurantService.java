@@ -1,12 +1,13 @@
 package com.vdt.fosho.service;
 
 import com.vdt.fosho.dto.RestaurantDTO;
+import com.vdt.fosho.elasticsearch.document.RestaurantDocument;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.exception.ResourceNotFoundException;
+import com.vdt.fosho.elasticsearch.repository.RestaurantDocumentRepository;
 import com.vdt.fosho.repository.RestaurantRepository;
 
 import com.vdt.fosho.utils.GeoUtils;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,29 @@ import java.util.Optional;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantDocumentRepository restaurantDocumentRepository;
 
+    // Elasticsearch
+    public boolean replicateData(RestaurantDocument restaurantDocument, String op) {
+        if(op.equals("c") || op.equals("u")) {
+            System.out.println("Replicating data to Elasticsearch....");
+            restaurantDocumentRepository.save(restaurantDocument);
+            return true;
+        } else if(op.equals("d")) {
+            restaurantDocumentRepository.deleteById(restaurantDocument.getId());
+        }
+        return true;
+    }
+
+    public Iterable<RestaurantDocument> getNearbyRestaurants(){
+        return restaurantDocumentRepository.findAll();
+    }
+
+    // MariaDB
     public List<Restaurant> getAllRestaurants() {
         // The implementation of "findAll()" is provided dynamically at runtime by Spring Data JPA.
         return restaurantRepository.findAll();
     }
-
 
     public Restaurant getRestaurantById(Long id) {
         Optional<Restaurant> result = restaurantRepository.findById(id);

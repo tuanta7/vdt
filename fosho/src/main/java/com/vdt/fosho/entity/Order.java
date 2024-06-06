@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -40,9 +43,9 @@ public class Order {
     @Column(name = "status")
     private OrderStatus status;
 
-    @Column(name = "created_at")
-    private long createdAt;
+    @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT NOW()")
+    private Date createdAt;
 
-    @Column(name = "delivered_at")
-    private long deliveredAt;
+    @Column(name = "delivered_at", columnDefinition = "DATETIME")
+    private Date deliveredAt;
 }
