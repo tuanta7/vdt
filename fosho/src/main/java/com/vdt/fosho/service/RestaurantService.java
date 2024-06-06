@@ -22,6 +22,17 @@ public class RestaurantService {
     private final RestaurantDocumentRepository restaurantDocumentRepository;
 
     // Elasticsearch
+    public boolean replicateData(RestaurantDocument restaurantDocument, String op) {
+        if(op.equals("c") || op.equals("u")) {
+            System.out.println("Replicating data to Elasticsearch....");
+            restaurantDocumentRepository.save(restaurantDocument);
+            return true;
+        } else if(op.equals("d")) {
+            restaurantDocumentRepository.deleteById(restaurantDocument.getId());
+        }
+        return true;
+    }
+
     public Iterable<RestaurantDocument> getNearbyRestaurants(){
         return restaurantDocumentRepository.findAll();
     }

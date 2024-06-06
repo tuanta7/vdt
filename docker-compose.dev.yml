@@ -3,7 +3,7 @@ version: "3.1"
 services:
   mariadb:
     image: mariadb
-    command: --log-bin=fosho_binary_log
+    command: --log-bin=fosho_binlog --binlog-format=ROW
     ports:
       - "3306:3306"
     restart: always

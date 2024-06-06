@@ -35,8 +35,11 @@ public class RestaurantController {
     private final CloudinaryService cloudinaryService;
 
     @GetMapping("/restaurants/nearby")
-    public ResponseEntity<Iterable<RestaurantDocument>> getNearbyRestaurants(){
-        return ResponseEntity.ok(restaurantService.getNearbyRestaurants());
+    public ResponseEntity<List<RestaurantDocument>> getNearbyRestaurants(){
+        Iterable<RestaurantDocument> allRestaurants = restaurantService.getNearbyRestaurants();
+        List<RestaurantDocument> nearbyRestaurants = new ArrayList<>();
+        allRestaurants.forEach(nearbyRestaurants::add);
+        return ResponseEntity.ok(nearbyRestaurants);
     }
 
     @GetMapping("/restaurants")

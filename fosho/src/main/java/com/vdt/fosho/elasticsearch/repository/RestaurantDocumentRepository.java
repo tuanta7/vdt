@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RestaurantDocumentRepository extends ElasticsearchRepository<RestaurantDocument, String>{
+public interface RestaurantDocumentRepository extends ElasticsearchRepository<RestaurantDocument, Long>{
 
     List<RestaurantDocument> findByLatitudeBetweenAndLongitudeBetween(
             double minLatitude,
