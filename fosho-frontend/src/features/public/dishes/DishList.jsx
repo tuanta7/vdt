@@ -13,7 +13,7 @@ const DishList = () => {
   const { isPending, data, error } = useQuery({
     queryKey: ["dishes", page],
     queryFn: () =>
-      fetchPublicGet(`${BASE_URL}/dishes?limit=8&page=${page}`, "GET"),
+      fetchPublicGet(`${BASE_URL}/dishes?limit=10&page=${page}`, "GET"),
   });
 
   return (
