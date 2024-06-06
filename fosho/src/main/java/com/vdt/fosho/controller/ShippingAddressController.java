@@ -1,16 +1,12 @@
 package com.vdt.fosho.controller;
 
-import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.dto.ShippingAddressDTO;
-import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.ShippingAddress;
 import com.vdt.fosho.entity.User;
-import com.vdt.fosho.exception.ForbiddenException;
 import com.vdt.fosho.service.ShippingAddressService;
 import com.vdt.fosho.utils.JSendResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

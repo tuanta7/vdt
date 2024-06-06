@@ -1,6 +1,5 @@
 package com.vdt.fosho.service;
 
-import com.vdt.fosho.dto.OrderItemDTO;
 import com.vdt.fosho.entity.OrderItem;
 import com.vdt.fosho.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;

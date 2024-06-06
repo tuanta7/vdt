@@ -1,9 +1,7 @@
 package com.vdt.fosho.config;
 
-import io.debezium.embedded.Connect;
 import io.debezium.engine.DebeziumEngine;
 import io.debezium.engine.RecordChangeEvent;
-import io.debezium.engine.format.ChangeEventFormat;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -2,7 +2,6 @@ package com.vdt.fosho.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vdt.fosho.entity.ShippingAddress;
 import lombok.*;
 
 import java.util.List;

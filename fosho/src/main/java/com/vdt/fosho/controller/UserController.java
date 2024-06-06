@@ -6,7 +6,6 @@ import com.vdt.fosho.entity.User;
 import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
