@@ -77,7 +77,12 @@ const CartRestaurant = ({ items }) => {
           <CartItem item={item} />
         </div>
       ))}
-      <TotalBar total={total} discount={discount} items={checkedItems} />
+      <TotalBar
+        total={total}
+        discount={discount}
+        items={checkedItems}
+        restaurantId={items[0].restaurant_id}
+      />
     </div>
   );
 };

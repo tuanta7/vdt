@@ -10,4 +10,6 @@
 - Tìm hiểu về caching dữ liệu: redis
 - Triển khai docker, k8s
 
+## Lệnh
+
 > mariadb-dump -u root -p -x -A > /tmp/dbs.sql

@@ -37,7 +37,7 @@ const RestaurantItem = ({ restaurant }) => {
             <p>📍 {restaurant.address}</p>
             <p>☎️ {restaurant.phone}</p>
             {restaurant.rating > 0 ? (
-              <div className="flex items-end gap-2">
+              <div className="flex items-end gap-1">
                 <Rating defaultValue={restaurant.rating} disable={true} />{" "}
                 <span className="text-sm">{restaurant.rating.toFixed(1)}</span>
               </div>

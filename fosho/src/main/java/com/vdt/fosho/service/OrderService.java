@@ -23,8 +23,11 @@ public class OrderService {
     @Transactional
     public Order createOrder(List<Long> orderItemIds, Long restaurantId, Long userId) {
         List<OrderItem> orderItems = orderItemService.getOrderItemsByIds(orderItemIds);
+        double totalPrice = 0.0;
+        double totalDiscount = 0.0;
+
         for (OrderItem orderItem : orderItems) {
-            if (orderItem.getOrder().getId() != null) {
+            if (orderItem.getOrder() != null) {
                 throw new BadRequestException("Order item is already in an order");
             }
             if (!orderItem.getUser().getId().equals(userId)) {
@@ -33,12 +36,18 @@ public class OrderService {
             if (!orderItem.getDish().getRestaurant().getId().equals(restaurantId)) {
                 throw new BadRequestException("Order item does not belong to restaurant");
             }
+            totalPrice += orderItem.getDish().getPrice();
+            totalDiscount += orderItem.getDish().getDiscount();
         }
+
         Order order = Order.builder().
                 createdAt(LocalDateTime.now()).
                 status(OrderStatus.PENDING).
                 user(orderItems.getFirst().getUser()).
                 restaurant(orderItems.getFirst().getDish().getRestaurant()).
+                totalPrice(totalPrice).
+                totalDiscount(totalDiscount).
+                shippingFee(50000.0).
                 build();
 
 

@@ -1,5 +1,6 @@
 package com.vdt.fosho.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.dto.OrderDTO;
 import com.vdt.fosho.entity.Order;
 import com.vdt.fosho.entity.User;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public JSendResponse<HashMap<String, OrderDTO>> createOrder(
-            @RequestBody ArrayList<Long> orderItemIds,
+            @RequestBody  List<Long> orderItemIds,
             @PathVariable("restaurant_id") Long restaurantId
     ) {
         if (orderItemIds.isEmpty()) {
