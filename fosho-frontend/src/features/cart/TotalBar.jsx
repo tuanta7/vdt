@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { formatPrice } from "../../utils/price";
 
-const TotalBar = ({ total, discount }) => {
+const TotalBar = ({ total, discount, items }) => {
   return (
     <div className="flex w-full justify-end items-center gap-10 px-3 pt-3 border-t border-neutral-300">
       <div>
@@ -18,13 +18,22 @@ const TotalBar = ({ total, discount }) => {
         )}
       </div>
 
-      <button className="btn btn-primary text-base-100">Đặt hàng</button>
+      <button
+        className="btn btn-primary text-base-100"
+        onClick={() => {
+          console.log("Đặt hàng");
+          console.log(items);
+        }}
+      >
+        Đặt hàng
+      </button>
     </div>
   );
 };
 TotalBar.propTypes = {
   total: PropTypes.number.isRequired,
   discount: PropTypes.number.isRequired,
+  items: PropTypes.array.isRequired,
 };
 
 export default TotalBar;

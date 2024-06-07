@@ -19,4 +19,12 @@ public class OrderItemService {
     public OrderItem createOrderItem(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
+
+    public List<OrderItem> getOrderItemsByIds(List<Long> orderItemIds) {
+        return orderItemRepository.findByIdIn(orderItemIds);
+    }
+
+    public void saveAll(List<OrderItem> orderItems) {
+        orderItemRepository.saveAll(orderItems);
+    }
 }

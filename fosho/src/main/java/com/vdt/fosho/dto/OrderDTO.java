@@ -1,12 +1,13 @@
 package com.vdt.fosho.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vdt.fosho.entity.OrderItem;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 import java.util.List;
 
@@ -19,6 +20,18 @@ public class OrderDTO {
 
     private Long id;
 
-    @NotNull(message = "Order can not be empty")
     private List<OrderItem> items;
+
+    private String status;
+
+    @JsonProperty("total_price")
+    private double totalPrice;
+
+    @JsonProperty("total_discount")
+    private double totalDiscount;
+
+    @JsonProperty("shipping_fee")
+    private double shippingFee;
+
+
 }

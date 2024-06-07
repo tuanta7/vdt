@@ -2,6 +2,9 @@ import PropTypes from "prop-types";
 import { fill } from "../../../utils/image";
 import { Link } from "react-router-dom";
 
+import { isOpen } from "../../../utils/isOpen";
+import Rating from "../../../components/Rating";
+
 const RestaurantItem = ({ restaurant }) => {
   return (
     <div className="card w-[250px] h-[450px] border-2 border-base-300 rounded-2xl overflow-hidden">
@@ -18,17 +21,29 @@ const RestaurantItem = ({ restaurant }) => {
               <h2 className="font-semibold text-lg truncate max-w-[200px]">
                 {restaurant.name}
               </h2>
-              <p className="text-xs text-neutral-500">
-                {restaurant.rating > 0
-                  ? `⭐ ${restaurant.rating}/5`
-                  : "Chưa có đánh giá"}
+              <p className="text-xs">
+                {isOpen(
+                  restaurant.is_active,
+                  restaurant.open_time,
+                  restaurant.close_time
+                )
+                  ? "🟢 Đang mở cửa"
+                  : "🔴 Chưa mở cửa"}
               </p>
             </div>
           </div>
+
           <div className="grid text-sm gap-2">
             <p>📍 {restaurant.address}</p>
-            <p> {restaurant.isOpen ? "🟢 Đang mở cửa" : "🔴 Chưa mở cửa"}</p>
             <p>☎️ {restaurant.phone}</p>
+            {restaurant.rating > 0 ? (
+              <div className="flex items-end gap-2">
+                <Rating defaultValue={restaurant.rating} disable={true} />{" "}
+                <span className="text-sm">{restaurant.rating.toFixed(1)}</span>
+              </div>
+            ) : (
+              <p className="text-sm text-neutral-500">⭐ Chưa có đánh giá</p>
+            )}
           </div>
         </div>
       </Link>

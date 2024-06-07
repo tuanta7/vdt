@@ -32,8 +32,8 @@ public class RestaurantDTO {
     @JsonProperty("logo_url")
     private String logoUrl;
 
-    @JsonProperty("is_open")
-    private boolean isOpen;
+    @JsonProperty("is_active")
+    private boolean isActive;
 
     @JsonProperty("open_time")
     @NotBlank(message = "Open time is required")
@@ -58,14 +58,16 @@ public class RestaurantDTO {
 
     // Accepted input fields: name, address, phone, latitude, longitude, openTime, closeTime
     public Restaurant toEntity() {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setName(name);
-        restaurant.setAddress(address);
-        restaurant.setPhone(phone);
-        restaurant.setOpenTime(openTime);
-        restaurant.setCloseTime(closeTime);
-        restaurant.setCoordinates(GeoUtils.createPoint(latitude, longitude));
-        restaurant.setOwner(owner);
-        return restaurant;
+
+        return Restaurant.builder()
+                .name(name)
+                .address(address)
+                .phone(phone)
+                .openTime(openTime)
+                .closeTime(closeTime)
+                .coordinates(GeoUtils.createPoint(latitude, longitude))
+                .isActive(true)
+                .owner(owner)
+                .build();
     }
 }

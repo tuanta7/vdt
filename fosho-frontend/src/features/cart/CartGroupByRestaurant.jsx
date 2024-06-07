@@ -8,6 +8,7 @@ const CartRestaurant = ({ items }) => {
   const [total, setTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [checkAll, setCheckAll] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
 
   return (
     <div className="w-full flex flex-col gap-3 mb-6 border border-neutral-300 pb-3 rounded-xl">
@@ -37,9 +38,11 @@ const CartRestaurant = ({ items }) => {
               }, 0);
               setTotal(total);
               setDiscount(discount);
+              setCheckedItems(items.map((item) => item.id));
             } else {
               setTotal(0);
               setDiscount(0);
+              setCheckedItems([]);
             }
           }}
         />
@@ -63,16 +66,18 @@ const CartRestaurant = ({ items }) => {
               if (e.target.checked) {
                 setDiscount(discount + item.dish.discount * item.quantity);
                 setTotal(total + afterDiscount);
+                setCheckedItems([...checkedItems, item.id]);
               } else {
                 setDiscount(discount - item.dish.discount * item.quantity);
                 setTotal(total - afterDiscount);
+                setCheckedItems(checkedItems.filter((id) => id !== item.id));
               }
             }}
           />
           <CartItem item={item} />
         </div>
       ))}
-      <TotalBar total={total} discount={discount} />
+      <TotalBar total={total} discount={discount} items={checkedItems} />
     </div>
   );
 };

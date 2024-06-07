@@ -1,5 +1,6 @@
 package com.vdt.fosho.repository;
 
+import com.vdt.fosho.dto.OrderItemDTO;
 import com.vdt.fosho.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long>{
 
     // Find the order item by user id, and order id (items of an order)
     List<OrderItem> findByUserIdAndOrderId(Long userId, Long orderId);
+
+    List<OrderItem> findByIdIn(List<Long> orderItemIds);
 }

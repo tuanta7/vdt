@@ -2,12 +2,14 @@ package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.locationtech.jts.geom.Point;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,17 +29,14 @@ public class Restaurant {
     @Column(name = "logo_public_id")
     private String logoPublicId;
 
-    @Column(name = "is_open")
-    private boolean isOpen;
-
     @Column(name = "open_time")
     private String openTime;
 
     @Column(name = "close_time")
     private String closeTime;
 
-    @Column(name = "is_active")
-    private String isActive;
+    @Column(name = "is_active", columnDefinition = "boolean default true")
+    private boolean isActive;
 
     @Column(name = "phone")
     private String phone;

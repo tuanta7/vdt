@@ -22,14 +22,12 @@ const Cart = () => {
   return (
     <div className="flex-1 flex flex-col items-center gap-3 min-w-max">
       <div className="w-full flex items-center gap-3 border border-neutral-300 rounded-xl p-2 px-4">
-        <div className="w-full grid grid-cols-6 place-items-center gap-6 font-semibold text-sm">
-          <div className="col-span-2 justify-self-start pl-12">
-            <h2>Sản phẩm</h2>
-          </div>
-          <h2>Giá</h2>
-          <h2>Số lượng</h2>
-          <h2>Tổng</h2>
-          <h2>Thao tác</h2>
+        <div className="w-full grid grid-cols-6 place-items-center gap-6 font-semibold text-sm px-4 ml-10">
+          <p className="col-span-2 justify-self-start">Món ăn</p>
+          <p>Giá</p>
+          <p>Số lượng</p>
+          <p>Tổng</p>
+          <p>Thao tác</p>
         </div>
       </div>
       <LoadingBlock>

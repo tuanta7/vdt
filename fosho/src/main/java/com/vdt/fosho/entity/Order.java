@@ -1,14 +1,18 @@
 package com.vdt.fosho.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -41,9 +45,25 @@ public class Order {
     @Column(name = "status")
     private OrderStatus status;
 
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "destination")
+    private String destination;
+
+    @Column(name = "payment_method", columnDefinition = "varchar(255) default 'COD'")
+    private String paymentMethod; // Right now, only support COD 😓
+
+    // Timestamps
     @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT NOW()")
-    private Date createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(name = "confirmed_at", columnDefinition = "DATETIME")
+    private LocalDateTime confirmedAt;
+
+    @Column(name = "pickup_time", columnDefinition = "DATETIME")
+    private LocalDateTime pickupTime;
 
     @Column(name = "delivered_at", columnDefinition = "DATETIME")
-    private Date deliveredAt;
+    private LocalDateTime deliveredAt;
 }

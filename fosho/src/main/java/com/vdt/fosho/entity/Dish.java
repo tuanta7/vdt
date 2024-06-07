@@ -31,13 +31,13 @@ public class Dish {
     private double rating;
 
     @Column(name="unit")
-    private String unit; // Cốc, phần, 1kg, 1 lít, 1 hộp,...
+    private String unit; // Cốc, phần, kg, hộp,...
 
     @Column(name = "sold")
     private int sold;
 
     @Column(name = "description", columnDefinition = "VARCHAR(1000)")
-    private String description;
+    private String description; // hashtag, description
 
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;

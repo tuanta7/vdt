@@ -119,7 +119,7 @@ public class RestaurantService {
                 .phone(restaurant.getPhone())
                 .logoUrl(restaurant.getLogoUrl())
                 .rating(restaurant.getRating())
-                .isOpen(restaurant.isOpen())
+                .isActive(restaurant.isActive())
                 .openTime(restaurant.getOpenTime())
                 .closeTime(restaurant.getCloseTime())
                 .latitude(restaurant.getCoordinates().getY())

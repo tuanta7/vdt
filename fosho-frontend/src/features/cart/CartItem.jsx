@@ -1,11 +1,25 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 import { fill } from "../../utils/image";
 import { formatPrice } from "../../utils/price";
 import CartItemDelete from "./CartItemDelete";
+import { useMutation } from "@tanstack/react-query";
 
 const CartItem = ({ item }) => {
+  const [quantity, setQuantity] = useState(item.quantity);
+  const { mutate: updateQuantity } = useMutation({
+    mutationFn: () => {},
+    onSuccess: (data) => {
+      setQuantity(data.order_item.quantity);
+    },
+  });
+
+  const handleQuantityChange = (newQuantity) => {
+    updateQuantity({ quantity: newQuantity });
+  };
+
   const renderPrice = () => {
     if (item.dish.discount) {
       return (
@@ -44,11 +58,17 @@ const CartItem = ({ item }) => {
       </div>
       <div className="flex flex-col">{renderPrice()}</div>
       <div className="flex items-center border border-neutral-400 w-fit rounded-lg overflow-hidden">
-        <button className="btn btn-sm glass">
+        <button
+          className="btn btn-sm glass"
+          onClick={() => handleQuantityChange(quantity - 1)}
+        >
           <MinusIcon className="w-3" />
         </button>
-        <p className="input input-sm px-4">{item.quantity}</p>
-        <button className="btn btn-sm glass">
+        <p className="input input-sm px-4">{quantity}</p>
+        <button
+          className="btn btn-sm glass"
+          onClick={() => handleQuantityChange(quantity + 1)}
+        >
           <PlusIcon className="w-3" />
         </button>
       </div>

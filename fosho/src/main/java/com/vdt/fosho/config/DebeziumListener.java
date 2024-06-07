@@ -50,7 +50,6 @@ public class DebeziumListener {
     private void handleEvent(RecordChangeEvent<SourceRecord> sourceRecordRecordChangeEvent) {
         SourceRecord sourceRecord = sourceRecordRecordChangeEvent.record();
         Struct value = (Struct) sourceRecord.value();
-        System.out.println(value);
 
         String op = value.get("op").toString();
         Struct source = (Struct) value.get("source");
@@ -63,6 +62,8 @@ public class DebeziumListener {
             case "dishes" -> handleDish(op, after);
             default -> false;
         };
+
+        System.out.println("Value: " + after);
         if (result){
             System.out.println("Replicated data successfully: " + table + ", " + op);
         } else {
@@ -87,17 +88,16 @@ public class DebeziumListener {
         double longitude = (double) coordinates.get("x");
         double latitude = (double) coordinates.get("y");
 
-        // Check if any of the fields are null
-
         return restaurantService.replicateData(op, RestaurantDocument.builder()
                 .id((Long) after.get("id"))
                 .name(after.get("name").toString())
                 .address(after.get("address").toString())
-                .isOpen((boolean) after.get("is_open"))
+                .isActive(after.get("is_active").toString().equals("true"))
                 .openTime(after.get("open_time").toString())
                 .phone(after.get("phone").toString())
                 .logoUrl(Objects.toString(after.get("logo_url"), null))
                 .closeTime(after.get("close_time").toString())
+                .rating((double) after.get("rating"))
                 .latitude(latitude)
                 .longitude(longitude)
                 .build());
@@ -108,7 +108,6 @@ public class DebeziumListener {
      }
 
     private boolean handleDish(String op, Struct after) {
-
         return dishService.replicateData(op, DishDocument.builder()
                 .id((Long) after.get("id"))
                 .name(after.get("name").toString())

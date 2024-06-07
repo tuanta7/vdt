@@ -15,7 +15,6 @@ import org.springframework.data.elasticsearch.annotations.Field;
 @NoArgsConstructor
 @Document(indexName = "restaurants")
 public class RestaurantDocument {
-
     @Id
     private Long id;
 
@@ -29,14 +28,20 @@ public class RestaurantDocument {
     @JsonProperty("logo_url")
     private String logoUrl;
 
-    @Field(name = "is_open")
-    private boolean isOpen;
+    @Field(name = "is_active")
+    @JsonProperty("is_active")
+    private boolean isActive;
 
     @Field(name = "open_time")
+    @JsonProperty("open_time")
     private String openTime;
 
     @Field(name = "close_time")
+    @JsonProperty("close_time")
     private String closeTime;
+
+    @Field(name = "rating")
+    private double rating;
 
     @Field(name = "phone")
     private String phone;
