@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useGlobal from "../../hooks/useGlobal";
 import Mapbox from "../public/maps/Mapbox";
 import ChangeAvatar from "./ChangeAvatar";
@@ -7,34 +6,24 @@ import ShippingAddressCreate from "./ShippingAddressCreate";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
-  const [addressForm, setAddressForm] = useState(false);
-  const [phoneForm, setPhoneForm] = useState(false);
-
   const { info } = useGlobal();
   const { user } = info;
 
   const shippingAddress = user?.shipping_addresses?.map((s) => (
     <div
       key={s.address}
-      className="flex items-center gap-6 justify-between p-2 mb-3 border border-neutral-500 hover:border-primary hover:cursor-pointer rounded-lg"
+      className="flex items-center gap-6 justify-between p-2 mb-3 border border-neutral-500 hover:border-info hover:cursor-pointer rounded-lg"
     >
-      <div className="w-64">
+      <div className="w-64 text-sm">
         <h2 className="font-semibold">🏠 {s.name}</h2>
-        <p className="break-words text-sm">🗺️ {s.address}</p>
+        <p>
+          🧑🏼‍💼 {s.receiver_name} - {s.phone}
+        </p>
+        <p className="break-words">🗺️ {s.address}</p>
       </div>
       <ShippingAddressDelete />
     </div>
   ));
-  const phone = user?.phone ? (
-    <p className="pl-1">{user?.phone}</p>
-  ) : (
-    <button
-      className="btn btn-xs max-w-fit"
-      onClick={() => setPhoneForm(!phoneForm)}
-    >
-      Thêm số điện thoại 📱
-    </button>
-  );
 
   return (
     <div className="flex-1 flex flex-wrap gap-8">
@@ -53,10 +42,13 @@ const Profile = () => {
               <h2 className="font-semibold ">{user?.full_name}</h2>
               <p className=" text-sm">{user?.email}</p>
             </div>
-            {phone}
             <button
               className="btn btn-xs max-w-fit min-w-max"
-              onClick={() => setAddressForm(!addressForm)}
+              onClick={() =>
+                document
+                  .getElementById("shipping_address_create_form")
+                  .showModal()
+              }
             >
               Thêm địa chỉ giao hàng 🏠
             </button>
@@ -65,9 +57,7 @@ const Profile = () => {
         </div>
         <div>
           <h2 className="font-semibold mb-2 pl-1 text-sm">Địa chỉ giao hàng</h2>
-          {addressForm && (
-            <ShippingAddressCreate cancel={() => setAddressForm(false)} />
-          )}
+          <ShippingAddressCreate />
           {user?.shipping_addresses?.length > 0 ? (
             shippingAddress
           ) : (

@@ -18,6 +18,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ShippingAddressService shippingAddressService;
 
     public User findByEmail(String userEmail) {
         Optional<User> result = userRepository.findByEmail(userEmail);
@@ -31,24 +32,15 @@ public class UserService {
         List<ShippingAddressDTO> shippingAddressesDTO = new ArrayList<>();
         if (user.getShippingAddresses() != null) {
             for (ShippingAddress sa: user.getShippingAddresses()) {
-                shippingAddressesDTO.add(
-                        ShippingAddressDTO.builder()
-                                .id(sa.getId())
-                                .name(sa.getName())
-                                .address(sa.getAddress())
-                                .latitude(sa.getCoordinates().getY())
-                                .longitude(sa.getCoordinates().getX())
-                                .build()
-                );
+                shippingAddressesDTO.add(shippingAddressService.toDTO(sa));
             }
         }
-
-        return new UserDTO(
-                user.getId(),
-                user.getFullName(),
-                user.getEmail(),
-                user.getAvatarUrl(),
-                shippingAddressesDTO
-        );
+        return  UserDTO.builder()
+                        .id(user.getId())
+                        .fullName(user.getFullName())
+                        .email(user.getEmail())
+                        .avatarUrl(user.getAvatarUrl())
+                        .shippingAddressesDTO(shippingAddressesDTO)
+                        .build();
     }
 }

@@ -12,6 +12,7 @@ public class ShippingAddressService {
 
     private final ShippingAddressRepository shippingAddressRepository;
 
+
     public ShippingAddress createShippingAddress(ShippingAddress shippingAddress) {
         return shippingAddressRepository.save(shippingAddress);
     }
@@ -21,6 +22,8 @@ public class ShippingAddressService {
                 .id(shippingAddress.getId())
                 .name(shippingAddress.getName())
                 .address(shippingAddress.getAddress())
+                .phone(shippingAddress.getPhone())
+                .receiverName(shippingAddress.getReceiverName())
                 .latitude(shippingAddress.getCoordinates().getY())
                 .longitude(shippingAddress.getCoordinates().getX())
                 .build();

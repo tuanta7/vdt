@@ -2,8 +2,11 @@ package com.vdt.fosho.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.EnumNaming;
 import com.vdt.fosho.entity.OrderItem;
+import com.vdt.fosho.entity.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,4 +40,12 @@ public class OrderDTO {
     @JsonProperty("destination")
     @NotBlank(message = "Destination is required")
     private String destination;
+
+    @JsonProperty("payment_method")
+    @NotBlank(message = "Payment method is required")
+    @Pattern(regexp = "^(COD|VIETTEL_PAYGATE)$",
+            message = "Payment method must be either COD or VIETTEL_PAYGATE"
+    )
+    private PaymentMethod paymentMethod;
+
 }

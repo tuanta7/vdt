@@ -51,8 +51,13 @@ public class Order {
     @Column(name = "destination")
     private String destination;
 
-    @Column(name = "payment_method", columnDefinition = "varchar(255) default 'COD'")
-    private String paymentMethod; // Right now, only support COD 😓
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shipping_address_id", nullable = false)
+    private ShippingAddress shippingAddress;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method")
+    private PaymentMethod paymentMethod; // Right now, only support COD 😓
 
     // Timestamps
     @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT NOW()")

@@ -19,6 +19,12 @@ public class ShippingAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "receiver_name")
+    private String receiverName;
+
     @Column(name = "name")
     private String name;
 
