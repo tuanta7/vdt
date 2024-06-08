@@ -39,10 +39,10 @@ public class User implements UserDetails {
     @Column(name = "avatar_public_id")
     private String avatarPublicId;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner")
     private List<Restaurant> restaurants;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<ShippingAddress> shippingAddresses;
 
     private String password;

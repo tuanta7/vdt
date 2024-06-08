@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,9 +48,6 @@ public class Order {
 
     @Column(name = "note")
     private String note;
-
-    @Column(name = "destination")
-    private String destination;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shipping_address_id", nullable = false)

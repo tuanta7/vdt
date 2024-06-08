@@ -38,7 +38,7 @@ const CartRestaurant = ({ items }) => {
               }, 0);
               setTotal(total);
               setDiscount(discount);
-              setCheckedItems(items.map((item) => item.id));
+              setCheckedItems(items);
             } else {
               setTotal(0);
               setDiscount(0);
@@ -66,11 +66,11 @@ const CartRestaurant = ({ items }) => {
               if (e.target.checked) {
                 setDiscount(discount + item.dish.discount * item.quantity);
                 setTotal(total + afterDiscount);
-                setCheckedItems([...checkedItems, item.id]);
+                setCheckedItems([...checkedItems, item]);
               } else {
                 setDiscount(discount - item.dish.discount * item.quantity);
                 setTotal(total - afterDiscount);
-                setCheckedItems(checkedItems.filter((id) => id !== item.id));
+                setCheckedItems(checkedItems.filter((i) => i.id !== item.id));
               }
             }}
           />

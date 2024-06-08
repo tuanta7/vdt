@@ -98,7 +98,6 @@ const ShippingAddressCreate = () => {
                 })}
               />
             </label>
-
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">Số điện thoại</span>

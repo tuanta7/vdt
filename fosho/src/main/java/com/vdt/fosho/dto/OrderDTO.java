@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 
 import java.util.List;
@@ -37,10 +38,6 @@ public class OrderDTO {
     @JsonProperty("shipping_fee")
     private double shippingFee;
 
-    @JsonProperty("destination")
-    @NotBlank(message = "Destination is required")
-    private String destination;
-
     @JsonProperty("payment_method")
     @NotBlank(message = "Payment method is required")
     @Pattern(regexp = "^(COD|VIETTEL_PAYGATE)$",
@@ -48,4 +45,6 @@ public class OrderDTO {
     )
     private PaymentMethod paymentMethod;
 
+    @JsonProperty("shipping_address")
+    private ShippingAddressDTO shippingAddress;
 }

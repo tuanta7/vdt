@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
+import OrderConfirm from "../orders/OrderConfirm";
 import { formatPrice } from "../../utils/price";
 
 const TotalBar = ({ total, discount, items, restaurantId }) => {
@@ -19,7 +19,16 @@ const TotalBar = ({ total, discount, items, restaurantId }) => {
           </p>
         )}
       </div>
-      <Link className="btn btn-primary text-base-100">Đặt hàng</Link>
+      <button
+        className="btn btn-primary text-base-100"
+        onClick={() => {
+          if (items.length === 0) return;
+          document.getElementById(`order_confirm_${restaurantId}`).showModal();
+        }}
+      >
+        Đặt hàng
+      </button>
+      <OrderConfirm items={items} restaurantId={restaurantId} />
     </div>
   );
 };

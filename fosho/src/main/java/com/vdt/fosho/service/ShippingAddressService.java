@@ -6,6 +6,8 @@ import com.vdt.fosho.repository.ShippingAddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ShippingAddressService {
@@ -27,5 +29,9 @@ public class ShippingAddressService {
                 .latitude(shippingAddress.getCoordinates().getY())
                 .longitude(shippingAddress.getCoordinates().getX())
                 .build();
+    }
+
+    public List<ShippingAddress> getShippingAddressesByUserId(Long id) {
+        return shippingAddressRepository.findByUserIdAndDeletedAtIsNull(id);
     }
 }

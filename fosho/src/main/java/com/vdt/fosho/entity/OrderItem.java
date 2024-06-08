@@ -19,15 +19,15 @@ public class OrderItem {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne
         @JoinColumn(name = "order_id")
         private Order order; // null means that the item is only in user's cart (not in any order yet)
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne
         @JoinColumn(name = "dish_id", nullable = false)
         private Dish dish;
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne
         @JoinColumn(name = "user_id", nullable = false)
         private User user;
 

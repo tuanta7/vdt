@@ -30,8 +30,9 @@ public class UserService {
 
     public UserDTO toDTO(User user) {
         List<ShippingAddressDTO> shippingAddressesDTO = new ArrayList<>();
-        if (user.getShippingAddresses() != null) {
-            for (ShippingAddress sa: user.getShippingAddresses()) {
+        List<ShippingAddress> shippingAddresses = shippingAddressService.getShippingAddressesByUserId(user.getId());
+        if (shippingAddresses != null) {
+            for (ShippingAddress sa: shippingAddresses) {
                 shippingAddressesDTO.add(shippingAddressService.toDTO(sa));
             }
         }

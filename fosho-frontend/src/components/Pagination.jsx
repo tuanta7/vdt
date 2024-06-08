@@ -13,6 +13,8 @@ const Pagination = ({ current, setFn, total }) => {
     setFn(current + 1);
   };
 
+  if (total === 0) total = 1;
+
   return (
     <div className="join mt-4 flex justify-center">
       <button
@@ -28,7 +30,7 @@ const Pagination = ({ current, setFn, total }) => {
       <button
         className="join-item btn btn-xs"
         onClick={handleNext}
-        disabled={current === total}
+        disabled={current >= total}
       >
         <ChevronDoubleRightIcon className="w-3 h-3" />
       </button>
