@@ -42,4 +42,7 @@ public class DishDTO {
     
     @JsonIgnore
     private Restaurant restaurant;
+
+    @JsonProperty("owner_id")
+    private Long ownerId;
 }

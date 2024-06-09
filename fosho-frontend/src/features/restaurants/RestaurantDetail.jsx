@@ -5,29 +5,24 @@ import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL, MAPBOX_TOKEN } from "../../utils/constant";
-import { fetchWithAccessToken } from "../../utils/fetchFn";
+import { fetchPublicGet } from "../../utils/fetchFn";
 import UserDishList from "../dishes/UserDishList";
 import ChangeLogo from "./ChangeLogo";
 import { isOpen } from "../../utils/isOpen";
 
 const RestaurantDetail = () => {
   const {
-    info: { user, accessToken },
+    info: { user },
   } = useGlobal();
 
   const { userId, restaurantId } = useParams();
 
   const { data } = useQuery({
     queryKey: ["user-restaurants", userId, restaurantId],
-    queryFn: () =>
-      fetchWithAccessToken(
-        `${BASE_URL}/restaurants/${restaurantId}`,
-        "GET",
-        accessToken
-      ),
+    queryFn: () => fetchPublicGet(`${BASE_URL}/restaurants/${restaurantId}`),
   });
 
-  const isOwner = data?.restaurant?.owner_id === user.id;
+  const isOwner = data?.restaurant?.owner_id === user?.id;
   const isOpenNow = isOpen(
     data?.restaurant?.is_active,
     data?.restaurant?.open_time,
@@ -43,7 +38,11 @@ const RestaurantDetail = () => {
         longitude: data.restaurant.longitude,
         zoom: 16,
       }}
-      style={{ width: 300, height: 180, borderRadius: "0.5rem" }}
+      style={{
+        width: 320,
+        height: 180,
+        borderRadius: "0.5rem",
+      }}
       mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"
     >
       <Marker
@@ -57,26 +56,24 @@ const RestaurantDetail = () => {
   );
 
   return (
-    <div className="flex-1 overflow-hidden">
-      <div className="flex justify-between items-center mb-3">
-        <Link
-          to={isOwner ? `/users/${userId}/restaurants` : `/restaurants`}
-          className="btn btn-sm"
-        >
-          🔙 Toàn bộ
-        </Link>
-        <div className="flex gap-3">
-          {isOwner && (
-            <>
-              <button className="btn btn-sm">
-                <Cog8ToothIcon className="w-4" />
-              </button>
-              <button className="btn btn-sm">Chỉnh sửa</button>
-            </>
-          )}
+    <div className="flex-1 overflow-auto mt-3">
+      {isOwner && (
+        <div className="flex justify-between items-center">
+          <Link
+            to={isOwner ? `/users/${userId}/restaurants` : `/restaurants`}
+            className="btn btn-sm"
+          >
+            🔙 Toàn bộ
+          </Link>
+          <div className="flex gap-3">
+            <button className="btn btn-sm">
+              <Cog8ToothIcon className="w-4" />
+            </button>
+            <button className="btn btn-sm">Chỉnh sửa</button>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-between items-start gap-6 flex-wrap mb-3">
+      )}
+      <div className="flex justify-between items-end gap-6 flex-wrap mb-3">
         <div className="mt-3 flex items-start gap-3">
           <div className="avatar flex flex-col items-end">
             <div className="w-44 h-44 border border-base-200 rounded-xl overflow-hidden">
@@ -89,7 +86,7 @@ const RestaurantDetail = () => {
               <ChangeLogo />
             </div>
           </div>
-          <div className="min-w-max">
+          <div className="w-fit">
             <p>
               {isOpenNow ? (
                 <span className="text-green-500 font-semibold">

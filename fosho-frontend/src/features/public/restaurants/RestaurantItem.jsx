@@ -1,13 +1,30 @@
 import PropTypes from "prop-types";
 import { fill } from "../../../utils/image";
 import { Link } from "react-router-dom";
+import haversine from "haversine-distance";
 
+import useGlobal from "../../../hooks/useGlobal";
 import { isOpen } from "../../../utils/isOpen";
 import Rating from "../../../components/Rating";
 
 const RestaurantItem = ({ restaurant }) => {
+  const {
+    info: { coordinates },
+  } = useGlobal();
+
+  const distanceInMeters = haversine(
+    {
+      lat: coordinates.lat,
+      lon: coordinates.long,
+    },
+    {
+      lat: restaurant.latitude,
+      lon: restaurant.longitude,
+    }
+  );
+
   return (
-    <div className="card w-[250px] h-[450px] border-2 border-base-300 rounded-2xl overflow-hidden">
+    <div className="card w-[250px] h-[460px] border-2 border-base-300 rounded-2xl overflow-hidden">
       <Link to={`/restaurants/${restaurant.id}`}>
         <figure>
           <img
@@ -44,6 +61,9 @@ const RestaurantItem = ({ restaurant }) => {
             ) : (
               <p className="text-sm text-neutral-500">⭐ Chưa có đánh giá</p>
             )}
+            <p className="text-neutral-500">
+              🗺️ Khoảng {((distanceInMeters / 1000) * 1.35).toFixed(2)} km
+            </p>
           </div>
         </div>
       </Link>

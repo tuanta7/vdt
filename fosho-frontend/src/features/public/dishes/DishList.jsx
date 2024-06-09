@@ -16,6 +16,8 @@ const DishList = () => {
       fetchPublicGet(`${BASE_URL}/dishes?limit=8&page=${page}&q=${""}`, "GET"),
   });
 
+  console.log(data);
+
   return (
     <div className="flex-1">
       <div className="flex flex-wrap justify-center items-center gap-2 mb-6 mt-2">

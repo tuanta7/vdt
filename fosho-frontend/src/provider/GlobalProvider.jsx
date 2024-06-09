@@ -24,8 +24,8 @@ const GlobalProvider = ({ children }) => {
     user: null,
     accessToken: null,
     coordinates: {
-      long: null,
-      lat: null,
+      long: parseFloat(localStorage.getItem("long")) || 105.8342,
+      lat: parseFloat(localStorage.getItem("lat")) || 21.0278,
     },
   });
 

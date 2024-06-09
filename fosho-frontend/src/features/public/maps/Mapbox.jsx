@@ -66,8 +66,8 @@ const Mapbox = ({ w, h }) => {
             {...viewState}
             onMove={(evt) => setViewState(evt.viewState)}
             style={{
-              width: w || 250,
-              height: h || 350,
+              width: w || 230,
+              height: h || 400,
               borderRadius: "0.5rem",
             }}
             mapStyle="mapbox://styles/tran-anhtuan/clwt3dnps01b101qrc1nb8ed3"

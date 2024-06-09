@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
                     auth
-                        .requestMatchers(HttpMethod.GET, "/restaurants/**", "/dishes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/restaurants/**", "/dishes/**", "/restaurants/{restaurant_id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .anyRequest().authenticated();
                 })
