@@ -1,13 +1,10 @@
 package com.vdt.fosho.controller;
 
 import com.vdt.fosho.dto.OrderItemDTO;
-import com.vdt.fosho.entity.Dish;
 import com.vdt.fosho.entity.OrderItem;
 import com.vdt.fosho.entity.User;
-import com.vdt.fosho.service.DishService;
 import com.vdt.fosho.service.OrderItemService;
 import com.vdt.fosho.utils.JSendResponse;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -34,7 +31,7 @@ public class OrderItemController {
         List<OrderItem> orderItems = orderItemService.getCart(user.getId());
         List<OrderItemDTO> orderItemsDTO = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
-            orderItemsDTO.add(orderItem.toDTO());
+            orderItemsDTO.add(orderItemService.toDTO(orderItem));
         }
 
         HashMap<String, List<OrderItemDTO>> data = new HashMap<>();
@@ -55,7 +52,7 @@ public class OrderItemController {
         OrderItem orderItem = orderItemService.createOrderItem(orderItemDTO);
 
         HashMap<String, OrderItemDTO> data = new HashMap<>();
-        data.put("order_item",orderItem.toDTO());
+        data.put("order_item", orderItemService.toDTO(orderItem));
         return JSendResponse.success(data);
     }
 }

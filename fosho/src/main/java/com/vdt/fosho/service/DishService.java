@@ -40,7 +40,7 @@ public class DishService {
             System.out.println("Searching all dishes in Elasticsearch");
             return dishDocumentRepository.findAll(pageable);
         }
-        return dishDocumentRepository.findByName(search, pageable);
+        return dishDocumentRepository.findByName(search, pageable);  // Elasticsearch
     }
 
     public Dish getDishById(Long dishId) {

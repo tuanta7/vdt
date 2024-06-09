@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.EnumNaming;
 import com.vdt.fosho.entity.OrderItem;
 import com.vdt.fosho.entity.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -38,13 +40,19 @@ public class OrderDTO {
     @JsonProperty("shipping_fee")
     private double shippingFee;
 
-    @JsonProperty("payment_method")
-    @NotBlank(message = "Payment method is required")
-    @Pattern(regexp = "^(COD|VIETTEL_PAYGATE)$",
-            message = "Payment method must be either COD or VIETTEL_PAYGATE"
-    )
-    private PaymentMethod paymentMethod;
-
     @JsonProperty("shipping_address")
     private ShippingAddressDTO shippingAddress;
+
+    @JsonProperty("payment_method")
+    private PaymentMethod paymentMethod;
+
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
+
+    // For creating order
+    @JsonProperty("order_item_ids")
+    private List<Long> itemIds;
+
+    @JsonProperty("shipping_address_id")
+    private Long shippingAddressId;
 }

@@ -2,6 +2,7 @@ package com.vdt.fosho.service;
 
 import com.vdt.fosho.dto.ShippingAddressDTO;
 import com.vdt.fosho.entity.ShippingAddress;
+import com.vdt.fosho.exception.BadRequestException;
 import com.vdt.fosho.repository.ShippingAddressRepository;
 import com.vdt.fosho.utils.GeoUtils;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,10 @@ public class ShippingAddressService {
                 .coordinates(GeoUtils.createPoint(shippingAddressDTO.getLatitude(), shippingAddressDTO.getLongitude()))
                 .user(shippingAddressDTO.getUser())
                 .build();
+    }
+
+    public ShippingAddress getShippingAddressesByIdAndUserId(Long id, Long userId) {
+        return shippingAddressRepository.findByIdAndUserIdAndDeletedAtIsNull(id, userId)
+                .orElseThrow(() -> new BadRequestException("Shipping address not found"));
     }
 }

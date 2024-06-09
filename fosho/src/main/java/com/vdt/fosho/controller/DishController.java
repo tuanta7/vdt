@@ -45,6 +45,7 @@ public class DishController {
         }
         Page<DishDocument> dishesPage = dishService.getAllDishes(q, page-1, limit);
         List<DishDocument> dishes = dishesPage.getContent();
+
         HashMap<String, Object> data = new HashMap<>();
         data.put("dishes", dishes);
         data.put("total", dishesPage.getTotalPages());

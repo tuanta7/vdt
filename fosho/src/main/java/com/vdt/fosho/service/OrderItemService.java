@@ -52,6 +52,17 @@ public class OrderItemService {
         orderItemRepository.saveAll(orderItems);
     }
 
+    public OrderItemDTO toDTO(OrderItem orderItem) {
+        return OrderItemDTO.builder()
+                .id(orderItem.getId())
+                .order(orderItem.getOrder())
+                .quantity(orderItem.getQuantity())
+                .dishDTO(dishService.toDTO(orderItem.getDish()))
+                .restaurantId(orderItem.getDish().getRestaurant().getId())
+                .restaurantName(orderItem.getDish().getRestaurant().getName())
+                .build();
+    }
+
 
     // Accepted input fields: quantity, dishId
     public OrderItem toEntity(OrderItemDTO orderItemDTO) {
