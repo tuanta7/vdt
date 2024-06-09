@@ -11,7 +11,6 @@ import com.vdt.fosho.exception.BadRequestException;
 import com.vdt.fosho.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +26,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final ShippingAddressService shippingAddressService;
+    private final RestaurantService restaurantService;
 
 
     public Page<Order> getOrdersByUserId(Long userId, int page, int size) {
@@ -55,8 +55,8 @@ public class OrderService {
             if (!orderItem.getDish().getRestaurant().getId().equals(restaurantId)) {
                 throw new BadRequestException("Order item does not belong to restaurant");
             }
-            totalPrice += orderItem.getDish().getPrice();
-            totalDiscount += orderItem.getDish().getDiscount();
+            totalPrice += orderItem.getDish().getPrice() * orderItem.getQuantity();
+            totalDiscount += orderItem.getDish().getDiscount() * orderItem.getQuantity();
         }
 
         Order order = Order.builder().
@@ -70,6 +70,7 @@ public class OrderService {
                 shippingFee(30000).
                 items(orderItems).
                 build();
+
         orderItems.forEach(orderItem -> orderItem.setOrder(order));
         orderItemService.saveAll(orderItems);
 
@@ -86,6 +87,7 @@ public class OrderService {
         }
 
         return OrderDTO.builder().
+                id(order.getId()).
                 totalPrice(order.getTotalPrice()).
                 totalDiscount(order.getTotalDiscount()).
                 shippingFee(order.getShippingFee()).
@@ -93,6 +95,7 @@ public class OrderService {
                 createdAt(order.getCreatedAt()).
                 shippingAddress(shippingAddress).
                 items(orderItems).
+                restaurant(restaurantService.toDTO(order.getRestaurant())).
                 build();
     }
 }

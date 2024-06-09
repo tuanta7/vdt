@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL } from "../../utils/constant";
@@ -9,9 +11,10 @@ import { formatPrice } from "../../utils/price";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
 import SelectShippingAddress from "./SelectShippingAddress";
 import OrderItem from "./OrderItem";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import LoadingButton from "../../components/LoadingButton";
 
 const OrderConfirm = ({ items, restaurantId }) => {
+  const queryClient = useQueryClient();
   const [shippingAddress, setShippingAddress] = useState(0);
 
   const total = items.reduce(
@@ -28,7 +31,7 @@ const OrderConfirm = ({ items, restaurantId }) => {
     info: { user, accessToken },
   } = useGlobal();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (payload) =>
       fetchWithAccessToken(
         `${BASE_URL}/restaurants/${restaurantId}/orders`,
@@ -36,21 +39,23 @@ const OrderConfirm = ({ items, restaurantId }) => {
         accessToken,
         payload
       ),
-    onSuccess: (data) => {
-      navigate(`/users/${user.id}orders/${data.order.id}`);
+    onSuccess: () => {
+      queryClient.invalidateQueries(["carts"]);
+      queryClient.invalidateQueries(["orders"]);
+      toast.success("Đặt hàng thành công");
+      navigate(`/users/${user.id}/orders`);
     },
   });
 
   const placeOrder = () => {
-    console.log("Place order");
     console.log({
       shipping_address_id: shippingAddress,
-      items: items.map((item) => item.id),
+      order_item_ids: items.map((item) => item.id),
     });
-    // mutate({
-    //   shipping_address_id: shippingAddress?.id,
-    //   items: items.map((item) => item.id),
-    // });
+    mutate({
+      shipping_address_id: shippingAddress,
+      order_item_ids: items.map((item) => item.id),
+    });
   };
 
   return (
@@ -107,7 +112,7 @@ const OrderConfirm = ({ items, restaurantId }) => {
             className="btn btn-primary text-base-100"
             onClick={placeOrder}
           >
-            Xác nhận
+            <LoadingButton isLoading={isPending}>Xác nhận</LoadingButton>
           </button>
         </div>
       </div>

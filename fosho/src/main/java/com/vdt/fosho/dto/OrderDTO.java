@@ -49,6 +49,9 @@ public class OrderDTO {
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
+    @JsonProperty("restaurant")
+    private RestaurantDTO restaurant;
+
     // For creating order
     @JsonProperty("order_item_ids")
     private List<Long> itemIds;

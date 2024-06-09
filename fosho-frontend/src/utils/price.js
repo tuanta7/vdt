@@ -1,4 +1,4 @@
-function formatPrice(price, delimiter = ",") {
+function formatPrice(price, delimiter = ".") {
   if (typeof price !== "number") {
     throw new TypeError("The price should be a number");
   }

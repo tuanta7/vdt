@@ -19,8 +19,8 @@ const OrderItem = ({ item }) => {
             {item.quantity}
           </span>
         </h2>
-        <p>
-          Giá: {formatPrice(item.dish.price * item.quantity)}
+        <p className="text-primary font-semibold">
+          Giá gốc: {formatPrice(item.dish.price * item.quantity)}
           <sup> ₫</sup>
         </p>
         <p className="text-sm">

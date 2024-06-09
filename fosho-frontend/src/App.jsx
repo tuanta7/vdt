@@ -14,7 +14,7 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import RestaurantDetail from "./features/restaurants/RestaurantDetail";
 import DishDetail from "./features/dishes/DishDetail";
 import Cart from "./features/cart/Cart";
-import OrderTracking from "./features/orders/OrderTracking";
+import OrderList from "./features/orders/OrderList";
 
 function App() {
   return (
@@ -49,7 +49,7 @@ function App() {
         <Route path="/users/:userId" element={<ProtectedLayout />}>
           <Route index element={<Profile />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="orders" element={<OrderTracking />} />
+          <Route path="orders" element={<OrderList />} />
           <Route path="info" element={<Profile />} />
           <Route path="restaurants" element={<UserRestaurantList />} />
 

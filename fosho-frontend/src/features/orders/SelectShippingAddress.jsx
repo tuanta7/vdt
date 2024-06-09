@@ -12,8 +12,8 @@ const SelectShippingAddress = ({ setFn }) => {
   } = useGlobal();
 
   const [coordinates, setCoordinates] = useState({
-    long: user?.shipping_address?.get(0).longitude || 106.6883,
-    lat: user?.shipping_address?.get(0).latitude || 10.762622,
+    long: user.shipping_addresses[0].longitude,
+    lat: user.shipping_addresses[0].latitude,
   });
 
   const [viewState, setViewState] = useState({
