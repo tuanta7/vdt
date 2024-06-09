@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import useGlobal from "../../hooks/useGlobal";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
@@ -12,16 +11,17 @@ import RestaurantCreate from "./RestaurantCreate";
 
 const UserRestaurantList = () => {
   const [showForm, setShowForm] = useState(false);
-  const { info } = useGlobal();
-  const { userId } = useParams();
+  const {
+    info: { user, accessToken },
+  } = useGlobal();
 
   const { isPending, data, error } = useQuery({
-    queryKey: ["user-restaurants", userId],
+    queryKey: ["user-restaurants", user.id],
     queryFn: () =>
       fetchWithAccessToken(
-        `${BASE_URL}/users/${userId}/restaurants`,
+        `${BASE_URL}/users/${user.id}/restaurants`,
         "GET",
-        info.accessToken
+        accessToken
       ),
   });
 

@@ -42,17 +42,4 @@ public class DishDTO {
     
     @JsonIgnore
     private Restaurant restaurant;
-
-    // Accepted input fields for create/update: name, description, price, discountPrice, unit, stock
-    public Dish toEntity() {
-        return Dish.builder()
-                .name(name)
-                .description(description)
-                .price(price)
-                .discount(discount)
-                .unit(unit)
-                .restaurant(restaurant)
-                .stock(stock)
-                .build();
-    }
 }

@@ -61,7 +61,7 @@ const OrderConfirm = ({ items, restaurantId }) => {
             <h2 className="text-lg text-primary font-semibold w-full">
               Đơn hàng
             </h2>
-            <div className="flex flex-col gap-2 border p-3 rounded-xl min-h-[250px] w-full">
+            <div className="flex flex-col gap-2 border p-3 rounded-xl md:min-h-[250px] w-full">
               {items.map((item) => (
                 <OrderItem key={item.id} item={item} />
               ))}

@@ -51,9 +51,7 @@ public class RestaurantController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         restaurantDTO.setOwner((User) authentication.getPrincipal());
-        Restaurant createdRestaurant = restaurantService.createRestaurant(
-                restaurantDTO.toEntity()
-        );
+        Restaurant createdRestaurant = restaurantService.createRestaurant(restaurantDTO);
 
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(createdRestaurant));
@@ -64,7 +62,9 @@ public class RestaurantController {
     @GetMapping("/restaurants/{restaurant_id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, RestaurantDTO>> getRestaurantById(@PathVariable("restaurant_id") Long id) {
+    public JSendResponse<HashMap<String, RestaurantDTO>> getRestaurantById(
+            @PathVariable("restaurant_id") Long id
+    ) {
         Restaurant restaurant = restaurantService.getRestaurantById(id);
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(restaurant));
@@ -83,9 +83,7 @@ public class RestaurantController {
             throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
         }
 
-        Restaurant updatedRestaurant = restaurantService.updateRestaurant(
-                id, restaurantDTO.toEntity()
-        );
+        Restaurant updatedRestaurant = restaurantService.updateRestaurant(id, restaurantDTO);
         HashMap<String, RestaurantDTO> data = new HashMap<>();
         data.put("restaurant", restaurantService.toDTO(updatedRestaurant));
         return JSendResponse.success(data);

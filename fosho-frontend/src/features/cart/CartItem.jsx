@@ -64,7 +64,7 @@ const CartItem = ({ item }) => {
         >
           <MinusIcon className="w-3" />
         </button>
-        <p className="input input-sm px-4">{quantity}</p>
+        <p className="input input-sm px-4">{item.quantity}</p>
         <button
           className="btn btn-sm glass"
           onClick={() => handleQuantityChange(quantity + 1)}

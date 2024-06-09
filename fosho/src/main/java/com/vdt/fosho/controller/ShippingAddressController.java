@@ -27,14 +27,14 @@ public class ShippingAddressController {
     public JSendResponse<HashMap<String, ShippingAddressDTO>> addShippingAddress(
             @Valid @RequestBody ShippingAddressDTO shippingAddressDTO
     ) {
+        // Get current user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
 
-        shippingAddressDTO.setUser(user);
-        ShippingAddress shippingAddress = shippingAddressService.createShippingAddress(
-                shippingAddressDTO.toEntity()
-        );
+        shippingAddressDTO.setUser(user); // Set user to create shipping address
+        ShippingAddress shippingAddress = shippingAddressService.createShippingAddress(shippingAddressDTO);
 
+        // Build response
         HashMap<String, ShippingAddressDTO> data = new HashMap<>();
         data.put("shipping_address", shippingAddressService.toDTO(shippingAddress));
         return JSendResponse.success(data);

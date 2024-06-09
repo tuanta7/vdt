@@ -42,16 +42,4 @@ public class ShippingAddressDTO {
 
         @JsonIgnore
         private User user;
-
-        public ShippingAddress toEntity() {
-            return ShippingAddress.builder()
-                    .id(id)
-                    .phone(phone)
-                    .receiverName(receiverName)
-                    .name(name)
-                    .address(address)
-                    .coordinates(GeoUtils.createPoint(latitude, longitude))
-                    .user(user)
-                    .build();
-        }
 }

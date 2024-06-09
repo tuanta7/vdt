@@ -56,18 +56,6 @@ public class RestaurantDTO {
     @JsonIgnore
     private User owner;
 
-    // Accepted input fields: name, address, phone, latitude, longitude, openTime, closeTime
-    public Restaurant toEntity() {
-
-        return Restaurant.builder()
-                .name(name)
-                .address(address)
-                .phone(phone)
-                .openTime(openTime)
-                .closeTime(closeTime)
-                .coordinates(GeoUtils.createPoint(latitude, longitude))
-                .isActive(true)
-                .owner(owner)
-                .build();
-    }
+    @JsonProperty("owner_id")
+    private Long ownerId;
 }

@@ -58,7 +58,6 @@ public class OrderService {
 
     public OrderDTO toDTO(Order order) {
         return OrderDTO.builder().
-                items(order.getItems()).
                 build();
     }
 }

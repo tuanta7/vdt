@@ -8,6 +8,7 @@ import com.vdt.fosho.service.DishService;
 import com.vdt.fosho.service.OrderItemService;
 import com.vdt.fosho.utils.JSendResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,11 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderItemController {
 
-    OrderItemService orderItemService;
-    DishService dishService;
+    private final OrderItemService orderItemService;
 
     @GetMapping("/carts")
     @ResponseStatus(HttpStatus.OK)
@@ -50,11 +50,9 @@ public class OrderItemController {
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        Dish dish = dishService.getDishById(orderItemDTO.getDishId());
 
         orderItemDTO.setUser(user);
-        orderItemDTO.setDish(dish);
-        OrderItem orderItem = orderItemService.createOrderItem(orderItemDTO.toEntity());
+        OrderItem orderItem = orderItemService.createOrderItem(orderItemDTO);
 
         HashMap<String, OrderItemDTO> data = new HashMap<>();
         data.put("order_item",orderItem.toDTO());

@@ -46,15 +46,4 @@ public class OrderItemDTO {
 
     @JsonIgnore
     private Dish dish;
-
-    // Accepted input fields: quantity, dishId
-    public OrderItem toEntity() {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setId(id);
-        orderItem.setQuantity(quantity);
-        orderItem.setOrder(order);
-        orderItem.setDish(dish);
-        orderItem.setUser(user);
-        return orderItem;
-    }
 }

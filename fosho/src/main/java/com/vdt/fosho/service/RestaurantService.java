@@ -58,23 +58,24 @@ public class RestaurantService {
     }
 
 
-    public Restaurant createRestaurant(Restaurant restaurant) {
+    public Restaurant createRestaurant(RestaurantDTO restaurantDTO) {
+        Restaurant restaurant = toEntity(restaurantDTO);
         return restaurantRepository.save(restaurant);
     }
 
 
-    public Restaurant updateRestaurant(Long id, Restaurant restaurant) {
+    public Restaurant updateRestaurant(Long id, RestaurantDTO restaurantDTO) {
         Optional<Restaurant> result = restaurantRepository.findById(id);
         if (result.isEmpty()) {
             throw new ResourceNotFoundException("Restaurant not found with id: " + id);
 
         }
         Restaurant existingRestaurant = result.get();
-        existingRestaurant.setName(restaurant.getName());
-        existingRestaurant.setAddress(restaurant.getAddress());
-        existingRestaurant.setPhone(restaurant.getPhone());
-        existingRestaurant.setOpenTime(restaurant.getOpenTime());
-        existingRestaurant.setCloseTime(restaurant.getCloseTime());
+        existingRestaurant.setName(restaurantDTO.getName());
+        existingRestaurant.setAddress(restaurantDTO.getAddress());
+        existingRestaurant.setPhone(restaurantDTO.getPhone());
+        existingRestaurant.setOpenTime(restaurantDTO.getOpenTime());
+        existingRestaurant.setCloseTime(restaurantDTO.getCloseTime());
         return restaurantRepository.save(existingRestaurant);
     }
 
@@ -111,6 +112,7 @@ public class RestaurantService {
         return restaurantRepository.save(existingRestaurant);
     }
 
+
     public RestaurantDTO toDTO(Restaurant restaurant) {
         return  RestaurantDTO.builder()
                 .id(restaurant.getId())
@@ -124,7 +126,21 @@ public class RestaurantService {
                 .closeTime(restaurant.getCloseTime())
                 .latitude(restaurant.getCoordinates().getY())
                 .longitude(restaurant.getCoordinates().getX())
+                .ownerId(restaurant.getOwner().getId())
                 .build();
     }
 
+    // Accepted input fields: name, address, phone, latitude, longitude, openTime, closeTime
+    public Restaurant toEntity(RestaurantDTO restaurantDTO) {
+        return Restaurant.builder()
+                .name(restaurantDTO.getName())
+                .address(restaurantDTO.getAddress())
+                .phone(restaurantDTO.getPhone())
+                .openTime(restaurantDTO.getOpenTime())
+                .closeTime(restaurantDTO.getCloseTime())
+                .coordinates(GeoUtils.createPoint(restaurantDTO.getLatitude(), restaurantDTO.getLongitude()))
+                .isActive(true)
+                .owner(restaurantDTO.getOwner())
+                .build();
+    }
 }

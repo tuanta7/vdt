@@ -1,17 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL, MAPBOX_TOKEN } from "../../utils/constant";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
 import UserDishList from "../dishes/UserDishList";
 import ChangeLogo from "./ChangeLogo";
-import { Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { isOpen } from "../../utils/isOpen";
 
 const RestaurantDetail = () => {
   const {
-    info: { accessToken },
+    info: { user, accessToken },
   } = useGlobal();
 
   const { userId, restaurantId } = useParams();
@@ -25,6 +26,13 @@ const RestaurantDetail = () => {
         accessToken
       ),
   });
+
+  const isOwner = data?.restaurant?.owner_id === user.id;
+  const isOpenNow = isOpen(
+    data?.restaurant?.is_active,
+    data?.restaurant?.open_time,
+    data?.restaurant?.close_time
+  );
 
   const map = data && (
     <Map
@@ -51,18 +59,21 @@ const RestaurantDetail = () => {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="flex justify-between items-center mb-3">
-        <Link to={`/users/${userId}/restaurants`} className="btn btn-sm">
+        <Link
+          to={isOwner ? `/users/${userId}/restaurants` : `/restaurants`}
+          className="btn btn-sm"
+        >
           🔙 Toàn bộ
         </Link>
-
         <div className="flex gap-3">
-          <button className="btn btn-sm">
-            <Cog8ToothIcon className="w-4" />
-          </button>
-          <button className="btn btn-sm">Chỉnh sửa</button>
-          <button className="btn btn-sm btn-primary text-base-100">
-            {data?.restaurant.is_open ? "Đóng cửa" : "Mở cửa 🧑🏼‍🍳"}
-          </button>
+          {isOwner && (
+            <>
+              <button className="btn btn-sm">
+                <Cog8ToothIcon className="w-4" />
+              </button>
+              <button className="btn btn-sm">Chỉnh sửa</button>
+            </>
+          )}
         </div>
       </div>
       <div className="flex justify-between items-start gap-6 flex-wrap mb-3">
@@ -80,7 +91,7 @@ const RestaurantDetail = () => {
           </div>
           <div className="min-w-max">
             <p>
-              {data?.restaurant.is_open ? (
+              {isOpenNow ? (
                 <span className="text-green-500 font-semibold">
                   🟢 Đang mở cửa
                 </span>
@@ -108,7 +119,7 @@ const RestaurantDetail = () => {
         </div>
         {map}
       </div>
-      <UserDishList />
+      <UserDishList isOwner={isOwner} />
     </div>
   );
 };

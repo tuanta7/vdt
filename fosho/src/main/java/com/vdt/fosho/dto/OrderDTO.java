@@ -25,7 +25,7 @@ public class OrderDTO {
 
     private Long id;
 
-    private List<OrderItem> items;
+    private List<OrderItemDTO> items;
 
     private String status;
 

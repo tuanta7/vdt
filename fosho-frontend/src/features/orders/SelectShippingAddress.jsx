@@ -69,7 +69,8 @@ const SelectShippingAddress = ({ setFn }) => {
         onMove={(evt) => setViewState(evt.viewState)}
         style={{
           width: "100%",
-          height: "200px",
+          height: "100%",
+          minHeight: "200px",
           borderRadius: "0.5rem",
           border: "1px solid #aaa",
         }}

@@ -40,6 +40,10 @@ function App() {
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<RestaurantList />} />
           <Route path="restaurants" element={<RestaurantList />} />
+          <Route
+            path="restaurants/:restaurantId"
+            element={<RestaurantDetail />}
+          />
           <Route path="dishes" element={<DishList />} />
         </Route>
         <Route path="/users/:userId" element={<ProtectedLayout />}>

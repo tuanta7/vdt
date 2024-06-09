@@ -52,7 +52,8 @@ public class DishService {
     }
 
 
-    public Dish createDish(Dish dish) {
+    public Dish createDish(DishDTO dishDTO) {
+        Dish dish = toEntity(dishDTO);
         return dishRepository.save(dish);
     }
 
@@ -83,6 +84,19 @@ public class DishService {
                 .sold(dish.getSold())
                 .thumbnailUrl(dish.getThumbnailUrl())
                 .stock(dish.getStock())
+                .build();
+    }
+
+    // Accepted input fields for create/update: name, description, price, discountPrice, unit, stock
+    public Dish toEntity(DishDTO dishDTO) {
+        return Dish.builder()
+                .name(dishDTO.getName())
+                .description(dishDTO.getDescription())
+                .price(dishDTO.getPrice())
+                .discount(dishDTO.getDiscount())
+                .unit(dishDTO.getUnit())
+                .restaurant(dishDTO.getRestaurant())
+                .stock(dishDTO.getStock())
                 .build();
     }
 }

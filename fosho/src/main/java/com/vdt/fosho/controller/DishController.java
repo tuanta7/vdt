@@ -78,7 +78,7 @@ public class DishController {
         Restaurant restaurant = verifyOwner(restaurantId);
         dishDTO.setRestaurant(restaurant);
 
-        Dish createdDish = dishService.createDish(dishDTO.toEntity());
+        Dish createdDish = dishService.createDish(dishDTO);
         HashMap<String, DishDTO> data = new HashMap<>();
         data.put("dish", dishService.toDTO(createdDish));
         return JSendResponse.success(data);

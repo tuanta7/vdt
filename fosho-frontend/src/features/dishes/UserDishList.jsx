@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -9,8 +10,9 @@ import LoadingBlock from "../../components/LoadingBlock";
 import DishItem from "../../components/DishItem";
 import UserDishToolbar from "./UserDishToolbar";
 import DishCreate from "./DishCreate";
+import AddToCartBar from "../cart/AddToCartBar";
 
-const UserDishList = () => {
+const UserDishList = ({ isOwner }) => {
   const [showForm, setShowForm] = useState(false);
   const { restaurantId, userId } = useParams();
 
@@ -39,12 +41,14 @@ const UserDishList = () => {
         <h2 className="font-semibold text-xl text-primary pl-2">🍽️ Thực đơn</h2>
         <div className="flex gap-3">
           {search}
-          <button
-            className="btn btn-sm btn-primary text-base-100"
-            onClick={() => setShowForm(!showForm)}
-          >
-            Thêm món mới
-          </button>
+          {isOwner && (
+            <button
+              className="btn btn-sm btn-primary text-base-100"
+              onClick={() => setShowForm(!showForm)}
+            >
+              Thêm món mới
+            </button>
+          )}
         </div>
       </div>
       {showForm && <DishCreate cancel={() => setShowForm(false)} />}
@@ -54,13 +58,24 @@ const UserDishList = () => {
             <DishItem
               key={d.id}
               dish={d}
-              buttonBar={<UserDishToolbar dishId={d.id} />}
+              buttonBar={
+                isOwner ? (
+                  <UserDishToolbar dishId={d.id} />
+                ) : (
+                  <AddToCartBar dishId={d.id} />
+                )
+              }
+              isOwner={isOwner}
             />
           ))}
         </div>
       </LoadingBlock>
     </div>
   );
+};
+
+UserDishList.propTypes = {
+  isOwner: PropTypes.bool,
 };
 
 export default UserDishList;
