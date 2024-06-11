@@ -60,13 +60,14 @@ const OrderConfirm = ({ items, restaurantId }) => {
 
   return (
     <dialog id={`order_confirm_${restaurantId}`} className="modal">
-      <div className="modal-box rounded-xl min-w-max">
-        <div className="flex justify-between gap-6 max-md:flex-col max-md:items-center">
+      <div className="modal-box rounded-xl">
+        <div className="flex flex-col gap-6 max-md:flex-col max-md:items-center">
+          <SelectShippingAddress setFn={setShippingAddress} />
           <div className="flex flex-col gap-3 w-full">
             <h2 className="text-lg text-primary font-semibold w-full">
               Đơn hàng
             </h2>
-            <div className="flex flex-col gap-2 border p-3 rounded-xl md:min-h-[250px] w-full">
+            <div className="flex flex-col gap-2 border p-3 rounded-xl w-full">
               {items.map((item) => (
                 <OrderItem key={item.id} item={item} />
               ))}
@@ -86,7 +87,6 @@ const OrderConfirm = ({ items, restaurantId }) => {
               </label>
             </div>
           </div>
-          <SelectShippingAddress setFn={setShippingAddress} />
         </div>
         <div className="flex items-center gap-3 justify-between mt-3">
           <div>

@@ -37,7 +37,7 @@ const Profile = () => {
               <ChangeAvatar userId={user?.id} />
             </div>
           </div>
-          <div className="h-fit flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <div className="pl-1">
               <h2 className="font-semibold ">{user?.full_name}</h2>
               <p className=" text-sm">{user?.email}</p>
@@ -70,7 +70,7 @@ const Profile = () => {
       <div className="flex-1 border border-neutral-400 p-3 rounded-xl">
         FoshoFeed Coming soon...
       </div>
-      <div className="max-lg:hidden">
+      <div className="max-lg:hidden -mt-3">
         <Mapbox />
       </div>
     </div>

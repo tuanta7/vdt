@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Map, { Marker } from "react-map-gl";
 
 import { MAPBOX_TOKEN } from "../../utils/constant";
 import useGlobal from "../../hooks/useGlobal";
+import ShippingAddressCreate from "../users/ShippingAddressCreate";
 
 const SelectShippingAddress = ({ setFn }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const {
-    info: { user },
+    info: { user, coordinates: c },
   } = useGlobal();
 
   const [coordinates, setCoordinates] = useState({
-    long: user.shipping_addresses[0].longitude,
-    lat: user.shipping_addresses[0].latitude,
+    long: user?.shipping_addresses[0]?.longitude || c.long,
+    lat: user?.shipping_addresses[0]?.latitude || c.lat,
   });
 
   const [viewState, setViewState] = useState({
@@ -27,41 +28,49 @@ const SelectShippingAddress = ({ setFn }) => {
     setViewState({ longitude: long, latitude: lat, zoom: 16 });
   };
 
-  useEffect(() => {
-    if (user?.shipping_addresses) {
-      setSelectedAddress(user?.shipping_addresses[0]);
-      setFn(user?.shipping_addresses[0].id);
-    }
-  }, [user.shipping_addresses, setFn]);
-
   return (
     <div className="flex flex-col gap-2 w-full">
-      <select
-        className="select select-sm select-bordered w-full"
-        defaultValue={user?.shipping_addresses ? 0 : -1}
-        onChange={(e) => {
-          const address = user?.shipping_addresses[e.target.value];
-          setFn(address.id);
-          setSelectedAddress(address);
-          handleCoordinates(address.longitude, address.latitude);
-        }}
-      >
-        <option value={-1} disabled>
-          Chọn địa chỉ giao hàng
-        </option>
-        {user?.shipping_addresses?.map((sa, i) => (
-          <option key={i} value={i}>
-            {sa.name}
+      <h2 className="text-lg text-primary font-semibold w-full">
+        Điạ chỉ giao hàng
+      </h2>
+      <div className="flex gap-3">
+        <select
+          className="select select-sm select-bordered w-full"
+          defaultValue={-1}
+          onChange={(e) => {
+            const address = user?.shipping_addresses[e.target.value];
+            setFn(address.id);
+            setSelectedAddress(address);
+            handleCoordinates(address.longitude, address.latitude);
+          }}
+        >
+          <option value={-1} disabled>
+            Chọn địa chỉ giao hàng
           </option>
-        ))}
-      </select>
-      <div className="text-sm border w-full p-2 rounded-lg">
-        <h2 className="font-semibold">🏠 {selectedAddress?.name}</h2>
-        <p>
-          🧑🏼‍💼 {selectedAddress?.receiver_name} - {selectedAddress?.phone}
-        </p>
-        <p className="break-words">🗺️ {selectedAddress?.address}</p>
+          {user?.shipping_addresses?.map((sa, i) => (
+            <option key={i} value={i}>
+              {sa.name}
+            </option>
+          ))}
+        </select>
+        <button
+          className="btn btn-sm"
+          onClick={() =>
+            document.getElementById("shipping_address_create_form").showModal()
+          }
+        >
+          Thêm mới
+        </button>
       </div>
+      {selectedAddress && (
+        <div className="text-sm border w-full p-2 rounded-lg">
+          <h2 className="font-semibold">🏠 {selectedAddress?.name}</h2>
+          <p>
+            🧑🏼‍💼 {selectedAddress?.receiver_name} - {selectedAddress?.phone}
+          </p>
+          <p className="break-words">🗺️ {selectedAddress?.address}</p>
+        </div>
+      )}
       <Map
         mapLib={import("mapbox-gl")}
         mapboxAccessToken={MAPBOX_TOKEN}
@@ -69,8 +78,7 @@ const SelectShippingAddress = ({ setFn }) => {
         onMove={(evt) => setViewState(evt.viewState)}
         style={{
           width: "100%",
-          height: "100%",
-          minHeight: "200px",
+          height: "150px",
           borderRadius: "0.5rem",
           border: "1px solid #aaa",
         }}
@@ -84,6 +92,7 @@ const SelectShippingAddress = ({ setFn }) => {
           <img src="/marker.png" alt="marker" className="w-6" />
         </Marker>
       </Map>
+      <ShippingAddressCreate />
     </div>
   );
 };

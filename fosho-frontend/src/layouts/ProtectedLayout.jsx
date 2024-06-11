@@ -58,7 +58,7 @@ const ProtectedLayout = () => {
             to={`/users/${info?.user?.id}/orders`}
             className="rounded-lg"
           >
-            🔖 <p className="max-md:hidden"> Đơn mua</p>
+            💴 <p className="max-md:hidden"> Đơn mua</p>
           </NavLink>
         </li>
         <li>

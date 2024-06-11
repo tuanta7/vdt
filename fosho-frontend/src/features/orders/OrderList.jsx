@@ -1,21 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL } from "../../utils/constant";
 import { fetchWithAccessToken } from "../../utils/fetchFn";
-import Order from "./Order";
+import Pagination from "../../components/Pagination";
 
 const OrderList = () => {
   const {
     info: { user, accessToken },
   } = useGlobal();
 
+  const status = "pending";
+
   const { data } = useQuery({
     queryKey: ["orders"],
     queryFn: () =>
       fetchWithAccessToken(
-        `${BASE_URL}/users/${user.id}/orders`,
+        `${BASE_URL}/users/${user.id}/orders?status=${status}`,
         "GET",
         accessToken
       ),
@@ -30,24 +32,27 @@ const OrderList = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/confirmed" className="font-semibold">
+          <NavLink to="confirmed" className="font-semibold">
             Đã xác nhận
           </NavLink>
         </li>
         <li>
-          <NavLink to="/in-transit" className="font-semibold">
+          <NavLink to="in-transit" className="font-semibold">
             Đang vận chuyển
           </NavLink>
         </li>
         <li>
-          <NavLink to="/delivered" className="font-semibold">
+          <NavLink to="delivered" className="font-semibold">
             Giao thành công
           </NavLink>
         </li>
       </ul>
-      {data?.orders?.map((o) => (
-        <Order key={o.id} order={o} />
-      ))}
+      <Outlet
+        context={{
+          orders: data?.orders || [],
+        }}
+      />
+      <Pagination current={1} total={data?.total} />
     </div>
   );
 };

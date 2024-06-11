@@ -98,4 +98,10 @@ public class OrderService {
                 restaurant(restaurantService.toDTO(order.getRestaurant())).
                 build();
     }
+
+    public Page<Order> getOrdersByRestaurantId(Long restaurantId, int page, int size) {
+        return orderRepository.findAllByRestaurantIdOrderByCreatedAtDesc(
+                restaurantId,
+                Pageable.ofSize(size).withPage(page));
+    }
 }

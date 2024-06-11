@@ -15,12 +15,13 @@ import RestaurantDetail from "./features/restaurants/RestaurantDetail";
 import DishDetail from "./features/dishes/DishDetail";
 import Cart from "./features/cart/Cart";
 import OrderList from "./features/orders/OrderList";
+import OrderListPending from "./features/orders/OrderListPending";
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster
-        position="top-center"
+        position="top-right"
         gutter={12}
         containerStyle={{ margin: "8px", padding: "2px" }}
         toastOptions={{
@@ -33,6 +34,7 @@ function App() {
           style: {
             fontSize: "16px",
             width: "max-content",
+            zIndex: 99,
           },
         }}
       />
@@ -49,7 +51,10 @@ function App() {
         <Route path="/users/:userId" element={<ProtectedLayout />}>
           <Route index element={<Profile />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="orders" element={<OrderList />} />
+          <Route path="orders" element={<OrderList />}>
+            <Route index element={<OrderListPending />} />
+            <Route path="pending" element={<OrderListPending />} />
+          </Route>
           <Route path="info" element={<Profile />} />
           <Route path="restaurants" element={<UserRestaurantList />} />
 

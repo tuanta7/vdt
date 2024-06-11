@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { fill } from "../../utils/image";
+import { isOpen } from "../../utils/isOpen";
 
 const UserRestaurantItem = ({ restaurant }) => {
   const { userId } = useParams();
@@ -17,7 +18,13 @@ const UserRestaurantItem = ({ restaurant }) => {
         <div className="card-title flex flex-wrap items-center gap-2">
           <h2 className="text-lg">{restaurant.name}</h2>
           <p className="text-xs">
-            {restaurant.is_open ? "🟢 Đang mở cửa" : "🔴 Chưa mở cửa"}
+            {isOpen(
+              restaurant.is_active,
+              restaurant.open_time,
+              restaurant.close_time
+            )
+              ? "🟢 Đang mở cửa"
+              : "🔴 Chưa mở cửa"}
           </p>
         </div>
         <p>{restaurant.address}</p>

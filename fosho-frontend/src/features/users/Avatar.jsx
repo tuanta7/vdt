@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   UserCircleIcon,
   BuildingStorefrontIcon,
+  ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
 import Logout from "../auth/Logout";
 
@@ -16,11 +17,19 @@ const Avatar = ({ user }) => {
           </div>
         </div>
       </summary>
-      <ul className="shadow menu dropdown-content z-[1] bg-base-100 rounded-box min-w-max">
+      <ul className="shadow menu dropdown-content z-[99] bg-base-100 rounded-box min-w-max">
         <p className="mx-4 mt-2 mb-6">{`🫡 Xin chào, ${user.full_name}`}</p>
         <li>
           <Link to={`/users/${user.id}/info`} className="pr-12 rounded-lg mb-2">
             <UserCircleIcon className="w-5" /> Thông tin cá nhân
+          </Link>
+        </li>
+        <li>
+          <Link
+            to={`/users/${user.id}/orders`}
+            className="pr-12 rounded-lg mb-2"
+          >
+            <ArchiveBoxIcon className="w-5" /> Đơn mua
           </Link>
         </li>
         <li>

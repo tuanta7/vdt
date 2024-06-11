@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
-import { Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { Cog8ToothIcon, PencilIcon } from "@heroicons/react/24/outline";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL, MAPBOX_TOKEN } from "../../utils/constant";
@@ -67,9 +67,17 @@ const RestaurantDetail = () => {
           </Link>
           <div className="flex gap-3">
             <button className="btn btn-sm">
+              Đơn hàng{" "}
+              <div className="bg-primary text-base-100 text-xs py-1 px-2 rounded-lg">
+                2
+              </div>
+            </button>
+            <button className="btn btn-sm">
+              <PencilIcon className="h-4" />
+            </button>
+            <button className="btn btn-sm">
               <Cog8ToothIcon className="w-4" />
             </button>
-            <button className="btn btn-sm">Chỉnh sửa</button>
           </div>
         </div>
       )}
@@ -102,8 +110,7 @@ const RestaurantDetail = () => {
             <h3 className="mb-2">{data?.restaurant?.address}</h3>
             <p className="mb-1">☎️ Điện thoại: {data?.restaurant?.phone}</p>
             <p className="mb-1">
-              🕙 Giờ hoạt động: {data?.restaurant?.open_time} -{" "}
-              {data?.restaurant?.close_time}
+              {`🕙 Giờ hoạt động: ${data?.restaurant?.open_time} - ${data?.restaurant?.close_time}`}
             </p>
             <p className="mr-2">
               {data?.restaurant.rating ? (

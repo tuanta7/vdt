@@ -6,12 +6,12 @@ import { formatPrice } from "../../utils/price";
 
 const OrderItem = ({ item }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 w-full">
       <img
         src={fill(item.dish.thumbnail_url, 200, 200)}
         className="w-[100px] h-[100px] rounded-lg"
       />
-      <div className="min-w-[270px]">
+      <div className="max-w-max">
         <h2 className="font-semibold">
           {item.dish.name}{" "}
           <span>

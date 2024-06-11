@@ -24,6 +24,27 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @GetMapping("/restaurants/{restaurant_id}/orders")
+    @ResponseBody
+    public JSendResponse<HashMap<String, Object>> getOrdersByRestaurantId(
+            @PathVariable("restaurant_id") Long restaurantId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit", defaultValue = "10") int size
+    ) {
+        Page<Order> orderPage = orderService.getOrdersByRestaurantId(restaurantId, page-1, size);
+
+        List<Order> orders = orderPage.getContent();
+        List<OrderDTO> orderDTOs = new ArrayList<>();
+        for (Order order : orders) {
+            orderDTOs.add(orderService.toDTO(order));
+        }
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("total", orderPage.getTotalPages());
+        data.put("orders", orderDTOs);
+        return JSendResponse.success(data);
+    }
+
     @PostMapping("/restaurants/{restaurant_id}/orders")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
