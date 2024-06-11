@@ -175,9 +175,9 @@ public class RestaurantController {
 
 
     private boolean isOwner(Long restaurantId) {
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        Long ownerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        return restaurant.getOwner().getId().equals(user.getId());
+        return ownerId.equals(user.getId());
     }
 }

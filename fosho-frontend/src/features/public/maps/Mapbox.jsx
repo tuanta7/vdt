@@ -46,7 +46,7 @@ const Mapbox = ({ w, h }) => {
   return (
     <>
       <div className="max-md:hidden">
-        <div className="max-w-min mt-3">
+        <div className="max-w-min">
           <p className="p-2 text-sm border rounded-t-lg word-wrap">
             📍
             <Address long={coordinates.long} lat={coordinates.lat} />

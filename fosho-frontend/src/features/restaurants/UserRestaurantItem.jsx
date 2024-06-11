@@ -3,11 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import { fill } from "../../utils/image";
 import { isOpen } from "../../utils/isOpen";
 
+import Rating from "../../components/Rating";
+
 const UserRestaurantItem = ({ restaurant }) => {
   const { userId } = useParams();
 
   return (
-    <div className="flex items-start bg-base-100 border xl:w-1/2 rounded-xl overflow-hidden">
+    <div className="flex items-start bg-base-200 bg-opacity-30 border border-neutral-300 xl:w-1/2 rounded-xl overflow-hidden">
       <figure className="min-w-[200px]">
         <img
           src={fill(restaurant.logo_url, 400, 400) || "/no-img.png"}
@@ -31,13 +33,16 @@ const UserRestaurantItem = ({ restaurant }) => {
         <p>
           Giờ hoạt động: {restaurant.open_time} - {restaurant.close_time}
         </p>
-        <p className="mr-2">
+        <div className="mr-2">
           {restaurant.rating ? (
-            `Đánh giá: ${restaurant.rating}⭐`
+            <div className="flex items-center gap-1">
+              <span>Đánh giá: {restaurant.rating}</span>
+              <Rating defaultValue={restaurant.rating} disable={true} />
+            </div>
           ) : (
             <span className="text-neutral-400">Chưa có đánh giá nào</span>
           )}
-        </p>
+        </div>
         <Link
           to={`/users/${userId}/restaurants/${restaurant.id}`}
           className="link text-primary no-underline hover:underline max-w-fit"

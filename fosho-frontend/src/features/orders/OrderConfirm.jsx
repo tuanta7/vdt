@@ -96,7 +96,10 @@ const OrderConfirm = ({ items, restaurantId }) => {
                 {formatPrice(total - discount)} <sup>₫</sup>{" "}
                 <span className="text-neutral-500 text-sm">
                   + phí vận chuyển{" "}
-                  <span className="tooltip" data-tip="Phí vận chuyển...">
+                  <span
+                    className="tooltip"
+                    data-tip="Phí vận chuyển nội thành: 30.000 ₫"
+                  >
                     <InformationCircleIcon className="w-4 h-4" />
                   </span>
                 </span>

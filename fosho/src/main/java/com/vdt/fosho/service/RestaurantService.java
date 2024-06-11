@@ -143,4 +143,8 @@ public class RestaurantService {
                 .owner(restaurantDTO.getOwner())
                 .build();
     }
+
+    public Long getRestaurantOwnerIdById(Long restaurantId) {
+        return restaurantRepository.getOwnerIdById(restaurantId);
+    }
 }

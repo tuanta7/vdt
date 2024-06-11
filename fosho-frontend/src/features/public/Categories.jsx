@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const Categories = () => {
   return (
-    <div className="min-w-fit mt-3">
+    <div className="min-w-fit">
       <ul className="menu gap-3 bg-base-200 rounded-lg pr-2">
         <li>
           <NavLink to="" className="rounded-lg">

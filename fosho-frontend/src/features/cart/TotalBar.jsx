@@ -14,7 +14,7 @@ const TotalBar = ({ total, discount, items, restaurantId }) => {
           </span>
         </p>
         {discount > 0 && (
-          <p className="text-neutral-500 mt-1">
+          <p className="text-neutral-500 mt-1 text-sm">
             Tiết kiệm {formatPrice(discount)} ₫
           </p>
         )}

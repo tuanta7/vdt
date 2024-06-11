@@ -21,20 +21,24 @@ const Order = ({ order }) => {
         <div className="grid lg:grid-cols-2 gap-3 p-2">
           <OrderItem key={order.items[0].id} item={order.items[0]} />
           <div className="flex flex-col gap-1 justify-end lg:items-end max-lg:border max-lg:p-2 rounded-xl">
-            <p className="text-sm">
-              🚚 Giao tới: <span>{order.shipping_address.address}</span>
-            </p>
             <p className="text-sm text-neutral-500">
               Đặt {formatISODate(order.created_at)}
             </p>
-            <div className="flex items-center gap-6 lg:mt-3">
+            <p className="text-sm text-neutral-500">
+              Giao tới: <span>{order.shipping_address.address}</span>
+            </p>
+            <div className="flex items-center gap-6">
               <p className="text-sm text-neutral-500">
                 {order.items.length} sản phẩm
               </p>
-              <p>
-                Thành tiền:{" "}
-                <span className="font-semibold text-primary">
-                  {formatPrice(order.total_price - order.total_discount)}
+              <p className="text-sm">
+                Thành tiền:
+                <span className="font-semibold text-primary text-lg px-2">
+                  {formatPrice(
+                    order.total_price -
+                      order.total_discount +
+                      order.shipping_fee
+                  )}
                   <sup> ₫</sup>
                 </span>
               </p>

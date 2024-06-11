@@ -2,9 +2,12 @@ package com.vdt.fosho.controller;
 
 import com.vdt.fosho.dto.OrderDTO;
 import com.vdt.fosho.entity.Order;
+import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.exception.BadRequestException;
+import com.vdt.fosho.exception.ForbiddenException;
 import com.vdt.fosho.service.OrderService;
+import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,6 +26,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final RestaurantService restaurantService;
 
     @GetMapping("/restaurants/{restaurant_id}/orders")
     @ResponseBody
@@ -31,8 +35,14 @@ public class OrderController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "limit", defaultValue = "10") int size
     ) {
-        Page<Order> orderPage = orderService.getOrdersByRestaurantId(restaurantId, page-1, size);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Long restaurantOwnerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
+        if (!user.getId().equals(restaurantOwnerId)) {
+            throw new ForbiddenException("This user is not the owner of the restaurant");
+        }
 
+        Page<Order> orderPage = orderService.getOrdersByRestaurantId(restaurantId, page-1, size);
         List<Order> orders = orderPage.getContent();
         List<OrderDTO> orderDTOs = new ArrayList<>();
         for (Order order : orders) {

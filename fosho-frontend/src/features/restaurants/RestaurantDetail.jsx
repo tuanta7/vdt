@@ -56,7 +56,7 @@ const RestaurantDetail = () => {
   );
 
   return (
-    <div className="flex-1 overflow-auto mt-3">
+    <div className="flex-1 overflow-auto">
       {isOwner && (
         <div className="flex justify-between items-center">
           <Link

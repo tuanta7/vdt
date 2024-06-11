@@ -21,8 +21,14 @@ const Cart = () => {
 
   return (
     <div className="flex-1 flex flex-col items-center gap-3 min-w-max">
-      <div className="w-full flex items-center gap-3 border border-neutral-300 rounded-xl p-2 px-4">
-        <div className="w-full grid grid-cols-6 place-items-center gap-6 font-semibold text-sm px-4 ml-10">
+      <div className="w-full flex items-center gap-3 border border-neutral-300 rounded-xl py-2 pl-4">
+        <input
+          type="checkbox"
+          className="checkbox checkbox-md"
+          checked
+          disabled
+        />
+        <div className="w-full grid grid-cols-6 place-items-center gap-6 font-semibold text-sm px-3">
           <p className="col-span-2 justify-self-start">Món ăn</p>
           <p>Giá</p>
           <p>Số lượng</p>

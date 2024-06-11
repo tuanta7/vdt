@@ -76,7 +76,8 @@ public class DishController {
             @PathVariable("restaurant_id") Long restaurantId,
             @RequestBody DishDTO dishDTO
     ) {
-        Restaurant restaurant = verifyOwner(restaurantId);
+        verifyOwner(restaurantId);
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
         dishDTO.setRestaurant(restaurant);
 
         Dish createdDish = dishService.createDish(dishDTO);
@@ -118,14 +119,13 @@ public class DishController {
         return JSendResponse.success(data);
     }
 
-    private Restaurant verifyOwner(Long restaurantId) {
+    private void verifyOwner(Long restaurantId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
 
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-        if (!Objects.equals(restaurant.getOwner().getId(), user.getId())) {
-            throw new ForbiddenException("You are not the owner of this restaurant");
+        Long ownerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
+        if (ownerId.equals(user.getId())) {
+            throw new ForbiddenException("This user is not the owner of this restaurant");
         }
-        return restaurant;
     }
 }

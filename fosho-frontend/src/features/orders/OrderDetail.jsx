@@ -1,7 +1,18 @@
 import PropTypes from "prop-types";
 
+import { formatPrice } from "../../utils/format";
+
 const OrderDetail = ({ order }) => {
-  return <div>{JSON.stringify(order.shipping_address.address)}</div>;
+  return (
+    <div>
+      <span className="text-sm text-neutral-600">
+        Phí vận chuyển:{" "}
+        <span className="font-semibold text-primary">
+          {formatPrice(order.shipping_fee)} <sup> ₫</sup>
+        </span>
+      </span>
+    </div>
+  );
 };
 
 OrderDetail.propTypes = {

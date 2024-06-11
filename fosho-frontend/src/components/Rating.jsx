@@ -17,8 +17,11 @@ const Rating = ({ defaultValue, disable }) => {
       transition
       allowFraction
       iconsCount={5}
-      size={20}
+      size={19}
       SVGclassName="inline"
+      style={{
+        marginTop: "-9px",
+      }}
     />
   );
 };

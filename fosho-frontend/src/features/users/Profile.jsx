@@ -70,7 +70,7 @@ const Profile = () => {
       <div className="flex-1 border border-neutral-400 p-3 rounded-xl">
         FoshoFeed Coming soon...
       </div>
-      <div className="max-lg:hidden -mt-3">
+      <div className="max-lg:hidden">
         <Mapbox />
       </div>
     </div>

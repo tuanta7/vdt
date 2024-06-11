@@ -23,7 +23,7 @@ const RestaurantList = ({ long, lat }) => {
 
   return (
     <div className="flex-1">
-      <div className="flex flex-wrap justify-center items-center gap-2 mb-6 mt-2">
+      <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
         <p className="text-sm font-semibold">🎯Bộ lọc</p>
         <select
           className="select select-bordered select-sm  max-w-xs"
