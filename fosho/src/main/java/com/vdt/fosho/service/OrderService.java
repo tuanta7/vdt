@@ -29,9 +29,20 @@ public class OrderService {
     private final RestaurantService restaurantService;
 
 
-    public Page<Order> getOrdersByUserId(Long userId, int page, int size) {
+    public Page<Order> getOrdersByUserId(Long userId, String status, int page, int size) {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
-        return orderRepository.findAllByUserIdOrderByCreatedAtDesc(userId, pageable);
+        return orderRepository.findAllByUserIdAndStatusOrderByCreatedAtDesc(
+                userId,
+                OrderStatus.valueOf(status),
+                pageable);
+    }
+
+    public Page<Order> getOrdersByRestaurantId(Long restaurantId, String status, int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return orderRepository.findAllByRestaurantIdAndStatusOrderByCreatedAtAsc(
+                restaurantId,
+                OrderStatus.valueOf(status),
+                pageable);
     }
 
     @Transactional
@@ -97,11 +108,5 @@ public class OrderService {
                 items(orderItems).
                 restaurant(restaurantService.toDTO(order.getRestaurant())).
                 build();
-    }
-
-    public Page<Order> getOrdersByRestaurantId(Long restaurantId, int page, int size) {
-        return orderRepository.findAllByRestaurantIdOrderByCreatedAtDesc(
-                restaurantId,
-                Pageable.ofSize(size).withPage(page));
     }
 }

@@ -33,16 +33,22 @@ public class OrderController {
     public JSendResponse<HashMap<String, Object>> getOrdersByRestaurantId(
             @PathVariable("restaurant_id") Long restaurantId,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "limit", defaultValue = "10") int size
+            @RequestParam(value = "limit", defaultValue = "10") int size,
+            @RequestParam(value = "status", defaultValue = "PENDING") String status
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
+
         Long restaurantOwnerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
         if (!user.getId().equals(restaurantOwnerId)) {
             throw new ForbiddenException("This user is not the owner of the restaurant");
         }
 
-        Page<Order> orderPage = orderService.getOrdersByRestaurantId(restaurantId, page-1, size);
+        Page<Order> orderPage = orderService.getOrdersByRestaurantId(
+                restaurantId,
+                status.toUpperCase(),
+                page-1,
+                size);
         List<Order> orders = orderPage.getContent();
         List<OrderDTO> orderDTOs = new ArrayList<>();
         for (Order order : orders) {
@@ -77,16 +83,18 @@ public class OrderController {
     public JSendResponse<HashMap<String, Object>> getOrdersByUserId(
             @PathVariable("user_id") Long userId,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "limit", defaultValue = "3") int size
+            @RequestParam(value = "limit", defaultValue = "3") int size,
+            @RequestParam(value = "status", defaultValue = "PENDING") String status
+
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
 
         if (!user.getId().equals(userId)) {
-            throw new BadRequestException("User id does not match");
+            throw new ForbiddenException("Cannot access other user's orders");
         }
 
-        Page<Order> orderPage = orderService.getOrdersByUserId(userId, page-1, size);
+        Page<Order> orderPage = orderService.getOrdersByUserId(userId, status.toUpperCase(), page-1, size);
 
         List<Order> orders = orderPage.getContent();
         List<OrderDTO> orderDTOs = new ArrayList<>();

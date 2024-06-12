@@ -20,7 +20,7 @@ const GoogleButton = () => {
 
   return (
     <button
-      className="btn border border-base-300 rounded-xl w-full"
+      className="btn border bg-base-200 rounded-xl w-full"
       onClick={handleClick}
     >
       <LoadingButton isLoading={isPending}>

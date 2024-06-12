@@ -42,3 +42,9 @@ details > summary::-webkit-details-marker {
 .table :where(thead, tbody) :where(tr:first-child:last-child) {
   border-bottom-width: 0px !important;
 }
+
+.menu button:disabled,
+.menu button[disabled] {
+  color: oklch(var(--b1)) !important;
+  background-color: oklch(var(--p)) !important;
+}

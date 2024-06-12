@@ -15,10 +15,10 @@ const RestaurantDetail = () => {
     info: { user },
   } = useGlobal();
 
-  const { userId, restaurantId } = useParams();
+  const { restaurantId } = useParams();
 
   const { data } = useQuery({
-    queryKey: ["user-restaurants", userId, restaurantId],
+    queryKey: ["user-restaurants", restaurantId],
     queryFn: () => fetchPublicGet(`${BASE_URL}/restaurants/${restaurantId}`),
   });
 
@@ -60,18 +60,18 @@ const RestaurantDetail = () => {
       {isOwner && (
         <div className="flex justify-between items-center">
           <Link
-            to={isOwner ? `/users/${userId}/restaurants` : `/restaurants`}
+            to={isOwner ? `/users/${user?.id}/restaurants` : `/restaurants`}
             className="btn btn-sm"
           >
             🔙 Toàn bộ
           </Link>
           <div className="flex gap-3">
-            <button className="btn btn-sm">
+            <Link to="orders" className="btn btn-sm">
               Đơn hàng{" "}
               <div className="bg-primary text-base-100 text-xs py-1 px-2 rounded-lg">
                 2
               </div>
-            </button>
+            </Link>
             <button className="btn btn-sm">
               <PencilIcon className="h-4" />
             </button>

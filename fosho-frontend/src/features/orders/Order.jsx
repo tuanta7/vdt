@@ -18,22 +18,29 @@ const Order = ({ order }) => {
           </h2>
           <OrderStatus status={order.status} />
         </div>
-        <div className="grid lg:grid-cols-2 gap-3 p-2">
+        <div className="grid lg:grid-cols-2 items-center gap-3 p-2">
           <OrderItem key={order.items[0].id} item={order.items[0]} />
-          <div className="flex flex-col gap-1 justify-end lg:items-end max-lg:border max-lg:p-2 rounded-xl">
-            <p className="text-sm text-neutral-500">
+          <div className="flex flex-col gap-1 justify-evenly lg:items-end max-lg:border max-lg:p-2 rounded-xl">
+            <p className="text-sm text-neutral-500 justify-self-start mb-2">
               Đặt {formatISODate(order.created_at)}
             </p>
             <p className="text-sm text-neutral-500">
               Giao tới: <span>{order.shipping_address.address}</span>
             </p>
-            <div className="flex items-center gap-6">
+            <p className="text-sm text-neutral-500">
+              Người nhận:{" "}
+              <span>
+                {order.shipping_address.receiver_name} -{" "}
+                {order.shipping_address.phone}
+              </span>
+            </p>
+            <div className="flex items-center gap-6 mt-2">
               <p className="text-sm text-neutral-500">
                 {order.items.length} sản phẩm
               </p>
-              <p className="text-sm">
-                Thành tiền:
-                <span className="font-semibold text-primary text-lg px-2">
+              <p>
+                <span className="text-sm">Thành tiền:</span>
+                <span className="font-semibold text-primary px-2 text-lg">
                   {formatPrice(
                     order.total_price -
                       order.total_discount +

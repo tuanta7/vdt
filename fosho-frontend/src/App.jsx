@@ -15,7 +15,7 @@ import RestaurantDetail from "./features/restaurants/RestaurantDetail";
 import DishDetail from "./features/dishes/DishDetail";
 import Cart from "./features/cart/Cart";
 import OrderList from "./features/orders/OrderList";
-import OrderListPending from "./features/orders/OrderListPending";
+import RestaurantOrderList from "./features/restaurants/RestaurantOrderList";
 
 function App() {
   return (
@@ -51,10 +51,8 @@ function App() {
         <Route path="/users/:userId" element={<ProtectedLayout />}>
           <Route index element={<Profile />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="orders" element={<OrderList />}>
-            <Route index element={<OrderListPending />} />
-            <Route path="pending" element={<OrderListPending />} />
-          </Route>
+          <Route path="orders" element={<OrderList />} />
+
           <Route path="info" element={<Profile />} />
           <Route path="restaurants" element={<UserRestaurantList />} />
 
@@ -65,6 +63,10 @@ function App() {
           <Route
             path="restaurants/:restaurantId/dishes/:dishId"
             element={<DishDetail />}
+          />
+          <Route
+            path="restaurants/:restaurantId/orders"
+            element={<RestaurantOrderList />}
           />
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
