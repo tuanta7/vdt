@@ -80,6 +80,15 @@ const RestaurantOrderList = () => {
             Giao thành công
           </button>
         </li>
+        <li>
+          <button
+            className="btn btn-sm font-semibold w-40"
+            onClick={() => reset("CANCELLED")}
+            disabled={status === "CANCELLED"}
+          >
+            Hủy đơn
+          </button>
+        </li>
       </ul>
       {data?.orders?.map((o) => (
         <RestaurantOrder key={o.id} order={o} />

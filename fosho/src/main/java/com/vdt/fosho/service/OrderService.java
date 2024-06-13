@@ -88,6 +88,16 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    public Order updateOrderStatus(Long orderId, String status, Long restaurantId){
+        return orderRepository.findById(orderId).map(order -> {
+            if (!order.getRestaurant().getId().equals(restaurantId)) {
+                throw new BadRequestException("Order does not belong to this restaurant");
+            }
+            order.setStatus(OrderStatus.valueOf(status));
+            return orderRepository.save(order);
+        }).orElseThrow(() -> new BadRequestException("Order not found"));
+    }
+
     public OrderDTO toDTO(Order order) {
         ShippingAddressDTO shippingAddress = shippingAddressService.toDTO(order.getShippingAddress());
 

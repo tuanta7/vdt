@@ -2,9 +2,7 @@ package com.vdt.fosho.controller;
 
 import com.vdt.fosho.dto.OrderDTO;
 import com.vdt.fosho.entity.Order;
-import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
-import com.vdt.fosho.exception.BadRequestException;
 import com.vdt.fosho.exception.ForbiddenException;
 import com.vdt.fosho.service.OrderService;
 import com.vdt.fosho.service.RestaurantService;
@@ -75,6 +73,30 @@ public class OrderController {
 
         HashMap<String, OrderDTO> data = new HashMap<>();
         data.put("order_item",orderService.toDTO(order));
+        return JSendResponse.success(data);
+    }
+
+    @PatchMapping("/restaurants/{restaurant_id}/orders/{order_id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public JSendResponse<HashMap<String, String>> updateOrderStatus(
+            @PathVariable("order_id") Long orderId,
+            @PathVariable("restaurant_id") Long restaurantId,
+            @RequestParam(value = "status") String status
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+
+        Long restaurantOwnerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
+        if (!user.getId().equals(restaurantOwnerId)) {
+            throw new ForbiddenException("This user is not the owner of the restaurant");
+        }
+
+        orderService.updateOrderStatus(orderId, status.toUpperCase(), restaurantId);
+
+        HashMap<String, String> data = new HashMap<>();
+        data.put("order_status", status.toUpperCase());
         return JSendResponse.success(data);
     }
 

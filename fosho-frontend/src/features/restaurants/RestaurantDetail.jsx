@@ -1,7 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
-import { Cog8ToothIcon, PencilIcon } from "@heroicons/react/24/outline";
+import {
+  BellAlertIcon,
+  Cog8ToothIcon,
+  PencilIcon,
+} from "@heroicons/react/24/outline";
 
 import useGlobal from "../../hooks/useGlobal";
 import { BASE_URL, MAPBOX_TOKEN } from "../../utils/constant";
@@ -67,10 +71,10 @@ const RestaurantDetail = () => {
           </Link>
           <div className="flex gap-3">
             <Link to="orders" className="btn btn-sm">
-              Đơn hàng{" "}
               <div className="bg-primary text-base-100 text-xs py-1 px-2 rounded-lg">
-                2
+                <BellAlertIcon className="w-4" />
               </div>
+              Đơn hàng
             </Link>
             <button className="btn btn-sm">
               <PencilIcon className="h-4" />
