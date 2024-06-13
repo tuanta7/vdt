@@ -58,7 +58,7 @@ public class DebeziumListener {
 
         boolean result = switch (table) {
             case "restaurants" -> handleRestaurant(op, after);
-            case "orders" -> handleOrder(op, after);
+            case "orders" -> handleOrder(op, after, (Struct) value.get("before"));
             case "dishes" -> handleDish(op, after);
             default -> false;
         };
@@ -103,7 +103,7 @@ public class DebeziumListener {
                 .build());
     }
 
-     private boolean handleOrder(String op, Struct after) {
+     private boolean handleOrder(String op, Struct after, Struct before) {
         return false;
      }
 

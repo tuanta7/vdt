@@ -8,7 +8,7 @@ function isOpen(isActive, openTime, closeTime) {
   const openTimeFloat = parseFloat(openTime.replace(":", "."));
   const closeTimeFloat = parseFloat(closeTime.replace(":", "."));
 
-  console.log({ nowFloat, openTimeFloat, closeTimeFloat });
+  // console.log({ nowFloat, openTimeFloat, closeTimeFloat });
 
   return nowFloat > openTimeFloat && nowFloat < closeTimeFloat;
 }

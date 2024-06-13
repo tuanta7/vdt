@@ -14,4 +14,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     @Query("SELECT r.owner.id FROM Restaurant r WHERE r.id = ?1")
     Long getOwnerIdById(Long restaurantId);
+
 }

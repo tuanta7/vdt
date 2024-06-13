@@ -29,6 +29,7 @@ const OrderConfirm = ({ items, restaurantId }) => {
   const navigate = useNavigate();
   const {
     info: { user, accessToken },
+    stompClient,
   } = useGlobal();
 
   const { mutate, isPending } = useMutation({
@@ -44,6 +45,18 @@ const OrderConfirm = ({ items, restaurantId }) => {
       queryClient.invalidateQueries(["orders"]);
       toast.success("Đặt hàng thành công");
       navigate(`/users/${user.id}/orders`);
+
+      if (stompClient.current) {
+        stompClient.current.publish({
+          destination: `/app/notifications`,
+          body: JSON.stringify({
+            restaurant_id: 1,
+            user_id: 2,
+            from_user: false,
+            message: "Thông báo tới nhà hàng!",
+          }),
+        });
+      }
     },
   });
 

@@ -1,5 +1,6 @@
 package com.vdt.fosho.controller;
 
+
 import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.entity.Restaurant;
 import com.vdt.fosho.entity.User;
@@ -7,6 +8,9 @@ import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +20,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final RestaurantService restaurantService;
+
+    @MessageMapping("/user.connect")
+    public String connectUser(@Payload String message) {
+        System.out.println("User connected: " + message);
+        return message;
+    }
+
+    @MessageMapping("/user.disconnect")
+    public String disconnectUser(@Payload String message) {
+        return message;
+    }
 
     @GetMapping("/{user_id}/restaurants")
     @ResponseStatus(HttpStatus.OK)

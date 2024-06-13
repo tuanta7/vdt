@@ -2,6 +2,7 @@ package com.vdt.fosho.controller;
 
 import com.vdt.fosho.dto.OrderDTO;
 import com.vdt.fosho.entity.Order;
+import com.vdt.fosho.entity.OrderStatus;
 import com.vdt.fosho.entity.User;
 import com.vdt.fosho.exception.ForbiddenException;
 import com.vdt.fosho.service.OrderService;
@@ -87,16 +88,15 @@ public class OrderController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
 
-
         Long restaurantOwnerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
         if (!user.getId().equals(restaurantOwnerId)) {
             throw new ForbiddenException("This user is not the owner of the restaurant");
         }
 
-        orderService.updateOrderStatus(orderId, status.toUpperCase(), restaurantId);
+        Order order = orderService.updateOrderStatus(orderId, status.toUpperCase(), restaurantId);
 
         HashMap<String, String> data = new HashMap<>();
-        data.put("order_status", status.toUpperCase());
+        data.put("order_status", order.getStatus().name());
         return JSendResponse.success(data);
     }
 

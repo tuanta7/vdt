@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 import PropTypes from "prop-types";
 import GlobalContext from "./context/GlobalContext";
 
@@ -29,8 +29,10 @@ const GlobalProvider = ({ children }) => {
     },
   });
 
+  const stompClient = useRef(null);
+
   return (
-    <GlobalContext.Provider value={{ dispatch, info }}>
+    <GlobalContext.Provider value={{ dispatch, info, stompClient }}>
       {children}
     </GlobalContext.Provider>
   );

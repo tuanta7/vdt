@@ -48,7 +48,7 @@ public class Dish {
     @Column(name = "stock")
     private int stock;
 
-    @OneToMany
+    @OneToMany(mappedBy = "dish")
     private List<DishImage> images;
 
     @OneToMany(mappedBy = "dish")

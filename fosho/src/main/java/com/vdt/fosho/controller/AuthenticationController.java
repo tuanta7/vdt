@@ -9,9 +9,11 @@ import com.vdt.fosho.service.UserService;
 import com.vdt.fosho.utils.JSendResponse;
 import com.vdt.fosho.utils.JwtUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +75,12 @@ public class AuthenticationController {
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, Object>> logout() {
+    public JSendResponse<HashMap<String, Object>> logout(
+            HttpServletResponse response,
+            HttpServletRequest request
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logoutService.logout(request, response, authentication);
         return JSendResponse.success(null);
     }
 

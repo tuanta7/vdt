@@ -1,4 +1,5 @@
 const BASE_URL = "http://localhost:8080";
+
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoidHJhbi1hbmh0dWFuIiwiYSI6ImNsZnJyMzd0ZjBiNXY0NHA4aDlncHV1ZnMifQ.1xL2sWUIKYyeuDVTCgtQYw";
 const MAPBOX_ACCESS_TOKEN =

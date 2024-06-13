@@ -1,7 +1,6 @@
 import { PropTypes } from "prop-types";
 import {
   Bars3BottomLeftIcon,
-  InboxStackIcon,
   ShoppingCartIcon,
   MagnifyingGlassIcon,
   ArrowRightEndOnRectangleIcon,
@@ -9,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, NavLink } from "react-router-dom";
 import useGlobal from "../hooks/useGlobal";
+import Notification from "../features/Notification";
 
 const Navbar = ({ UserAvatar }) => {
   const {
@@ -43,9 +43,7 @@ const Navbar = ({ UserAvatar }) => {
         </div>
       </div>
       <div className="navbar-end flex gap-4 items-center">
-        <button className="btn btn-ghost btn-circle btn-sm">
-          <InboxStackIcon className="w-5" />
-        </button>
+        <Notification />
         <NavLink
           to={user ? `/users/${user.id}/cart` : "/auth/login"}
           className="btn btn-ghost btn-circle btn-sm"
