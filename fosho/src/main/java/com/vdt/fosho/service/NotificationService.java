@@ -9,8 +9,12 @@ import com.vdt.fosho.repository.NotificationRepository;
 import com.vdt.fosho.repository.RestaurantRepository;
 import com.vdt.fosho.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +43,7 @@ public class NotificationService {
                 .fromUserToRestaurant(notificationDTO.isFromUserToRestaurant())
                 .user(user)
                 .restaurant(restaurant)
+                .timestamp(LocalDateTime.now())
                 .build();
     }
 
@@ -46,8 +51,12 @@ public class NotificationService {
         return notificationRepository.findByUserIdOrderByTimestampDesc(userId);
     }
 
-    public List<Notification> findNotificationsByRestaurantId(Long restaurantId){
-        return notificationRepository.findByRestaurantIdOrderByTimestampDesc(restaurantId);
+    public Page<Notification> findNotificationsByRestaurantId(Long restaurantId, int page, int size){
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return notificationRepository.findByRestaurantIdAndFromUserToRestaurantIsTrueOrderByTimestampDesc(
+                restaurantId,
+                pageable
+        );
     }
 
     public NotificationDTO toDTO(Notification notification) {
@@ -57,6 +66,10 @@ public class NotificationService {
                 .seen(notification.isSeen())
                 .user(notification.getUser().getUsername())
                 .restaurant(notification.getRestaurant().getName())
+                .timestamp(notification.getTimestamp())
+                .fromUserToRestaurant(notification.isFromUserToRestaurant())
+                .userId(notification.getUser().getId())
+                .restaurantId(notification.getRestaurant().getId())
                 .build();
     }
 

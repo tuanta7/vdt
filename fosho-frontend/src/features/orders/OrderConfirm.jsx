@@ -50,10 +50,10 @@ const OrderConfirm = ({ items, restaurantId }) => {
         stompClient.current.publish({
           destination: `/app/notifications`,
           body: JSON.stringify({
-            restaurant_id: 1,
-            user_id: 2,
-            from_user: false,
-            message: "Thông báo tới nhà hàng!",
+            restaurant_id: restaurantId,
+            user_id: user.id,
+            from_user: true,
+            message: `Đơn hàng mới từ ${user.full_name} (${user.email})`,
           }),
         });
       }

@@ -8,6 +8,7 @@ import com.vdt.fosho.service.NotificationService;
 import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -61,8 +62,10 @@ public class NotificationController {
     @GetMapping("/restaurants/{restaurant_id}/notifications")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, List<NotificationDTO>>> getRestaurantNotification(
-            @PathVariable("restaurant_id") Long restaurantId
+    public JSendResponse<HashMap<String, Object>> getRestaurantNotification(
+            @PathVariable("restaurant_id") Long restaurantId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -72,10 +75,10 @@ public class NotificationController {
             throw new ForbiddenException("You are not allowed to access this resource");
         }
 
-        List<Notification> notifications = notificationService.findNotificationsByRestaurantId(restaurantId);
-        HashMap<String, List<NotificationDTO>> data = new HashMap<>();
-
-        data.put("notifications", notificationService.toDTOList(notifications));
+        Page<Notification> notifications = notificationService.findNotificationsByRestaurantId(restaurantId, page-1, size);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("notifications", notificationService.toDTOList(notifications.getContent()));
+        data.put("total", notifications.getTotalPages());
         return JSendResponse.success(data);
     }
 }

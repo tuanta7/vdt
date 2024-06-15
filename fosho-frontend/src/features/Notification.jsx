@@ -1,13 +1,15 @@
 import { InboxStackIcon } from "@heroicons/react/24/outline";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client/dist/sockjs";
-
-import { BASE_URL } from "../utils/constant";
-import useGlobal from "../hooks/useGlobal";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 
+import { BASE_URL } from "../utils/constant";
+import useGlobal from "../hooks/useGlobal";
+
 const Notification = () => {
+  const queryClient = useQueryClient();
   const [connected, setConnected] = useState(false);
   const stompClientRef = useRef(null);
   const {
@@ -15,12 +17,13 @@ const Notification = () => {
     stompClient: stompClientGlobal,
   } = useGlobal();
 
-  const onMessageReceived = (payload) => {
-    const msg = JSON.parse(payload.body).message;
-    toast.success(msg);
-  };
-
   useEffect(() => {
+    const onMessageReceived = (payload) => {
+      const msg = JSON.parse(payload.body).message;
+      queryClient.invalidateQueries(["notifications", user?.id]);
+      toast.success(msg);
+    };
+
     const socket = new SockJS(`${BASE_URL}/ws`);
     const stompClient = new Client({
       webSocketFactory: () => socket,
@@ -51,17 +54,18 @@ const Notification = () => {
         stompClientGlobal.current = null;
       }
     };
-  }, [user, stompClientGlobal]);
+  }, [user, stompClientGlobal, queryClient]);
 
+  // Test restaurant notification when user place an order
   const sendMessage = () => {
     if (stompClientRef.current && connected) {
       stompClientRef.current.publish({
         destination: `/app/notifications`,
         body: JSON.stringify({
-          restaurant_id: 1,
+          restaurant_id: 2,
           user_id: 2,
-          from_user: false,
-          message: "Thông báo tới nhà hàng!",
+          from_user: true,
+          message: `Đơn hàng mới từ ${user?.email}!`,
         }),
       });
     }

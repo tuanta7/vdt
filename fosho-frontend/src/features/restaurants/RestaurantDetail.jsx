@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import Map, { Marker } from "react-map-gl";
 import {
-  BellAlertIcon,
+  ClipboardDocumentCheckIcon,
   Cog8ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/outline";
@@ -13,6 +13,7 @@ import { fetchPublicGet } from "../../utils/fetchFn";
 import UserDishList from "../dishes/UserDishList";
 import ChangeLogo from "./ChangeLogo";
 import { isOpen } from "../../utils/isOpen";
+import RestaurantOrderNotification from "./RestaurantOrderNotification";
 
 const RestaurantDetail = () => {
   const {
@@ -69,12 +70,11 @@ const RestaurantDetail = () => {
           >
             🔙 Toàn bộ
           </Link>
-          <div className="flex gap-3">
+          <div className="flex gap-2 items-center">
+            <RestaurantOrderNotification restaurantId={restaurantId} />
             <Link to="orders" className="btn btn-sm">
-              <div className="bg-primary text-base-100 text-xs py-1 px-2 rounded-lg">
-                <BellAlertIcon className="w-4" />
-              </div>
               Đơn hàng
+              <ClipboardDocumentCheckIcon className="h-4" />
             </Link>
             <button className="btn btn-sm">
               <PencilIcon className="h-4" />

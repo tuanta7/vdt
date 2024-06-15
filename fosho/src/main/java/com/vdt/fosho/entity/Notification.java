@@ -34,6 +34,6 @@ public class Notification {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @Column(name = "timestamp", columnDefinition = "DATETIME")
+    @Column(name = "timestamp", columnDefinition = "DATETIME DEFAULT NOW()")
     private LocalDateTime timestamp;
 }
