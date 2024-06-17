@@ -124,7 +124,7 @@ public class DishController {
         User user = (User) authentication.getPrincipal();
 
         Long ownerId = restaurantService.getRestaurantOwnerIdById(restaurantId);
-        if (ownerId.equals(user.getId())) {
+        if (!ownerId.equals(user.getId())) {
             throw new ForbiddenException("This user is not the owner of this restaurant");
         }
     }

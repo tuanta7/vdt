@@ -54,8 +54,8 @@ public class Order {
     private ShippingAddress shippingAddress;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method")
-    private PaymentMethod paymentMethod; // Right now, only support COD 😓
+    @Column(name = "payment_method", columnDefinition = "ENUM('COD', 'VIETTEL_PAYGATE') default 'COD'")
+    private PaymentMethod paymentMethod;
 
     // Timestamps
     @Column(name = "created_at", columnDefinition = "DATETIME DEFAULT NOW()")
@@ -69,4 +69,8 @@ public class Order {
 
     @Column(name = "delivered_at", columnDefinition = "DATETIME")
     private LocalDateTime deliveredAt;
+
+    @ManyToOne
+    @JoinColumn(name = "driver_id")
+    private User driver;
 }

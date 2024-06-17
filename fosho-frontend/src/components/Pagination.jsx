@@ -25,7 +25,7 @@ const Pagination = ({ current, setFn, total }) => {
         <ChevronDoubleLeftIcon className="w-3 h-3" />
       </button>
       <button className="join-item btn btn-xs px-6">
-        Page {current} / {total}
+        Trang {current} / {total}
       </button>
       <button
         className="join-item btn btn-xs"

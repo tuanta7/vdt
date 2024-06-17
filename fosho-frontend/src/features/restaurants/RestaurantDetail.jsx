@@ -63,7 +63,7 @@ const RestaurantDetail = () => {
   return (
     <div className="flex-1 overflow-auto">
       {isOwner && (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-3">
           <Link
             to={isOwner ? `/users/${user?.id}/restaurants` : `/restaurants`}
             className="btn btn-sm"
@@ -85,8 +85,8 @@ const RestaurantDetail = () => {
           </div>
         </div>
       )}
-      <div className="flex justify-between items-end gap-6 flex-wrap mb-3">
-        <div className="mt-3 flex items-start gap-3">
+      <div className="flex justify-between items-start gap-6 flex-wrap mb-3">
+        <div className="flex items-start gap-3">
           <div className="avatar flex flex-col items-end">
             <div className="w-44 h-44 border border-base-200 rounded-xl overflow-hidden">
               <img

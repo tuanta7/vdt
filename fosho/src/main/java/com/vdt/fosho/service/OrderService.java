@@ -80,6 +80,7 @@ public class OrderService {
                 shippingAddress(shippingAddress).
                 shippingFee(30000).
                 items(orderItems).
+                paymentMethod(orderDTO.getPaymentMethod()).
                 build();
 
         orderItems.forEach(orderItem -> orderItem.setOrder(order));
