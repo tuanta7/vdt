@@ -13,7 +13,7 @@ const RestaurantNotificationList = ({ restaurantId }) => {
   } = useGlobal();
 
   const { data } = useQuery({
-    queryKey: ["notifications", user.id],
+    queryKey: ["notifications", user?.id],
     queryFn: () =>
       fetchWithAccessToken(
         `${BASE_URL}/restaurants/${restaurantId}/notifications?limit=5&page=1`,
@@ -32,7 +32,7 @@ const RestaurantNotificationList = ({ restaurantId }) => {
         <li key={n.id} className="border border-base-300 mb-3 rounded-lg">
           <div className="flex items-center justify-between w-full hover:bg-base-100">
             <Link
-              to={`/users/${user.id}/restaurants/${restaurantId}/orders`}
+              to={`/users/${user?.id}/restaurants/${restaurantId}/orders`}
               className="hover:text-info"
             >
               <p className="text-sm max-w-64 break-words">{n.message}</p>

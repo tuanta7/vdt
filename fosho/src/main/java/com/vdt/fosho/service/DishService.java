@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -55,6 +53,10 @@ public class DishService {
     public Dish createDish(DishDTO dishDTO) {
         Dish dish = toEntity(dishDTO);
         return dishRepository.save(dish);
+    }
+
+    public void save(Dish dish) {
+        dishRepository.save(dish);
     }
 
     public List<Dish> getAllDishesByRestaurantId(Long restaurantId) {
@@ -99,4 +101,6 @@ public class DishService {
                 .stock(dishDTO.getStock())
                 .build();
     }
+
+
 }

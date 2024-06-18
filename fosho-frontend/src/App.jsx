@@ -16,6 +16,7 @@ import DishDetail from "./features/dishes/DishDetail";
 import Cart from "./features/cart/Cart";
 import OrderList from "./features/orders/OrderList";
 import RestaurantOrderList from "./features/restaurants/RestaurantOrderList";
+import Search from "./features/search/Search";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<RestaurantList />} />
+          <Route path="search" element={<Search />} />
           <Route path="restaurants" element={<RestaurantList />} />
           <Route
             path="restaurants/:restaurantId"

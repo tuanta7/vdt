@@ -27,7 +27,8 @@ const RestaurantDetail = () => {
     queryFn: () => fetchPublicGet(`${BASE_URL}/restaurants/${restaurantId}`),
   });
 
-  const isOwner = data?.restaurant?.owner_id === user?.id;
+  const isOwner = data ? data?.restaurant?.owner_id === user?.id : false;
+
   const isOpenNow = isOpen(
     data?.restaurant?.is_active,
     data?.restaurant?.open_time,
@@ -94,9 +95,11 @@ const RestaurantDetail = () => {
                 alt="Logo"
               />
             </div>
-            <div className="-mt-44 mb-36">
-              <ChangeLogo />
-            </div>
+            {isOwner && (
+              <div className="-mt-44 mb-36">
+                <ChangeLogo />
+              </div>
+            )}
           </div>
           <div className="w-fit">
             <p>

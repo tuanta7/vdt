@@ -14,6 +14,8 @@ const AddToCartBar = ({ dishId }) => {
     info: { accessToken },
   } = useGlobal();
 
+  console.log("accessToken", accessToken);
+
   const { isPending, mutate } = useMutation({
     mutationFn: () =>
       fetchWithAccessToken(`${BASE_URL}/carts`, "POST", accessToken, {

@@ -3,10 +3,7 @@ package com.vdt.fosho.service;
 import com.vdt.fosho.dto.OrderDTO;
 import com.vdt.fosho.dto.OrderItemDTO;
 import com.vdt.fosho.dto.ShippingAddressDTO;
-import com.vdt.fosho.entity.Order;
-import com.vdt.fosho.entity.OrderItem;
-import com.vdt.fosho.entity.OrderStatus;
-import com.vdt.fosho.entity.ShippingAddress;
+import com.vdt.fosho.entity.*;
 import com.vdt.fosho.exception.BadRequestException;
 import com.vdt.fosho.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ public class OrderService {
     private final OrderItemService orderItemService;
     private final ShippingAddressService shippingAddressService;
     private final RestaurantService restaurantService;
+    private final DishService dishService;
 
 
     public Page<Order> getOrdersByUserId(Long userId, String status, int page, int size) {
@@ -89,14 +89,42 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    @Transactional
     public Order updateOrderStatus(Long orderId, String status, Long restaurantId){
-        return orderRepository.findById(orderId).map(order -> {
-            if (!order.getRestaurant().getId().equals(restaurantId)) {
-                throw new BadRequestException("Order does not belong to this restaurant");
+        Optional<Order> result = orderRepository.findById(orderId);
+        if (result.isEmpty()) {
+            throw new BadRequestException("Order not found");
+        }
+        Order order = result.get();
+        if (!order.getRestaurant().getId().equals(restaurantId)) {
+            throw new BadRequestException("Order does not belong to this restaurant");
+        }
+
+        for (OrderItem item : order.getItems()) {
+            Dish dish = item.getDish();
+            if (!Objects.equals(dish.getRestaurant().getId(), restaurantId)) {
+                throw new BadRequestException("Order item does not belong to this restaurant");
             }
-            order.setStatus(OrderStatus.valueOf(status));
-            return orderRepository.save(order);
-        }).orElseThrow(() -> new BadRequestException("Order not found"));
+
+            if (dish.getStock() < item.getQuantity()) {
+                throw new BadRequestException("Not enough stock for dish: " + dish.getName());
+            }
+
+            if (status.equals("CANCELLED")) {
+                dish.setStock(dish.getStock() + item.getQuantity());
+                dish.setSold(dish.getSold() - item.getQuantity());
+                dishService.save(dish);
+            }
+            else if(status.equals("CONFIRMED")) {
+                dish.setStock(dish.getStock() - item.getQuantity());
+                dish.setSold(dish.getSold() + item.getQuantity());
+                dishService.save(dish);
+            }
+
+        }
+        order.setStatus(OrderStatus.valueOf(status));
+        return orderRepository.save(order);
+
     }
 
     public OrderDTO toDTO(Order order) {

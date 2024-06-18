@@ -1,5 +1,7 @@
 package com.vdt.fosho.service;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import com.vdt.fosho.dto.RestaurantDTO;
 import com.vdt.fosho.elasticsearch.document.RestaurantDocument;
 import com.vdt.fosho.entity.Restaurant;
@@ -9,12 +11,13 @@ import com.vdt.fosho.repository.RestaurantRepository;
 
 import com.vdt.fosho.utils.GeoUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +38,13 @@ public class RestaurantService {
         return true;
     }
 
-    public List<RestaurantDocument> getAllRestaurants() {
-        Iterable<RestaurantDocument> restaurantDocuments = restaurantDocumentRepository.findAll();
-        return StreamSupport
-                .stream(restaurantDocuments.spliterator(), false)
-                .collect(Collectors.toList());
+    public Page<RestaurantDocument> getAllRestaurants(String search, int page, int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        if (search.isEmpty()) {
+            System.out.println("Searching all dishes in Elasticsearch");
+            return restaurantDocumentRepository.findAll(pageable);
+        }
+        return restaurantDocumentRepository.findByName(search, pageable);  // Elasticsearch
     }
 
 

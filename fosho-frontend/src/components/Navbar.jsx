@@ -1,4 +1,5 @@
 import { PropTypes } from "prop-types";
+import { useState } from "react";
 import {
   Bars3BottomLeftIcon,
   ShoppingCartIcon,
@@ -6,11 +7,13 @@ import {
   ArrowRightEndOnRectangleIcon,
   ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useGlobal from "../hooks/useGlobal";
 import Notification from "../features/Notification";
 
 const Navbar = ({ UserAvatar }) => {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   const {
     info: { user },
   } = useGlobal();
@@ -20,6 +23,7 @@ const Navbar = ({ UserAvatar }) => {
       <ArrowRightEndOnRectangleIcon className="w-5" />
     </Link>
   );
+
   return (
     <nav className="navbar bg-base-200 text-neutral-600">
       <div className="navbar-start flex items-center gap-4">
@@ -31,16 +35,29 @@ const Navbar = ({ UserAvatar }) => {
         </Link>
       </div>
       <div className="navbar-center min-w-content md:min-w-80">
-        <div className="max-md:hidden flex items-center justify-between border rounded-lg bg-base-100 w-full">
+        <form
+          className="max-md:hidden flex items-center justify-between border rounded-lg bg-base-100 w-full"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (search) navigate(`/search?q=${search}`);
+          }}
+        >
           <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm nhà hàng, món ăn..."
             className="input input-sm rounded-lg focus:border-none no-focus w-full"
           />
-          <button className="btn btn-ghost rounded-lg btn-sm">
+          <button
+            className="btn btn-ghost rounded-lg btn-sm"
+            onClick={() => {
+              if (search) navigate(`/search?q=${search}`);
+            }}
+          >
             <MagnifyingGlassIcon className="w-4 h-4" />
           </button>
-        </div>
+        </form>
       </div>
       <div className="navbar-end flex gap-4 items-center">
         <Notification />

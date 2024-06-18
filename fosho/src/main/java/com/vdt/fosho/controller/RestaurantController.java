@@ -12,6 +12,7 @@ import com.vdt.fosho.service.RestaurantService;
 import com.vdt.fosho.utils.JSendResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,9 +36,19 @@ public class RestaurantController {
     @GetMapping("/restaurants")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public JSendResponse<HashMap<String, List<RestaurantDocument>>> getAllRestaurants() {
-        List<RestaurantDocument> restaurants = restaurantService.getAllRestaurants();
-        HashMap<String, List<RestaurantDocument>> data = new HashMap<>();
+    public JSendResponse<HashMap<String, Object>> getAllRestaurants(
+            @RequestParam(required = false,defaultValue = "") String q,
+            @RequestParam(required = false, defaultValue = "10") int limit,
+            @RequestParam(required = false, defaultValue = "1") int page
+    ) {
+        if (limit < 1 || page < 1) {
+            throw new BadRequestException("Invalid limit or page");
+        }
+        Page<RestaurantDocument> restaurantsPage = restaurantService.getAllRestaurants(q, page-1, limit);
+        List<RestaurantDocument> restaurants = restaurantsPage.getContent();
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("total", restaurantsPage.getTotalPages());
         data.put("restaurants", restaurants);
         return JSendResponse.success(data);
     }
@@ -160,7 +171,9 @@ public class RestaurantController {
     @DeleteMapping("/restaurants/{restaurant_id}/logo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public JSendResponse<Object> deleteRestaurantLogo(@PathVariable("restaurant_id") Long id) throws IOException {
+    public JSendResponse<Object> deleteRestaurantLogo(
+            @PathVariable("restaurant_id") Long id
+    ) throws IOException {
         if (!isOwner(id)) {
             throw new ForbiddenException("Access denied, you are not the owner of this restaurant");
         }

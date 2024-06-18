@@ -1,16 +1,21 @@
 import PropTypes from "prop-types";
 import { useQuery } from "@tanstack/react-query";
-
+import { useSearchParams } from "react-router-dom";
 import { fetchPublicGet } from "../../../utils/fetchFn";
 import { BASE_URL } from "../../../utils/constant";
 import LoadingBlock from "../../../components/LoadingBlock";
 import RestaurantItem from "./RestaurantItem";
 
 const RestaurantList = ({ long, lat }) => {
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("q") || "";
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["restaurants"],
+    queryKey: ["restaurants", search],
     queryFn: () =>
-      fetchPublicGet(`${BASE_URL}/restaurants?long=${long}&lat=${lat}`),
+      fetchPublicGet(
+        `${BASE_URL}/restaurants?long=${long}&lat=${lat}&q=${search}`
+      ),
   });
 
   const list = (
