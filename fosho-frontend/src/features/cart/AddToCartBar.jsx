@@ -14,14 +14,15 @@ const AddToCartBar = ({ dishId }) => {
     info: { accessToken },
   } = useGlobal();
 
-  console.log("accessToken", accessToken);
-
   const { isPending, mutate } = useMutation({
-    mutationFn: () =>
-      fetchWithAccessToken(`${BASE_URL}/carts`, "POST", accessToken, {
+    mutationFn: () => {
+      if (!accessToken) return (window.location.href = "/auth/login");
+      return fetchWithAccessToken(`${BASE_URL}/carts`, "POST", accessToken, {
         quantity: 1,
         dish_id: dishId,
-      }),
+      });
+    },
+
     onSuccess: () => {
       queryClient.invalidateQueries(["carts"]);
       toast.success("Đã thêm vào giỏ hàng");

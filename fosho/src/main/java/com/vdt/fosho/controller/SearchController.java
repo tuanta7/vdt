@@ -1,6 +1,5 @@
 package com.vdt.fosho.controller;
 
-import com.vdt.fosho.dto.DishDTO;
 import com.vdt.fosho.elasticsearch.document.DishDocument;
 import com.vdt.fosho.elasticsearch.document.RestaurantDocument;
 import com.vdt.fosho.service.DishService;
