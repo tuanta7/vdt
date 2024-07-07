@@ -21,3 +21,35 @@ services:
       - xpack.security.enabled=false
       - discovery.type=single-node
     restart: always
+
+  backend:
+    build:
+      context: ./fosho
+      dockerfile: Dockerfile
+    depends_on:
+      - mariadb
+      - elasticsearch
+    environment:
+      DB_URL: jdbc:mariadb://mariadb:3306/fosho
+      ES_URL: elasticsearch
+      CLOUDNAME: foshovdt24
+      API_KEY: 817531568843454
+      API_SECRET: d7fWGMplsWsjOlHXyK-IKWoNVVM
+    restart: always
+
+  frontend:
+    build:
+      context: ./fosho-frontend
+      dockerfile: Dockerfile
+    restart: always
+
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8088:80"
+    depends_on:
+      - frontend
+      - backend

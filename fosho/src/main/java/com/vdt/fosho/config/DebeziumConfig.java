@@ -19,14 +19,14 @@ public class DebeziumConfig {
                 .with("name", "custom-mariadb-connector")
                 .with("connector.class", "io.debezium.connector.mysql.MySqlConnector")
                 .with("offset.storage", "org.apache.kafka.connect.storage.FileOffsetBackingStore")
-                .with("offset.storage.file.filename", "F:\\Debezium/offsets.dat")
+                .with("offset.storage.file.filename", "/app/offsets.dat")
                 .with("offset.flush.interval.ms", 60000)
 
                 // MariaDB properties
                 .with("connector.adapter", "mariadb")
                 .with("database.protocol", "jdbc:mariadb")
                 .with("database.jdbc.driver", "org.mariadb.jdbc.Driver")
-                .with("database.hostname", "localhost")
+                .with("database.hostname", "mariadb")
                 .with("database.port", 3306)
                 .with("database.user", "root")
                 .with("database.password", "password")
@@ -39,12 +39,12 @@ public class DebeziumConfig {
                 .with("database.server.id", 6000)
                 .with("database.server.name", "fosho-connector")
                 .with("database.history", "io.debezium.relational.history.FileDatabaseHistory")
-                .with("database.history.file.filename", "F:\\Debezium/dbhistory.dat")
+                .with("database.history.file.filename", "/app/dbhistory.dat")
 
                 // Kafka
                 .with("topic.prefix", "vdt")
                 .with("schema.history.internal", "io.debezium.storage.file.history.FileSchemaHistory")
-                .with("schema.history.internal.file.filename", "F:\\Debezium/history.dat")
+                .with("schema.history.internal.file.filename", "/app/history.dat")
                 .build();
     }
 }
